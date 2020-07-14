@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Billing xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://www.mennekes.de/Mennekes.EdlVerification.xsd">
+    <Customer>
+        <CustomerId>11</CustomerId>
+        <Name1>ptb ptb</Name1>
+        <ZipCode>38116</ZipCode>
+        <Street>Bundesallee 100</Street>
+        <Town>Braunschweig</Town>
+    </Customer>
+    <Supplier>
+        <ZipCode>57399</ZipCode>
+        <Name1>MENNEKES Elektrotechnik GmbH &amp; Co. KG</Name1>
+        <Street>Aloys-Mennekes-Straße 1</Street>
+        <Phone>+49 27 23 / 41 - 1</Phone>
+        <Fax>+49 27 23 / 41 - 214</Fax>
+        <MailAddress>info@MENNEKES.de</MailAddress>
+        <Town>Kirchhundem</Town>
+        <MailAddressLinkText>info@MENNEKES.de</MailAddressLinkText>
+        <MailSubject>test</MailSubject>
+        <MailBody>test</MailBody>
+        <WebAddress>https://www.chargeupyourday.com/</WebAddress>
+        <WebAddressLinkText>https://www.chargeupyourday.com/</WebAddressLinkText>
+    </Supplier>
+    <BillingPeriods>
+        <BillingPeriod>
+            <BillingNo>RE2017-01</BillingNo>
+            <ObisCode>1.8.0</ObisCode>
+            <Title>Lieferung Strom</Title>
+            <Begin>2018-09-04T12:22:14+02:00</Begin>
+            <End>2018-09-04T12:26:45+02:00</End>
+            <ChargingProcesses>
+                <ChargingProcess>
+                    <ServerId>0901454D4800005BAE2F</ServerId>
+                    <PublicKey>6DACB9C5466A25B3EB9F6466B53457C84A27448B01A64A278C0A28DAC95F2B45DF39B79918A9A4D2E3551F3FE925D09D</PublicKey>
+                    <!-- Public key is 48 bytes, 96 chars in Base16 notation. Letters are uppercase -->
+                    <MeteringPoint>DE*PWC*E00003*005</MeteringPoint>
+                    <!-- Zählpunktbezeichnung or Id Messlokation -->
+                    <SiteAddress> <!-- Installation place -->
+                        <ZipCode>38116</ZipCode>
+                        <Street>Bundesallee 100</Street>
+                        <Town>Braunschweig</Town>
+                    </SiteAddress>
+                    <CustomerIdent>874AD0FE</CustomerIdent>
+                    <TimestampCustomerIdent>2018-09-04T12:22:10+02:00
+                    </TimestampCustomerIdent>
+                    <MeasurementStart> <!-- Begin of charging process -->
+                        <TimestampCustomerIdent>2018-09-04T12:22:10+02:00
+                        </TimestampCustomerIdent>
+                        <Timestamp>2018-09-04T12:22:14+02:00</Timestamp>
+                        <Signature>
+                            55CB60BB5E8AC580516F6A3DA5D6BB0365FD9DC04D50BE53B79FD95A2A92D749C36839
+                            B0A507E63A48E0A956A6FEFDB5
+                        </Signature>
+                        <EventCounter>8</EventCounter>
+                        <MeterStatus>65800</MeterStatus>
+                        <Value>519116</Value>
+                        <Scaler>-1</Scaler>
+                        <Pagination>25</Pagination>
+                        <SecondIndex>74650</SecondIndex>
+                    </MeasurementStart>
+                    <MeasurementEnd> <!-- End of charging process -->
+                        <Timestamp>2018-09-04T12:26:45+02:00</Timestamp>
+                        <Signature>
+                            6574B62680B76639C2EF03CDEA34CCAC5633F3C7E08E5C251463F0DFED38B35A9675126D
+                            DA8F4B0CAB017B1A42C5EBDC
+                        </Signature>
+                        <EventCounter>8</EventCounter>
+                        <Value>520535</Value>
+                        <Scaler>-1</Scaler>
+                        <Pagination>26</Pagination>
+                        <MeterStatus>65800</MeterStatus>
+                        <SecondIndex>74921</SecondIndex>
+                    </MeasurementEnd>
+                    <EventLogItems>
+                        <!-- normally this collection is empty as MENNEKES blocks clock setting during an active charging process -->
+                        <EventLogItem>
+                            <TimeBefore/>
+                            <TimeAfter/>
+                            <MeterStatus/>
+                            <EventCounter/>
+                            <EventCode/>
+                            <Signature/>
+                            <SecondIndex/>
+                        </EventLogItem>
+                    </EventLogItems>
+                </ChargingProcess>
+            </ChargingProcesses>
+        </BillingPeriod>
+    </BillingPeriods>
+</Billing>

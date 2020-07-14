@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="publicKey" type="publicKey"/>
+
+  <xs:element name="result" nillable="true" type="xs:anyType"/>
+
+  <xs:element name="results" type="results"/>
+
+  <xs:element name="signedData" type="signedData"/>
+
+  <xs:element name="verifiedData" type="verifiedData"/>
+
+  <xs:complexType name="results">
+    <xs:sequence>
+      <xs:element ref="result" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="result">
+    <xs:sequence>
+      <xs:element name="status" type="xs:string" minOccurs="0"/>
+      <xs:element ref="signedData" minOccurs="0"/>
+      <xs:element ref="publicKey" minOccurs="0"/>
+      <xs:element ref="verifiedData" minOccurs="0"/>
+      <xs:element name="errorMessage" type="xs:string" minOccurs="0"/>
+      <xs:element name="warningMessage" type="xs:string" minOccurs="0"/>
+      <xs:element name="meterDiff" type="xs:string" minOccurs="0"/>
+      <xs:element name="timeDiff" type="xs:string" minOccurs="0"/>
+      <xs:element name="meters" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="meter" type="meter" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="transactionId" type="xs:integer"/>
+  </xs:complexType>
+
+  <xs:complexType name="signedData">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="format" type="xs:string"/>
+        <xs:attribute name="encoding" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="publicKey">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="encoding" type="xs:string"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="verifiedData" abstract="true">
+    <xs:sequence/>
+    <xs:attribute name="encoding" type="xs:string"/>
+    <xs:attribute name="format" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="meter">
+    <xs:sequence>
+      <xs:element name="value" type="xs:double"/>
+      <xs:element name="timestamp" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

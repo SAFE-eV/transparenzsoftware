@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<values>
+<value transactionId="1" context="Transaction.Begin">
+        <signedData format="OCMF" encoding="plain" transactionId="29">OCMF|{"FV":"1.0","GI":"HTB","GS":"HTBSerial","GV":"0.0.1","PG":"T12345","MV":"HTB","MM":"HTB","MS":"HTBGenerated1","MF":"1.0","IS":true,"IL":"VERIFIED","IF":["RFID_PLAIN","OCPP_RS_TLS"],"IT":"ISO14443","ID":"8D2E2D536DCFD0","CI":"HTB","CT":"CBIDC","RD":[{"TM":"2019-04-02T17:28:45,867+0200 S","TX":"B","RV":3.51824,"RI":"1-b:1.8.e","RU":"kWh","EI":1523,"ST":"G"},{"TM":"2019-04-02T17:28:45,867+0200 S","TX":"X","RV":7.01047,"RI":"1-b:1.8.e","RU":"kWh","EI":1523,"ST":"G"}]}|{"SA":"ECDSA-secp192k1-SHA256","SD":"303402185A5E62A58B45C10C37166B7E43D26296D79C450DF30C2FA4021822099CFAEB793D9246FAE130C93964B43FC4C5F2CF1732E1"}</signedData>
+        <publicKey encoding="hex">30 46 30 10 06 07 2A 86 48 CE 3D 02 01 06 05 2B 81 04 00 1F 03 32 00 04 C2 00 65 42 21 8B B2 7F 5E 0B 94 5C 5F 9D 15 88 67 B6 66 B3 BB 44 14 AB C6 56 94 89 A8 F7 98 50 20 C7 7F 0F 32 A4 B4 E1 83 A3 05 61 27 C3 48 69</publicKey>
+    </value><value transactionId="1" context="Transaction.End">
+    <signedData format="OCMF" encoding="plain" transactionId="629">OCMF|{"FV":"1.0","GI":"HTB","GS":"HTBSerial","GV":"0.0.1","PG":"T12345","MV":"HTB","MM":"HTB","MS":"HTBGenerated1","MF":"1.0","IS":true,"IL":"VERIFIED","IF":["RFID_PLAIN","OCPP_RS_TLS"],"IT":"ISO14443","ID":"D12485D464E500","CI":"HTB","CT":"CBIDC","RD":[{"TM":"2019-04-02T17:39:10,867+0200 S","TX":"X","RV":9.43621,"RI":"1-b:1.8.e","RU":"kWh","EI":1523,"ST":"G"},{"TM":"2019-04-02T17:39:10,867+0200 S","TX":"E","RV":12.64134,"RI":"1-b:1.8.e","RU":"kWh","EI":1523,"ST":"G"}]}|{"SA":"ECDSA-secp192k1-SHA256","SD":"3035021900AD05AAF3958E32F798B4DBF9F217C8DF0214FFA1EF10B84A02185DA76499F3785AD7B94734314662162408A330A959B22D3C"}</signedData>
+    <publicKey encoding="hex">30 46 30 10 06 07 2A 86 48 CE 3D 02 01 06 05 2B 81 04 00 1F 03 32 00 04 C2 00 65 42 21 8B B2 7F 5E 0B 94 5C 5F 9D 15 88 67 B6 66 B3 BB 44 14 AB C6 56 94 89 A8 F7 98 50 20 C7 7F 0F 32 A4 B4 E1 83 A3 05 61 27 C3 48 69</publicKey>
+</value>
+</values>

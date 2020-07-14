@@ -1,0 +1,47 @@
+package com.hastobe.transparenzsoftware.gui.views.customelements;
+
+import com.hastobe.transparenzsoftware.gui.views.MainView;
+import com.hastobe.transparenzsoftware.i18n.Translator;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class MainViewBottomPanel extends JPanel {
+
+    private final VerifyButton verifyBtn;
+    private final JLabel pagingLabel;
+
+    public MainViewBottomPanel(MainView mainView) {
+        this.setLayout(new GridLayout(0, 3));
+        this.add(Box.createVerticalStrut(this.getWidth() / 3));
+        this.add(Box.createVerticalStrut(this.getWidth() / 3));
+        this.add(Box.createVerticalStrut(this.getWidth() / 3));
+        this.add(Box.createHorizontalStrut(this.getWidth() / 3));
+        this.verifyBtn = new VerifyButton(mainView);
+        this.add(verifyBtn);
+        pagingLabel = new JLabel("");
+        pagingLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        setPagingCount(0, 0);
+        this.add(pagingLabel);
+        this.add(Box.createHorizontalStrut(this.getWidth() / 3));
+        this.add(Box.createHorizontalStrut(this.getWidth() / 3));
+        this.add(Box.createVerticalStrut(this.getWidth() / 3));
+        this.pagingLabel.setVisible(false);
+    }
+
+    public void setEnableVerifyButton(boolean enable) {
+        this.verifyBtn.setEnabled(enable);
+    }
+
+    public void setPagingCount(int current, int total){
+        this.pagingLabel.setText(String.format(Translator.get("app.view.pageof"), current, total));
+    }
+
+    public void showPaginationCount() {
+        this.pagingLabel.setVisible(true);
+    }
+
+    public void setEnableVerifyMode(boolean single) {
+        verifyBtn.setVerifySingle(single);
+    }
+}

@@ -1,0 +1,19 @@
+# intellij
+*.iml
+.idea/*
+
+# java
+target/*
+/target/
+
+
+# eclipse
+.settings/*
+.project
+*.log
+bin/*
+.classpath
+# test files
+test_ignored_files/*
+# maven shade plugin
+dependency-reduced-pom.xml

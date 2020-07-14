@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<current>
+    <value>
+        <signedData format="SML_EDL40_P" encoding="base64">TEST1
+        </signedData>
+        <publicKey encoding="base64">TEST2
+        </publicKey>
+    </value>
+    <value>
+        <signedData format="SML_EDL40_P" encoding="base64">TEST3
+        </signedData>
+        <publicKey encoding="base64">TEST4</publicKey>
+    </value>
+</current>
