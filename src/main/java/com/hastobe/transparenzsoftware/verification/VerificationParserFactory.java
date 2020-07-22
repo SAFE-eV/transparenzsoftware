@@ -2,6 +2,7 @@ package com.hastobe.transparenzsoftware.verification;
 
 import com.hastobe.transparenzsoftware.verification.format.alfen.AlfenVerificationParser;
 import com.hastobe.transparenzsoftware.verification.format.ocmf.OCMFVerificationParser;
+import com.hastobe.transparenzsoftware.verification.format.pcdf.PcdfVerificationParser;
 import com.hastobe.transparenzsoftware.verification.format.sml.EDL40.EDL40VerificationParser;
 import com.hastobe.transparenzsoftware.verification.format.sml.EDLMennekes.EDLMennekesVerificationParser;
 import com.hastobe.transparenzsoftware.verification.format.sml.SignatureOnly.SignatureOnlyVerificationParser;
@@ -24,6 +25,7 @@ public class VerificationParserFactory {
         this.parser.add(new EDLMennekesVerificationParser());
         this.parser.add(new AlfenVerificationParser());
         this.parser.add(new OCMFVerificationParser());
+        this.parser.add(new PcdfVerificationParser());
     }
 
     /**
