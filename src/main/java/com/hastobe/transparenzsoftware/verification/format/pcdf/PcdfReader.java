@@ -25,6 +25,8 @@ public class PcdfReader {
 	private PcdfChargingData cd;
 	
 	private static HashMap<String, String> attributes; 
+	
+	private ArrayList<String> missing;
 
 	public PcdfReader()
 	{
@@ -45,10 +47,29 @@ public class PcdfReader {
 		attributes.put("SG", "parseSGAttrib");
 		attributes.put("BV", "parseBVAttrib");
 		attributes.put("CSC", "parseCSCAttrib");
+		
+		missing = new ArrayList<String>();
+		
+		missing.add("ST");
+		missing.add("CT");
+		missing.add("CD");
+		missing.add("TV");
+		missing.add("SP");
+		missing.add("RV");
+		missing.add("SI");
+		missing.add("CS");
+		missing.add("HW");
+		missing.add("DT");
+		missing.add("PK");
+		missing.add("SG");
+		missing.add("BV");
+		missing.add("CSC");
 	}
 	
 	private String parseSTAttrib(String val) throws ValidationException
 	{
+		if (val.length() != 12)
+			throw new ValidationException("Time information length is invalid", "error.pcdf.validation.time.length");
 		String res  = convertTime(val);
 		if (res.indexOf("TSW") == -1)
 		{
@@ -60,6 +81,8 @@ public class PcdfReader {
 	
 	private String parseCTAttrib(String val) throws ValidationException
 	{
+		if (val.length() != 12)
+			throw new ValidationException("Time information length is invalid", "error.pcdf.validation.time.length");
 		String res = convertTime(val);
 		if (res.indexOf("TSW") == -1)
 		{
@@ -162,6 +185,8 @@ public class PcdfReader {
 	private String parseSIAttrib(String val) throws ValidationException
 	{
 		String res = "";
+		if ((val.length() < 5) || (val.length() > 75))
+			throw new ValidationException("Session information length is invalid", "error.pcdf.validation.session.length");
 		String[] vll = val.split("\\*");
 		if (vll.length != 3)
 			throw new ValidationException("Session information is invalid", "error.pcdf.validation.session.invalid");
@@ -182,17 +207,21 @@ public class PcdfReader {
 		return res;
 	}
 	
-	private String parseCSAttrib(String val)
+	private String parseCSAttrib(String val) throws ValidationException
 	{
 		String res = "";
 		cd.setSWCRC(val);
+		if (val.length() != 8)
+			throw new ValidationException("Software Checksum has wrong length", "error.pcdf.validation.software.checksum.length");
 		return res;
 	}
 	
-	private String parseHWAttrib(String val)
+	private String parseHWAttrib(String val) throws ValidationException
 	{
 		String res = "";
 		cd.setHWSN(val);
+		if (val.length() != 11)
+			throw new ValidationException("Hardware Serial has wrong length", "error.pcdf.validation.hardware.serial.length");
 		return res;
 	}
 	
@@ -268,45 +297,52 @@ public class PcdfReader {
 	private String convertTime(String ts) throws ValidationException
 	{
 		String tsd = "";
-		int y = Integer.parseInt(ts.substring(0, 2));
-		int m = Integer.parseInt(ts.substring(2, 4));
-		int d = Integer.parseInt(ts.substring(4, 6));
-		int h = Integer.parseInt(ts.substring(6, 8));
-		int mn = Integer.parseInt(ts.substring(8, 10));
-		int sec = Integer.parseInt(ts.substring(10));
-		
-		long secCount = h * 3600 + mn * 60 + sec;
-		/*if (duration == -1)
+		try
 		{
-			duration = secCount;
-			System.out.println("Duration is set " + Long.toString(duration));
-		}
-		else
-		{
-			duration = secCount - duration;
-			System.out.println("Duration is calc " + Long.toString(duration));
-		}*/
-		if (y < 19)
-			throw new ValidationException("Corrupt time information", "error.pcdf.validation.time.invalid");
-		else
-			if ((m == 0) || (m > 12))
+			int y = Integer.parseInt(ts.substring(0, 2));
+			int m = Integer.parseInt(ts.substring(2, 4));
+			int d = Integer.parseInt(ts.substring(4, 6));
+			int h = Integer.parseInt(ts.substring(6, 8));
+			int mn = Integer.parseInt(ts.substring(8, 10));
+			int sec = Integer.parseInt(ts.substring(10));
+			
+			long secCount = h * 3600 + mn * 60 + sec;
+			/*if (duration == -1)
+			{
+				duration = secCount;
+				System.out.println("Duration is set " + Long.toString(duration));
+			}
+			else
+			{
+				duration = secCount - duration;
+				System.out.println("Duration is calc " + Long.toString(duration));
+			}*/
+			if (y < 19)
 				throw new ValidationException("Corrupt time information", "error.pcdf.validation.time.invalid");
 			else
-				if ((d == 0) || (d > 31))
+				if ((m == 0) || (m > 12))
 					throw new ValidationException("Corrupt time information", "error.pcdf.validation.time.invalid");
 				else
-					if ((h > 23))
+					if ((d == 0) || (d > 31))
 						throw new ValidationException("Corrupt time information", "error.pcdf.validation.time.invalid");
 					else
-						if ((mn > 59))
+						if ((h > 23))
 							throw new ValidationException("Corrupt time information", "error.pcdf.validation.time.invalid");
 						else
-							if ((sec > 59))
+							if ((mn > 59))
 								throw new ValidationException("Corrupt time information", "error.pcdf.validation.time.invalid");
 							else
-							{
-								tsd = "20" + ts.substring(0,2) + "-" + ts.substring(2,4) + "-" + ts.substring(4,6) + "T" + ts.substring(6,8) + ":" + ts.substring(8,10) + ":" + ts.substring(10);
-							}	
+								if ((sec > 59))
+									throw new ValidationException("Corrupt time information", "error.pcdf.validation.time.invalid");
+								else
+								{
+									tsd = "20" + ts.substring(0,2) + "-" + ts.substring(2,4) + "-" + ts.substring(4,6) + "T" + ts.substring(6,8) + ":" + ts.substring(8,10) + ":" + ts.substring(10);
+								}	
+		}
+		catch (NumberFormatException e)
+		{
+			throw new ValidationException("Corrupt time information", "error.pcdf.validation.time.invalid");
+		}
 		return tsd;
 	}
 	
@@ -460,7 +496,7 @@ public class PcdfReader {
 		return input;
 	}
 	
-	private String removeSTXETX2(String input)
+	private String removeSTXETX2(String input) throws ValidationException
 	{
 		int pss = input.indexOf("128.8.0");
 		if (pss != -1)
@@ -475,7 +511,7 @@ public class PcdfReader {
 		}
 		else
 		{
-			input = "TSW0007";
+			throw new ValidationException("Charging data is not valid", "error.pcdf.validation.obis.invalid");
 		}
 		return input;
 	}
@@ -538,7 +574,7 @@ public class PcdfReader {
 	private String parsePcdfFile(String input) throws ValidationException
 	{
 		String res = "";
-		input = input.substring(0, input.length() - 1);
+		//input = input.substring(0, input.length() - 1);
 		//input = checkAndRemoveSTXETX(input);
 		input = removeSTXETX2(input);
 		if (input.indexOf("TSW0") != 0)
@@ -555,25 +591,73 @@ public class PcdfReader {
 					if (a.getErr() == 0)
 					{
 						String funcName = attributes.get(a.getAttrName());
-						Method meth;
-						try {
-							meth = this.getClass().getDeclaredMethod(funcName, String.class);
-							
-							try {
-								String err = (String) meth.invoke(this, a.getAttrVal());
-								if (!err.isEmpty())
-									return err;
-							} catch (IllegalAccessException e) {
-								e.printStackTrace();
-							} catch (IllegalArgumentException e) {
-								e.printStackTrace();
-							} catch (InvocationTargetException e) {
-								e.printStackTrace();
-							}
-						} catch (NoSuchMethodException e) {
-							e.printStackTrace();
-						} catch (SecurityException e) {
-							e.printStackTrace();
+						missing.remove(a.getAttrName());
+						if (a.getAttrName().equals("ST"))
+							this.parseSTAttrib(a.getAttrVal());
+						else
+						{
+							if (a.getAttrName().equals("CT"))
+								this.parseCTAttrib(a.getAttrVal());
+							else
+							{
+								if (a.getAttrName().equals("CD"))
+									this.parseCDAttrib(a.getAttrVal());
+								else
+								{
+									if (a.getAttrName().equals("TV"))
+										this.parseTVAttrib(a.getAttrVal());
+									else
+									{
+										if (a.getAttrName().equals("BV"))
+											this.parseBVAttrib(a.getAttrVal());
+										else
+										{
+											if (a.getAttrName().equals("CSC"))
+												this.parseCSCAttrib(a.getAttrVal());
+											else
+											{
+												if (a.getAttrName().equals("SP"))
+													this.parseSPAttrib(a.getAttrVal());
+												else
+												{
+													if (a.getAttrName().equals("RV"))
+														this.parseRVAttrib(a.getAttrVal());
+													else
+													{
+														if (a.getAttrName().equals("SI"))
+															this.parseSIAttrib(a.getAttrVal());
+														else
+														{
+															if (a.getAttrName().equals("CS"))
+																this.parseCSAttrib(a.getAttrVal());
+															else
+															{
+																if (a.getAttrName().equals("HW"))
+																	this.parseHWAttrib(a.getAttrVal());
+																else
+																{
+																	if (a.getAttrName().equals("DT"))
+																		this.parseDTAttrib(a.getAttrVal());
+																	else
+																	{
+																		if (a.getAttrName().equals("PK"))
+																			this.parsePKAttrib(a.getAttrVal());
+																		else
+																		{
+																			if (a.getAttrName().equals("SG"))
+																				this.parseSGAttrib(a.getAttrVal());
+																		}
+																	}
+																}
+															}
+														}	
+													}
+												}
+											}
+										}
+									}
+								}	
+							}	
 						}
 					}
 					else
@@ -584,7 +668,17 @@ public class PcdfReader {
 						}
 					}
 				}
-				
+				if (missing.size() != 0)
+				{
+					String missFields = "";
+					String sep = "";
+					for (String s:missing)
+					{
+						missFields = missFields + sep + s;
+						sep = ",";
+					}
+					throw new ValidationException("Missing fields in the data tuple", "error.pcdf.validation.data.missing");
+				}
 				int pos = input.indexOf("(SG:");
 				cd.setChData("128.8.0" + input);
 			}
@@ -592,7 +686,7 @@ public class PcdfReader {
 				throw new ValidationException("Charging data is not valid", "error.pcdf.validation.obis.invalid");
 		}
 		else
-			res = input;
+			throw new ValidationException("Charging data is not valid", "error.pcdf.validation.obis.invalid");
 
 		return res;
 	}

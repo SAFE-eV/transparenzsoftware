@@ -51,13 +51,6 @@ public class PcdfVerifiedData extends VerifiedData {
 		
 		addData.put(Translator.get("app.verify.pcdf.charge.duration"), durationNormalizer(chDur));
 		
-		String timeValid = extractAttribute("TV", chData);
-		
-		if (timeValid.contentEquals("1"))
-			addData.put(Translator.get("app.verify.pcdf.charge.time.validity"), Translator.get("app.verify.pcdf.charge.yes"));
-		else
-			addData.put(Translator.get("app.verify.pcdf.charge.time.validity"), Translator.get("app.verify.pcdf.charge.no"));
-		
 		String billValid = extractAttribute("BV", chData);
 		
 		if (billValid.equals("1"))
