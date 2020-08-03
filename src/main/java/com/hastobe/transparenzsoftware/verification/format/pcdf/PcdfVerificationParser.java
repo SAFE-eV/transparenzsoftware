@@ -159,7 +159,7 @@ public class PcdfVerificationParser implements VerificationParser, ContainedPubl
 				if (!checkSignAndPublicKey(justData, sign, pbKeyStr))
 				{
 					com.hastobe.transparenzsoftware.verification.result.Error er;
-					er = new com.hastobe.transparenzsoftware.verification.result.Error(Type.VERIFICATION, "Signature verification failed", "error.pcdf.verification.signature.failed");
+					er = new com.hastobe.transparenzsoftware.verification.result.Error(Type.VALIDATION, "Signature verification failed", "error.pcdf.verification.signature.failed");
 					
 					vr.addError(er);
 				}
@@ -179,7 +179,7 @@ public class PcdfVerificationParser implements VerificationParser, ContainedPubl
 		else
 		{
 			com.hastobe.transparenzsoftware.verification.result.Error er;
-			er = new com.hastobe.transparenzsoftware.verification.result.Error(Type.VERIFICATION, "Wrong Public Key", "error.invalid.public.key.embedded");
+			er = new com.hastobe.transparenzsoftware.verification.result.Error(Type.VALIDATION, "Wrong Public Key", "error.invalid.public.key.embedded");
 			
 			vr.addError(er);
 		}

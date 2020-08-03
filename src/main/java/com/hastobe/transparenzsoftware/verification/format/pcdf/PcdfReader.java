@@ -192,6 +192,12 @@ public class PcdfReader {
 			throw new ValidationException("Session information is invalid", "error.pcdf.validation.session.invalid");
 		else
 		{
+			if ((vll[0].length() < 1) || (vll[0].length() > 36))
+				throw new ValidationException("Session information length is invalid", "error.pcdf.validation.session.length");
+			if (vll[1].length() != 1)
+				throw new ValidationException("Session information length is invalid", "error.pcdf.validation.session.length");
+			if ((vll[2].length() < 1) || (vll[2].length() > 36))
+				throw new ValidationException("Session information length is invalid", "error.pcdf.validation.session.length");
 			cd.setIdTag(vll[0]);
 			cd.setTxId(vll[2]);
 			try
