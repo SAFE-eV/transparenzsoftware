@@ -71,6 +71,99 @@ public class PcdfVerificationParser implements VerificationParser, ContainedPubl
 		return false;
 	}
 	
+	private boolean checkSignAndPublicKeyByte(String data, String sign, byte[] pke)
+	{
+		try {
+			/*int ln = pk.length();
+			byte[] pke = new byte[ln/2];
+			
+			int i = 0;
+			for(i = 0; i < ln/2;i++)
+			{
+				String val = pk.substring(i * 2, i* 2 + 2);
+				pke[i] = (byte)Integer.parseInt(val, 16);
+			}*/
+			
+			int lns = sign.length();
+			byte[] se = new byte[lns/2];
+			for(int i = 0; i < lns/2;i++)
+			{
+				String val = sign.substring(i * 2, i* 2 + 2);
+				se[i] = (byte)Integer.parseInt(val, 16);
+			}
+			
+			byte[] x = new byte[32];
+		    byte[] y = new byte[32];
+		    System.arraycopy(pke, 1, x, 0, 32);
+		    System.arraycopy(pke, 33, y, 0, 32);	    
+		    
+		    try {
+				KeyFactory kf = KeyFactory.getInstance("EC");
+				
+				AlgorithmParameters parameters = AlgorithmParameters.getInstance("EC");
+				parameters.init(new ECGenParameterSpec("secp256r1"));
+				ECParameterSpec ecParameterSpec = parameters.getParameterSpec(ECParameterSpec.class);
+				
+				ECPublicKeySpec ecPublicKeySpec = new ECPublicKeySpec(new ECPoint(new BigInteger(x), new BigInteger(y)), ecParameterSpec);
+				ECPublicKey ecPublicKey = (ECPublicKey) kf.generatePublic(ecPublicKeySpec);
+				
+				PublicKey publicKey = kf.generatePublic(ecPublicKeySpec);
+				
+				Signature signature = Signature.getInstance("SHA256withECDSA");
+	            signature.initVerify(publicKey);
+	            
+	            byte[] bytes = data.getBytes();
+	            signature.update(bytes);
+	
+	            boolean verified = signature.verify(se);
+	            if (verified) 
+	            {
+	                return true;
+	            } else 
+	            {
+	                return false;
+	            }
+		    } catch (NoSuchAlgorithmException | InvalidParameterSpecException | InvalidKeySpecException e) {
+				//getLogger().error(e.getClass().getSimpleName() + " occurred when trying to get public key from raw bytes", e);
+		        //return null;
+			}
+		} catch (Exception e) {
+            e.printStackTrace();
+        }
+		return false;
+	}
+	
+	private byte[] makePublicKeyByte(String pk)
+	{
+		int ln = pk.length();
+		byte[] pke = new byte[ln/2];
+		
+		int i = 0;
+		for(i = 0; i < ln/2;i++)
+		{
+			String val = pk.substring(i * 2, i* 2 + 2);
+			pke[i] = (byte)Integer.parseInt(val, 16);
+		}
+		return pke;
+	}
+	
+	private boolean checkTwoBytePublicKeys(byte[] pk1, byte[] pk2)
+	{
+		if (pk1.length != pk2.length)
+		{
+			return false;
+		}
+		else
+		{
+			for (int i = 0; i < pk1.length; i++)
+			{
+				if (pk1[i] != pk2[i])
+					return false;
+			}
+		}
+		return true;
+	}
+	
 	private boolean checkSignAndPublicKey(String data, String sign, String pk)
 	{
 		try {
@@ -102,7 +195,6 @@ public class PcdfVerificationParser implements VerificationParser, ContainedPubl
 		    System.arraycopy(pke, 1, x, 0, 32);
 		    System.arraycopy(pke, 33, y, 0, 32);
 		    //System.out.println("X: " + x.toString() + " Y: " + y.toString());
-		    
 		    
 		    
 		    try {
@@ -146,8 +238,11 @@ public class PcdfVerificationParser implements VerificationParser, ContainedPubl
 		String pbKeyStr = parsePublicKey(data);
 		PcdfVerifiedData verData = new PcdfVerifiedData(pbKeyStr, data);
 		VerificationResult vr = new VerificationResult(verData);
+		byte[] dtPK = makePublicKeyByte(pbKeyStr);
 		
-		if (publicKey.length == (pbKeyStr.length() / 2))
+		
+		//if (publicKey.length == (pbKeyStr.length() / 2))
+		if (checkTwoBytePublicKeys(dtPK, publicKey))
 		{
 			int pos = data.indexOf("(SG:");
 			if (pos != -1)
@@ -156,7 +251,7 @@ public class PcdfVerificationParser implements VerificationParser, ContainedPubl
 				
 				String sign = data.substring(pos + 4, data.length() - 1);
 				
-				if (!checkSignAndPublicKey(justData, sign, pbKeyStr))
+				if (!checkSignAndPublicKeyByte(justData, sign, publicKey))
 				{
 					com.hastobe.transparenzsoftware.verification.result.Error er;
 					er = new com.hastobe.transparenzsoftware.verification.result.Error(Type.VALIDATION, "Signature verification failed", "error.pcdf.verification.signature.failed");

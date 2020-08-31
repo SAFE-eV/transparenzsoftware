@@ -520,11 +520,12 @@ public class MainView extends JFrame {
         	{
         		PcdfReader pcdfRead = new PcdfReader();
         		pcdfRead.readPCDFString(rawDataContent);
-        	}
-        	catch (ValidationException er)
-        	{
-        		LOGGER.debug("No values pasted");
-        	}
+	        } catch (ValidationException e2) {
+				LOGGER.error("Validation error in file", exception);
+	            String localizedMessage = e2.getLocalizedMessage();
+	            setErrorMessage(localizedMessage);
+	            return;
+			}
         }
 
         //we could not read values so it can be a single value
