@@ -224,12 +224,12 @@ public class MainView extends JFrame {
         	try {
 				values = pcdfReader.readPcdfFile(filename);
 			} catch (ValidationException e) {
-				LOGGER.error("Validation error in file", exception);
+				LOGGER.error("Validation error in file", e);
 	            String localizedMessage = e.getLocalizedMessage();
 	            setErrorMessage(localizedMessage);
 	            return;
 			} catch (InvalidInputException e) {
-				LOGGER.error("Error on reading file", exception);
+				LOGGER.error("Error on reading file", e);
 	            String localizedMessage = e.getLocalizedMessage();
 	            setErrorMessage(localizedMessage);
 	            return;
@@ -521,7 +521,7 @@ public class MainView extends JFrame {
         		PcdfReader pcdfRead = new PcdfReader();
         		pcdfRead.readPCDFString(rawDataContent);
 	        } catch (ValidationException e2) {
-				LOGGER.error("Validation error in file", exception);
+				LOGGER.error("Validation error in file", e2);
 	            String localizedMessage = e2.getLocalizedMessage();
 	            setErrorMessage(localizedMessage);
 	            return;
