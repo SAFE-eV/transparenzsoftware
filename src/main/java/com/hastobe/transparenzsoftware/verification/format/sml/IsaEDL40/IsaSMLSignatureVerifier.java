@@ -96,26 +96,6 @@ public class IsaSMLSignatureVerifier extends SMLSignatureVerifier {
         return signatureVerifier;
     }
 
-    @Override
-    public byte[] signatureToDER(byte[] signature) {
-        byte[] r = Arrays.copyOfRange(signature, 0, signature.length / 2);
-        byte[] s = Arrays.copyOfRange(signature, signature.length / 2, signature.length);
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        DEROutputStream derOutputStream = new DEROutputStream(byteArrayOutputStream);
-        //t he key is in asn1 format we calculate two points
-        // using the DERSequence
-        ASN1EncodableVector v = new ASN1EncodableVector();
-        v.add(new ASN1Integer(new BigInteger(PLUS_SIGN, r)));
-        v.add(new ASN1Integer(new BigInteger(PLUS_SIGN, s)));
-        try {
-            derOutputStream.writeObject(new DERSequence(v));
-        } catch (IOException e) {
-            throw new RuntimeException("Could not create DER sequence");
-        }
-        return byteArrayOutputStream.toByteArray();
-    }
-
     private BigInteger getPointXKeyCurve(byte[] pubKey) {
         assert pubKey.length == PUBLIC_KEY_BYTES_LENGTH;
 
@@ -150,25 +130,4 @@ public class IsaSMLSignatureVerifier extends SMLSignatureVerifier {
         ECPoint point = new ECPoint(getPointXKeyCurve(pubKey), getPointYKeyCurve(pubKey));
         return new ECPublicKeySpec(point, ecParameterSpec);
     }
-
-    @Override
-    public PublicKey getPublicKeyFromBytes(byte[] pubKey) throws ValidationException {
-
-        if (pubKey.length != PUBLIC_KEY_BYTES_LENGTH) {
-            LOGGER.error("Invalid public key length received");
-            throw new ValidationException("Public key is not 48 bytes long", "error.invalid.public.key");
-        }
-
-        try {
-            KeyFactory kf = KeyFactory.getInstance(KEY_ALGORITHM, Constants.BOUNCY_CASTLE_PROVIDER_CODE);
-            return kf.generatePublic(initPublicKeyCryptoSpecs(pubKey));
-        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-            LOGGER.error(e.getClass().getSimpleName() + " occurred when trying to get public key from raw bytes", e);
-            throw new RuntimeException("Cannot calculate the public key failure in crypt library");
-        } catch (InvalidParameterSpecException | InvalidKeySpecException e) {
-            throw new ValidationException("Could not create a public key", "error.invalid.public.key", e);
-        }
-    }
-
-
 }
