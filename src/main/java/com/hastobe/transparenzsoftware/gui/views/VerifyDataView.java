@@ -26,7 +26,7 @@ public class VerifyDataView extends JFrame {
 
     private final static int WIDTH = 1024;
     private final static int HEIGHT = 768;
-    public static final Dimension SIZE_SCROLLPANE_VISIBLE = new Dimension(800, 400);
+    public static final Dimension SIZE_SCROLLPANE_VISIBLE = new Dimension(800, 640);
     public static final Dimension SIZE_SCROLL_PANE_CLOSED = new Dimension(800, 10);
 
     private JLabel iconLabel;
@@ -238,7 +238,7 @@ public class VerifyDataView extends JFrame {
                 if (count % 2 != 0) {
                     styleBg += "background-color: dark-grey;";
                 }
-                String addText = Utils.splitStringToGroups(value != null ? value.toString() : "", 40, "<br/>");
+                String addText = Utils.splitStringToGroups(value != null ? value.toString() : "", 70, "<br/>");
                 bd.append(
                         String.format(
                                 "<tr style=\"%s\"><td style=\"width: 180px;\">%s</td><td><p>%s</p></td></tr>",
@@ -260,26 +260,61 @@ public class VerifyDataView extends JFrame {
         if (meters.size() <= 0) {
             return;
         }
+        boolean addStart = false;
+        boolean addStop = false;
+        int numElements = meters.size();
+        int index=1;
+
         StringBuilder builder = new StringBuilder();
         builder.append("<html><body><ul style=\"list-style-type: none;\">");
         for (Meter meter : meters) {
             if(meter.getType() != null){
-                builder.append(Translator.get(meter.getType().message));
-                builder.append("</li>");
-            }
-            builder.append("<li>");
-            builder.append(String.format("%.4f kWh", meter.getValue()));
-            builder.append("</li><li>");
+                if(meter.getType() == Meter.Type.START && !addStart)
+                {
+                    addStart = true;
+                    builder.append("<li>");
+                    builder.append(Translator.get(meter.getType().message));
+                    builder.append("</li>");
 
-            LocalDateTime localDateTime = meter.getTimestamp() != null ? meter.getTimestamp().toLocalDateTime() : null;
-            builder.append(LocalDateTimeAdapter.formattedDateTime(localDateTime));
-            builder.append(" (<span style=\"color: blue\">lokal</span>)");
+                    builder.append("<li>");
+                    builder.append(String.format("%.4f kWh", meter.getValue()));
+                    builder.append("</li><li>");
 
-            if (!meter.getAdditonalText().isEmpty()) {
-                builder.append(String.format(" (%s)", meter.getAdditonalText()));
+                    LocalDateTime localDateTime = meter.getTimestamp() != null ? meter.getTimestamp().toLocalDateTime() : null;
+                    builder.append(LocalDateTimeAdapter.formattedDateTime(localDateTime));
+                    builder.append(" (<span style=\"color: blue\">lokal</span>)");
+
+                    if (!meter.getAdditonalText().isEmpty()) {
+                        builder.append(String.format(" (%s)", meter.getAdditonalText()));
+                    }
+                    builder.append("</li>");
+                    builder.append("<li>&nbsp;</li>");
+
+                }
+
+                if(meter.getType() == Meter.Type.STOP && !addStop && numElements==index)
+                {
+                    addStop = true;
+                    builder.append("<li>");
+                    builder.append(Translator.get(meter.getType().message));
+                    builder.append("</li>");
+
+                    builder.append("<li>");
+                    builder.append(String.format("%.4f kWh", meter.getValue()));
+                    builder.append("</li><li>");
+
+                    LocalDateTime localDateTime = meter.getTimestamp() != null ? meter.getTimestamp().toLocalDateTime() : null;
+                    builder.append(LocalDateTimeAdapter.formattedDateTime(localDateTime));
+                    builder.append(" (<span style=\"color: blue\">lokal</span>)");
+
+                    if (!meter.getAdditonalText().isEmpty()) {
+                        builder.append(String.format(" (%s)", meter.getAdditonalText()));
+                    }
+                    builder.append("</li>");
+                    builder.append("<li>&nbsp;</li>");
+                }
             }
-            builder.append("</li>");
-            builder.append("<li>&nbsp;</li>");
+            index++;
         }
 
         if (transactionResult) {
