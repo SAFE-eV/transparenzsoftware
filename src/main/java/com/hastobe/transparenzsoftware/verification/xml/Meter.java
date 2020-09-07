@@ -173,7 +173,8 @@ public class Meter {
 
     public enum Type {
         START("app.verify.start"),
-        STOP("app.verify.end");
+        STOP("app.verify.end"),
+        UPDATE("app.verify.update");
 
         public final String message;
 
