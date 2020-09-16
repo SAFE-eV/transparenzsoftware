@@ -23,15 +23,6 @@ public class IsaSMLSignatureVerifier extends SMLSignatureVerifier {
 
     private final static Logger LOGGER = LogManager.getLogger(IsaSMLSignatureVerifier.class);
 
-    // "Vorzeichen" we want to make sure that all points are seen as positive
-    private static final int PLUS_SIGN = 1;
-    public static final String SIGNATURE_ALGORITHM = "NonewithECDSA";
-    public static final int CROPPED_DATA_LENGTH = 32;
-    public static final String ELLIPTIC_CURVE_ALGORITHM = "secp256r1";
-    public static final String KEY_ALGORITHM = "EC";
-    public static final int KEY_POINT_DATA_LENGTH = 32;
-    public static final int PUBLIC_KEY_BYTES_LENGTH = 64;
-
     /**
      * Initializes the verifier and also the bouncy castle library as security
      * provider.
@@ -39,6 +30,10 @@ public class IsaSMLSignatureVerifier extends SMLSignatureVerifier {
     public IsaSMLSignatureVerifier() {
         //enable bc as provider
         Security.addProvider(new BouncyCastleProvider());
+        PUBLIC_KEY_BYTES_LENGTH = 64;
+        KEY_POINT_DATA_LENGTH = 32;
+        ELLIPTIC_CURVE_ALGORITHM = "secp256r1";
+        CROPPED_DATA_LENGTH = 32;
     }
 
     @Override
