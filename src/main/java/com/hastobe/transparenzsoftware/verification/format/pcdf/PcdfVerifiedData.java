@@ -10,7 +10,10 @@ import com.hastobe.transparenzsoftware.verification.RegulationLawException;
 import com.hastobe.transparenzsoftware.verification.ValidationException;
 import com.hastobe.transparenzsoftware.verification.VerificationType;
 import com.hastobe.transparenzsoftware.verification.xml.Meter;
+import com.hastobe.transparenzsoftware.verification.xml.OffsetDateTimeAdapter;
 import com.hastobe.transparenzsoftware.verification.xml.VerifiedData;
+import com.hastobe.transparenzsoftware.verification.xml.Meter.TimeSyncType;
+import com.hastobe.transparenzsoftware.verification.xml.Meter.Type;
 
 public class PcdfVerifiedData extends VerifiedData {
 
@@ -25,18 +28,9 @@ public class PcdfVerifiedData extends VerifiedData {
 		publicKey = pk;
 		meters = new ArrayList<Meter>();
 		
-		
 		String cons = extractAttribute("RV", chData);
 		cons = cons.replace("*kWh", "");
 		
-		double consDou = Double.parseDouble(cons);
-		
-		String tsStr = extractAttribute("CT", chData);
-		OffsetDateTime odt = null;//new OffsetDateTime(null, null);
-		
-		Meter met = new Meter(consDou, odt);
-		
-		meters.add(met);
 		addData = new HashMap<String, Object>();
 		
 		String startTime = extractAttribute("ST", chData);
@@ -46,6 +40,20 @@ public class PcdfVerifiedData extends VerifiedData {
 		String stopTime = extractAttribute("CT", chData);
 		
 		addData.put(Translator.get("app.verify.pcdf.charge.current.time"), timeNormalizer(stopTime));
+		
+		double consDou = Double.parseDouble(cons);
+		
+		String tsStr = extractAttribute("CT", chData);
+		OffsetDateTime odt = OffsetDateTime.parse(timeNormalizer(startTime) + "+00:00");
+		
+		Meter first = new Meter(0.0, odt, Type.START, TimeSyncType.INFORMATIVE);
+		meters.add(first);
+		
+		OffsetDateTime odt2 = OffsetDateTime.parse(timeNormalizer(stopTime) + "+00:00");
+		Meter met = new Meter(consDou, odt2, Type.STOP, TimeSyncType.INFORMATIVE);
+		
+		meters.add(met);
+		
 		
 		String chDur = extractAttribute("CD", chData);
 		
@@ -110,7 +118,7 @@ public class PcdfVerifiedData extends VerifiedData {
 	{
 		timeInfo = "20" + timeInfo;
 		
-		timeInfo = timeInfo.substring(0, 4) + "." + timeInfo.substring(4, 6) + "." + timeInfo.substring(6, 8) + "T" + timeInfo.substring(8, 10) + ":" + timeInfo.substring(10, 12) + ":" + timeInfo.substring(12);
+		timeInfo = timeInfo.substring(0, 4) + "-" + timeInfo.substring(4, 6) + "-" + timeInfo.substring(6, 8) + "T" + timeInfo.substring(8, 10) + ":" + timeInfo.substring(10, 12) + ":" + timeInfo.substring(12);
 		
 		return timeInfo;
 	}

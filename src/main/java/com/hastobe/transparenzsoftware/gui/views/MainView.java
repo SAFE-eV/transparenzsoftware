@@ -516,16 +516,7 @@ public class MainView extends JFrame {
             onValuesRead(values);
             return;
         } catch (InvalidInputException e) {
-        	try
-        	{
-        		PcdfReader pcdfRead = new PcdfReader();
-        		pcdfRead.readPCDFString(rawDataContent);
-	        } catch (ValidationException e2) {
-				LOGGER.error("Validation error in file", exception);
-	            String localizedMessage = e2.getLocalizedMessage();
-	            setErrorMessage(localizedMessage);
-	            return;
-			}
+        	LOGGER.debug("No values pasted"); 
         }
 
         //we could not read values so it can be a single value
