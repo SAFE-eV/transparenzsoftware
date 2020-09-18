@@ -56,7 +56,7 @@ public class EncodingTypePanel extends JPanel {
 
         chooserType = new JComboBox();
         chooserType.setModel(new DefaultComboBoxModel(VerificationType.values()));
-        chooserType.setSelectedItem(VerificationType.EDL_40_P);
+        chooserType.setSelectedItem(VerificationType.ISA_EDL_40_P);
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.ipady = 0;

@@ -6,6 +6,7 @@ import com.hastobe.transparenzsoftware.gui.listeners.GotoBtnListener;
 import com.hastobe.transparenzsoftware.gui.views.customelements.*;
 import com.hastobe.transparenzsoftware.i18n.Translator;
 import com.hastobe.transparenzsoftware.verification.*;
+import com.hastobe.transparenzsoftware.verification.format.pcdf.PcdfReader;
 import com.hastobe.transparenzsoftware.verification.input.InputReader;
 import com.hastobe.transparenzsoftware.verification.input.InvalidInputException;
 import com.hastobe.transparenzsoftware.verification.result.Error;
@@ -215,15 +216,37 @@ public class MainView extends JFrame {
         //cleanup state
         LOGGER.info(String.format("Try to open file %s", filename));
         clearState();
-        File xmlFile = new File(filename);
-        try {
-            InputReader inputReader = new InputReader();
-            values = inputReader.readFile(xmlFile);
-        } catch (InvalidInputException exception) {
-            LOGGER.error("Error on reading file", exception);
-            String localizedMessage = exception.getLocalizedMessage();
-            setErrorMessage(localizedMessage);
-            return;
+        
+        if (filename.indexOf(".pcdf") != -1)
+        {
+        	//this is a Porsche Charging Data File, parse in a different way
+        	PcdfReader pcdfReader = new PcdfReader();
+        	try {
+				values = pcdfReader.readPcdfFile(filename);
+			} catch (ValidationException e) {
+				LOGGER.error("Validation error in file", e);
+	            String localizedMessage = e.getLocalizedMessage();
+	            setErrorMessage(localizedMessage);
+	            return;
+			} catch (InvalidInputException e) {
+				LOGGER.error("Error on reading file", e);
+	            String localizedMessage = e.getLocalizedMessage();
+	            setErrorMessage(localizedMessage);
+	            return;
+			}
+        }
+        else
+        {
+        	File xmlFile = new File(filename);
+	        try {
+	            InputReader inputReader = new InputReader();
+	            values = inputReader.readFile(xmlFile);
+	        } catch (InvalidInputException exception) {
+	            LOGGER.error("Error on reading file", exception);
+	            String localizedMessage = exception.getLocalizedMessage();
+	            setErrorMessage(localizedMessage);
+	            return;
+	        }
         }
         onValuesRead(values);
     }
@@ -493,7 +516,16 @@ public class MainView extends JFrame {
             onValuesRead(values);
             return;
         } catch (InvalidInputException e) {
-            LOGGER.debug("No values pasted");
+        	try
+        	{
+        		PcdfReader pcdfRead = new PcdfReader();
+        		pcdfRead.readPCDFString(rawDataContent);
+	        } catch (ValidationException e2) {
+				LOGGER.error("Validation error in file", e2);
+	            String localizedMessage = e2.getLocalizedMessage();
+	            setErrorMessage(localizedMessage);
+	            return;
+			}
         }
 
         //we could not read values so it can be a single value

@@ -28,6 +28,7 @@ public class SMLReader {
 
     private static final String TYPE_CONTRACT_ID = "81 82 81 54 01 FF";
     private static final String TYPE_SIGNED_VALUE = "01 00 01 11 00 FF";
+    private static final String TYPE_SIGNED_VALUE_2 = "01 00 01 08 00 FF";
     private static final String TYPE_PAGINATION = "81 80 81 71 01 FF";
     private static final String TYPE_MANUFACTURER_SPECIFIC = "81 80 81 61 01 FF";
     private static final String TYPE_SECONDS_INDEX = "81 00 60 08 00 01";
@@ -110,6 +111,44 @@ public class SMLReader {
                         if (statusChoice instanceof Unsigned32) {
                             parsedSml.setStatus(((Unsigned32) statusChoice).getVal());
                         }
+                        break;
+                    case TYPE_SIGNED_VALUE_2: //2
+                        //the obis id is the name of the object name
+                        OctetString obisIDElement2 = smlEntry.getObjName();
+                        parsedSml.setObisNr(obisIDElement2.getValue());
+
+                        //the actual value
+                        Integer64 wh2 = (Integer64) smlEntry.getValue().getChoice();
+
+                        //the unit (What ours or similar) 1 byte
+                        parsedSml.setUnit(smlEntry.getUnit().getVal());
+                        //scaler 1 byte
+                        parsedSml.setScaler(smlEntry.getScaler().getVal());
+                        //the meter position is stored in the value
+                        parsedSml.setMeterPosition(wh2.getVal());
+
+                        // the timestamp is stored without a the local time in account
+                        // but in the calculation the timestamp is taken as it is
+                        // on the station so add that to the value
+                        //the setTimestamp method will take care of switching LSB and MSB
+                        if (smlEntry.getValTime().getChoice() instanceof SmlTimestampLocal) {
+                            parsedSml.setTimestamp(SMLUtils.parseSmlTimestamp((SmlTimestampLocal) smlEntry.getValTime().getChoice()));
+                        }
+                        else if(smlEntry.getValTime().getChoice() instanceof SmlTimestamp) {
+                            parsedSml.setTimestamp(SMLUtils.parseSmlTimestamp((SmlTimestamp) smlEntry.getValTime().getChoice()));
+                        }
+                        Unsigned32 secondsIndex2 = new Unsigned32(708606);//(Unsigned32) 708606;
+                        parsedSml.setSecondsIndex(secondsIndex2.getVal());
+                        Unsigned32 paginationData2 = new Unsigned32(10);
+                        parsedSml.setPagination(paginationData2.getVal());
+
+
+                        //the set status will take care of taking only the LSB
+                        ASNObject statusChoice2 = smlEntry.getStatus().getChoice();
+                        if (statusChoice2 instanceof Unsigned32) {
+                            parsedSml.setStatus(((Unsigned32) statusChoice2).getVal());
+                        }
+
                         break;
                     case TYPE_PAGINATION:
                         if(smlEntry.getValue().getChoice() instanceof Unsigned32){

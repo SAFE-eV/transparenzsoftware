@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigInteger;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.security.MessageDigest;
@@ -153,7 +154,7 @@ public class Utils {
     public static long bytesToLong(byte[] bytes) {
         ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
         buffer.put(bytes);
-        buffer.flip();//need flip
+        ((Buffer)buffer).flip();//need flip
         return buffer.getLong();
     }
 
@@ -427,5 +428,32 @@ public class Utils {
             result = result || isBitSet(arr, i);
         }
         return result;
+    }
+
+    public static byte[] longToByteArray(long value)
+    {
+        ByteBuffer bb = ByteBuffer.allocate(Long.BYTES);
+        bb.putLong(value);
+        byte[] array = bb.array();
+
+        return array;
+    }
+
+    public static byte[] hexStringToByteArray(String s) {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i+1), 16));
+        }
+        return data;
+    }
+
+    private String hexRepresentation(String format){
+        if(format != null && Utils.hexToAscii(format).matches("[A-Za-z0-9]*")){
+            return String.format("%s (%s)", format, Utils.hexToAscii(format));
+        } else {
+            return format;
+        }
+
     }
 }
