@@ -27,13 +27,13 @@ public class SMLSignatureVerifier implements Verifier {
     /**
      * "Vorzeichen" we want to make sure that all points are seen as positive
      */
-    private static final int PLUS_SIGN = 1;
-    public static final String SIGNATURE_ALGORITHM = "NonewithECDSA";
-    public static final int CROPPED_DATA_LENGTH = 24;
-    public static final String ELLIPTIC_CURVE_ALGORITHM = "secp192r1";
-    public static final String KEY_ALGORITHM = "EC";
-    public static final int KEY_POINT_DATA_LENGTH = 24;
-    public static final int PUBLIC_KEY_BYTES_LENGTH = 48;
+    protected static int PLUS_SIGN = 1;
+    protected static String SIGNATURE_ALGORITHM = "NonewithECDSA";
+    protected static int CROPPED_DATA_LENGTH = 24;
+    protected static String ELLIPTIC_CURVE_ALGORITHM = "secp192r1";
+    protected static String KEY_ALGORITHM = "EC";
+    protected static int KEY_POINT_DATA_LENGTH = 24;
+    protected static int PUBLIC_KEY_BYTES_LENGTH = 48;
 
     /**
      * Initializes the verifier and also the bouncy castle library as security

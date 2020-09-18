@@ -1,5 +1,6 @@
 package com.hastobe.transparenzsoftware.verification.format.sml;
 
+import org.openmuc.jsml.structures.SmlTimestamp;
 import org.openmuc.jsml.structures.SmlTimestampLocal;
 
 import java.time.Instant;
@@ -27,4 +28,13 @@ public class SMLUtils {
         OffsetDateTime offsetDateTime = OffsetDateTime.of(localDateTime, ZoneOffset.ofTotalSeconds(offsetTotal));
         return offsetDateTime;
     }
+
+    public static OffsetDateTime parseSmlTimestamp(SmlTimestamp timestampLocal) {
+        int offsetTotal =0;
+        Instant instant = Instant.ofEpochSecond(timestampLocal.getLongValue());
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+        OffsetDateTime offsetDateTime = OffsetDateTime.of(localDateTime, ZoneOffset.ofTotalSeconds(offsetTotal));
+        return offsetDateTime;
+    }
+
 }
