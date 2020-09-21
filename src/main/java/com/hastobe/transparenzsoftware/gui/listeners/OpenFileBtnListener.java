@@ -31,6 +31,7 @@ public class OpenFileBtnListener implements ActionListener {
         //disable it otherwise it will always be on the first place
         jfc.setAcceptAllFileFilterUsed(false);
         jfc.addChoosableFileFilter(new FileNameExtensionFilter(Translator.get("app.view.extensions.xml"), "xml"));
+        jfc.addChoosableFileFilter(new FileNameExtensionFilter(Translator.get("app.view.extensions.pcdf"), "pcdf"));
         //add all files at thend
         jfc.addChoosableFileFilter(jfc.getAcceptAllFileFilter());
 
