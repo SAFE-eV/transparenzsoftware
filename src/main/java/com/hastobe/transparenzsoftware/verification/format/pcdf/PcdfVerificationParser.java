@@ -237,7 +237,7 @@ public class PcdfVerificationParser implements VerificationParser, ContainedPubl
 	public VerificationResult parseAndVerify(String data, byte[] publicKey) {
 		String pbKeyStr = parsePublicKey(data);
 		PcdfVerifiedData verData = new PcdfVerifiedData(pbKeyStr, data);
-		VerificationResult vr = new VerificationResult(verData);
+		VerificationResult vr = null;//new VerificationResult(verData);
 		byte[] dtPK = makePublicKeyByte(pbKeyStr);
 		
 		
@@ -255,19 +255,19 @@ public class PcdfVerificationParser implements VerificationParser, ContainedPubl
 				{
 					com.hastobe.transparenzsoftware.verification.result.Error er;
 					er = new com.hastobe.transparenzsoftware.verification.result.Error(Type.VALIDATION, "Signature verification failed", "error.pcdf.verification.signature.failed");
-					
+					vr = new VerificationResult(verData, false);
 					vr.addError(er);
 				}
 				else
 				{
-					
+					vr = new VerificationResult(verData, true);
 				}
 			}
 			else
 			{
 				com.hastobe.transparenzsoftware.verification.result.Error er;
 				er = new com.hastobe.transparenzsoftware.verification.result.Error(Type.VALIDATION, "No signature present in data tupple", "error.pcdf.missing.signature");
-				
+				vr = new VerificationResult(verData, false);
 				vr.addError(er);
 			}
 		}
@@ -275,7 +275,7 @@ public class PcdfVerificationParser implements VerificationParser, ContainedPubl
 		{
 			com.hastobe.transparenzsoftware.verification.result.Error er;
 			er = new com.hastobe.transparenzsoftware.verification.result.Error(Type.VALIDATION, "Wrong Public Key", "error.invalid.public.key.embedded");
-			
+			vr = new VerificationResult(verData, false);
 			vr.addError(er);
 		}
 		

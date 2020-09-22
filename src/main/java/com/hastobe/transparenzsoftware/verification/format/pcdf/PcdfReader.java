@@ -416,7 +416,7 @@ public class PcdfReader {
 		return vals;
 	}
 	
-	public Values readPCDFString(String content) throws ValidationException
+	public Values readPCDFString(String content) throws ValidationException, InvalidInputException
 	{
 		Values vals = new Values();
 		List<Value> listVals = new ArrayList<>();
@@ -575,6 +575,37 @@ public class PcdfReader {
 			}
 		}
 		return a;
+	}
+	
+	private boolean checkPcdfFile(String input) throws InvalidInputException
+	{
+		ArrayList<String> miss = new ArrayList<String>();
+		
+		miss.add("ST");
+		miss.add("CT");
+		miss.add("CD");
+		miss.add("TV");
+		miss.add("SP");
+		miss.add("RV");
+		miss.add("SI");
+		miss.add("CS");
+		miss.add("HW");
+		miss.add("DT");
+		miss.add("PK");
+		miss.add("SG");
+		miss.add("BV");
+		miss.add("CSC");
+		
+		int count = 0;
+		for (String s:miss)
+		{
+			if (input.indexOf("(" + s + ":") != -1)
+				count++;//count every time an attribute is found
+		}
+		
+		if (count > 0)
+			throw new InvalidInputException("File cannot be read", "error.pcdf.file.not.readable"); 
+		return true;
 	}
 	
 	private String parsePcdfFile(String input) throws ValidationException
