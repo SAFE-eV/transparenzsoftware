@@ -44,9 +44,13 @@ public class IsaSMLVerifiedData extends VerifiedData {
     private String actualEcUnit;
     private String actualEcScaler;
 
+    private String startEValueHexString;
     private double startEValue;
+    private String actualEValueHexString;
     private double actualEValue;
     private List<Meter> meters;
+
+    private String detailsHeader;
 
     public IsaSMLVerifiedData(IsaEDL40Signature smlSignature, VerificationType verificationType, EncodingType encodingType, String publicKey)
     {
@@ -55,12 +59,17 @@ public class IsaSMLVerifiedData extends VerifiedData {
         this.publicKey = publicKey;
         if (smlSignature != null) {
             pagination = new BigInteger(Utils.reverseByteOrder(smlSignature.getPagination())).intValue();
-            String cntxDesc = " (Begin)";
+            String cntxDesc = " (Start der Ladetransaktion)";
+            detailsHeader = "Ablesezeitpunkt (Beginn der Ladetransaktion):";
             String getListName =Utils.toFormattedHex(smlSignature.getListNameOfRes());
-            if(getListName.equals("81 80 81 62 01 FF"))
-                cntxDesc = " (Update)";
-            else if(getListName.equals("81 80 81 62 02 FF"))
-                cntxDesc = " (End)";
+            if(getListName.equals("81 80 81 62 01 FF")) {
+                cntxDesc = " (Update während der Ladetransaktion)";
+                detailsHeader = "Ablesezeitpunkt (Update während der Ladetransaktion):";
+            }
+            else if(getListName.equals("81 80 81 62 02 FF")) {
+                cntxDesc = " (Ende der Ladetransaktion)";
+                detailsHeader = "Ablesezeitpunkt (Ende der Ladetransaktion):";
+            }
 
             context = Utils.toFormattedHex(smlSignature.getListNameOfRes())+cntxDesc;
             serverId = Utils.toFormattedHex(smlSignature.getServerId());
@@ -85,8 +94,11 @@ public class IsaSMLVerifiedData extends VerifiedData {
             startEValue = Utils.bytesToLong(smlSignature.getStartEcValue());
             actualEValue= Utils.bytesToLong(smlSignature.getActualEcValue());
             //calculate kWh
-            startEValue = startEValue != 0 ? Math.round(startEValue * Math.pow(10, smlSignature.getStartEcScaler()) / 1000)  : 0;
-            actualEValue = actualEValue != 0 ? Math.round(actualEValue * Math.pow(10, smlSignature.getActualEcScaler()) / 1000)  : 0;
+
+            startEValueHexString = Utils.toFormattedHex(smlSignature.getStartEcValue());
+            startEValue = startEValue != 0 ? (startEValue * Math.pow(10, smlSignature.getStartEcScaler()) / 1000.0)  : 0;
+            actualEValueHexString = Utils.toFormattedHex(smlSignature.getActualEcValue());
+            actualEValue = actualEValue != 0 ? (actualEValue * Math.pow(10, smlSignature.getActualEcScaler()) / 1000.0)  : 0;
             if(getListName.equals("81 80 81 62 00 FF") || getListName.equals("81 80 81 62 02 FF"))
             {
                 meters.add(new Meter(startEValue, startEcTime, Meter.Type.START, Meter.TimeSyncType.INFORMATIVE));
@@ -122,27 +134,24 @@ public class IsaSMLVerifiedData extends VerifiedData {
     @Override
     public LinkedHashMap<String, Object> getAdditionalData() {
         LinkedHashMap<String, Object> additionalData = new LinkedHashMap<String, Object>();
-        additionalData.put("Pagination:", pagination);
-        additionalData.put("OBIS-ID Context", context);
+        additionalData.put("Datensatznummer:", pagination);
+        additionalData.put("OBIS-ID Datensatzkontext", context);
         additionalData.put("ServerId:", getServerId());
-        additionalData.put("ContractId:", getContractId());
+        additionalData.put("Kontrakt ID/Kundenmerkmal:", getContractId());
 
-        additionalData.put(" ", " ");
-        additionalData.put("Start energy. OBIS-ID:", startEcObisId);
-        additionalData.put("Start energy. Time:", LocalDateTimeAdapter.formattedDateTime(startEcTime.toLocalDateTime()));
-        additionalData.put("Start energy value:", Double.toString(startEValue) +" kWh");
-        additionalData.put("Start energy Status:", startEcStatus);
-        additionalData.put("Start energy Unit:", startEcUnit);
-        additionalData.put("Start energy Scalar:", startEcScaler);
+        additionalData.put("Beginn der Ladetransaktion", " ");
+        additionalData.put("OBIS-ID:", startEcObisId);
+        additionalData.put("Ablesezeitpunkt:", LocalDateTimeAdapter.formattedDateTime(startEcTime.toLocalDateTime()));
+        additionalData.put("Value:", String.format("%.4f kWh", startEValue));
+        additionalData.put("Ablesewert (HEX):", startEValueHexString);
+        additionalData.put("Status:", startEcStatus);
 
-        additionalData.put("  ", "  ");
-        additionalData.put("Actual energy. OBIS-ID:", actualEcObisId);
-        additionalData.put("Actual energy. Time:", LocalDateTimeAdapter.formattedDateTime(actualEcTime.toLocalDateTime()));
-        additionalData.put("Actual energy. Actual Energy value:", Double.toString(actualEValue) +" kWh");
-        additionalData.put("Actual energy. Status:", actualEcStatus);
-        additionalData.put("Actual energy. Unit:", actualEcUnit);
-        additionalData.put("Actual energy. Scalar:", actualEcScaler);
-
+        additionalData.put(detailsHeader, "  ");
+        additionalData.put("OBIS-ID: ", actualEcObisId);
+        additionalData.put("Ablesezeitpunkt: ", LocalDateTimeAdapter.formattedDateTime(actualEcTime.toLocalDateTime()));
+        additionalData.put("Actual Energy value:", String.format("%.4f kWh", actualEValue));
+        additionalData.put("Ablesewert (HEX): ", actualEValueHexString);
+        additionalData.put("Status: ", actualEcStatus);
 
         return additionalData;
     }
