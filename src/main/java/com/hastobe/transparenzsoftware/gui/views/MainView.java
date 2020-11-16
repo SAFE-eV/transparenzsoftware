@@ -7,6 +7,7 @@ import com.hastobe.transparenzsoftware.gui.views.customelements.*;
 import com.hastobe.transparenzsoftware.i18n.Translator;
 import com.hastobe.transparenzsoftware.verification.*;
 import com.hastobe.transparenzsoftware.verification.format.pcdf.PcdfReader;
+import com.hastobe.transparenzsoftware.verification.format.pcdf.PcdfVerificationParser;
 import com.hastobe.transparenzsoftware.verification.input.InputReader;
 import com.hastobe.transparenzsoftware.verification.input.InvalidInputException;
 import com.hastobe.transparenzsoftware.verification.result.Error;
@@ -529,6 +530,24 @@ public class MainView extends JFrame {
                 VerificationParser parser = parserWithData.get(0);
                 singleValueFound = true;
                 centerPanel.setVerificationType(parser.getVerificationType());
+                if (parser instanceof PcdfVerificationParser)
+                {
+                	PcdfReader pr = new PcdfReader();
+                	try
+                	{
+                		pr.readPCDFString(rawDataContent);
+	                } catch (ValidationException e) {
+	    				LOGGER.error("Validation error in parsed text", e);
+	    	            String localizedMessage = e.getLocalizedMessage();
+	    	            setErrorMessage(localizedMessage);
+	    	            return;
+	    			} catch (InvalidInputException e) {
+	    				LOGGER.error("Error on parsing text", e);
+	    	            String localizedMessage = e.getLocalizedMessage();
+	    	            setErrorMessage(localizedMessage);
+	    	            return;
+	    			}
+                }
                 //try to load public key if its there
                 if(centerPanel.getPublicKeyContent().trim().isEmpty() && parser instanceof ContainedPublicKeyParser) {
                     String parsePublicKey = ((ContainedPublicKeyParser) parser).createFormattedKey(rawDataContent);
