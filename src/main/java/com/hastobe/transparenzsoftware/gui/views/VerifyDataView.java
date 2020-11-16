@@ -272,46 +272,18 @@ public class VerifyDataView extends JFrame {
                 if(meter.getType() == Meter.Type.START && !addStart)
                 {
                     addStart = true;
-                    builder.append("<li>");
-                    builder.append(Translator.get(meter.getType().message));
-                    builder.append("</li>");
+                    AddOverviewDisplayElements(builder, meter);
+                }
 
-                    builder.append("<li>");
-                    builder.append(String.format("%.4f kWh", meter.getValue()));
-                    builder.append("</li><li>");
-
-                    LocalDateTime localDateTime = meter.getTimestamp() != null ? meter.getTimestamp().toLocalDateTime() : null;
-                    builder.append(LocalDateTimeAdapter.formattedDateTime(localDateTime));
-                    builder.append(" (<span style=\"color: blue\">lokal</span>)");
-
-                    if (!meter.getAdditonalText().isEmpty()) {
-                        builder.append(String.format(" (%s)", meter.getAdditonalText()));
-                    }
-                    builder.append("</li>");
-                    builder.append("<li>&nbsp;</li>");
-
+                if(meter.getType() == Meter.Type.UPDATE && addStart)
+                {
+                    AddOverviewDisplayElements(builder, meter);
                 }
 
                 if(meter.getType() == Meter.Type.STOP && !addStop && numElements==index)
                 {
                     addStop = true;
-                    builder.append("<li>");
-                    builder.append(Translator.get(meter.getType().message));
-                    builder.append("</li>");
-
-                    builder.append("<li>");
-                    builder.append(String.format("%.4f kWh", meter.getValue()));
-                    builder.append("</li><li>");
-
-                    LocalDateTime localDateTime = meter.getTimestamp() != null ? meter.getTimestamp().toLocalDateTime() : null;
-                    builder.append(LocalDateTimeAdapter.formattedDateTime(localDateTime));
-                    builder.append(" (<span style=\"color: blue\">lokal</span>)");
-
-                    if (!meter.getAdditonalText().isEmpty()) {
-                        builder.append(String.format(" (%s)", meter.getAdditonalText()));
-                    }
-                    builder.append("</li>");
-                    builder.append("<li>&nbsp;</li>");
+                    AddOverviewDisplayElements(builder, meter);
                 }
             }
             index++;
@@ -334,6 +306,26 @@ public class VerifyDataView extends JFrame {
 
         meterLabel.setText(builder.toString());
         meterLabel.setToolTipText(Translator.get("app.view.datetime.time.station"));
+    }
+
+    private void AddOverviewDisplayElements(StringBuilder builder, Meter meter) {
+        builder.append("<li>");
+        builder.append(meter.getDescriptiveMessageText() == null ? Translator.get(meter.getType().message) : meter.getDescriptiveMessageText());
+        builder.append("</li>");
+
+        builder.append("<li>");
+        builder.append(String.format("%.4f kWh", meter.getValue()));
+        builder.append("</li><li>");
+
+        LocalDateTime localDateTime = meter.getTimestamp() != null ? meter.getTimestamp().toLocalDateTime() : null;
+        builder.append(LocalDateTimeAdapter.formattedDateTime(localDateTime));
+        builder.append(" (<span style=\"color: blue\">lokal</span>)");
+
+        if (!meter.getAdditonalText().isEmpty()) {
+            builder.append(String.format(" (%s)", meter.getAdditonalText()));
+        }
+        builder.append("</li>");
+        builder.append("<li>&nbsp;</li>");
     }
 
 }

@@ -19,6 +19,8 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Meter {
 
+    private String descriptiveMessageText;
+
     private double value;
 
     //necessary as jaxb will complain about the timestamp
@@ -47,6 +49,14 @@ public class Meter {
         this.timestamp = timestamp;
         this.type = type;
         this.timeSyncType = timeSyncType;
+    }
+
+    public void setDescriptiveMessageText(String text){
+        descriptiveMessageText = text;
+    }
+
+    public String getDescriptiveMessageText(){
+        return descriptiveMessageText;
     }
 
     public double getValue() {
