@@ -77,7 +77,7 @@ public class PcdfVerificationParser implements VerificationParser, ContainedPubl
 		if ((pos == 0) || (pos == 1) || (pos == 6))
 			return true;
 		else
-			if (data.indexOf("(RV:") != 0)
+			if (data.indexOf("(RV:") > 0)
 				return true;
 		return false;
 	}
