@@ -91,8 +91,8 @@ public class Meter {
     }
 
     private static double[] getMinMax(List<Meter> values) {
-        double minimum = Double.MAX_VALUE;
-        double max = Double.MIN_VALUE;
+        double minimum = Double.POSITIVE_INFINITY;
+        double max = Double.NEGATIVE_INFINITY;
         boolean startMarkerFound = false;
         boolean stopMarkerFound = false;
         for (Meter meter : values) {
