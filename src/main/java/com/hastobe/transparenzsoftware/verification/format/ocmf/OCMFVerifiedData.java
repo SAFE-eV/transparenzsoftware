@@ -9,10 +9,7 @@ import com.hastobe.transparenzsoftware.verification.result.Error;
 import com.hastobe.transparenzsoftware.verification.xml.Meter;
 import com.hastobe.transparenzsoftware.verification.xml.VerifiedData;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class OCMFVerifiedData extends VerifiedData {
 
@@ -193,7 +190,30 @@ public class OCMFVerifiedData extends VerifiedData {
     private boolean checkLawIntegrityForReadings(List<? extends Reading> readings, String idLevelStart, String idLevelStop ) throws OCMFValidationException, RegulationLawException {
         Reading startValue = null;
         Reading stopValue = null;
+
+        String previousST = null;
+        String previousRU = null;
         for (Reading reading : readings) {
+            if (reading.getST() == null) {
+                if (previousST == null) {
+                    throw new OCMFValidationException("Missing mandatory ST parameter for first reading.", "error.values.missing.st");
+                } else {
+                    reading.setST(previousST);
+                }
+            } else {
+                previousST = reading.getST();
+            }
+
+            if (reading.getRU() == null) {
+                if (previousRU == null) {
+                    throw new OCMFValidationException("Missing mandatory RU parameter for first reading.", "error.values.missing.ru");
+                } else {
+                    reading.setRU(previousRU);
+                }
+            } else {
+                previousRU = reading.getRU();
+            }
+
             if (reading.isStartTransaction()) {
                 if (startValue != null) {
                     throw new OCMFValidationException("Cannot verify contains multiple start values", "error.values.toomany.start");
