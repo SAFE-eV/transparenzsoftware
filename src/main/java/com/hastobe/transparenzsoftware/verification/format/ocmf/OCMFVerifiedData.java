@@ -5,7 +5,6 @@ import com.hastobe.transparenzsoftware.verification.FormatComparisonException;
 import com.hastobe.transparenzsoftware.verification.RegulationLawException;
 import com.hastobe.transparenzsoftware.verification.ValidationException;
 import com.hastobe.transparenzsoftware.verification.VerificationType;
-import com.hastobe.transparenzsoftware.verification.result.Error;
 import com.hastobe.transparenzsoftware.verification.xml.Meter;
 import com.hastobe.transparenzsoftware.verification.xml.VerifiedData;
 
@@ -59,7 +58,7 @@ public class OCMFVerifiedData extends VerifiedData {
             if (rv == null) {
                 rv = (double) 0;
             }
-            Meter.TimeSyncType timeSyncType = reading.isTimeInformativeOnly() ? Meter.TimeSyncType.INFORMATIVE : Meter.TimeSyncType.SYNCHRON;
+            Meter.TimeSyncType timeSyncType = reading.isTimeInformativeOnly() ? Meter.TimeSyncType.INFORMATIVE : Meter.TimeSyncType.SYNCHRONIZED;
             meters.add(new Meter(rv, reading.getTimestamp(), type, timeSyncType));
         }
         this.publicKey = publicKey;
