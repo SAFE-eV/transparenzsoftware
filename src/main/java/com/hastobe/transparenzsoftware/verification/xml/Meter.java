@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.beans.Transient;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -18,6 +17,8 @@ import java.util.List;
 @XmlRootElement(name = "result")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Meter {
+
+    private String descriptiveMessageText;
 
     private double value;
 
@@ -49,6 +50,14 @@ public class Meter {
         this.timeSyncType = timeSyncType;
     }
 
+    public void setDescriptiveMessageText(String text){
+        descriptiveMessageText = text;
+    }
+
+    public String getDescriptiveMessageText(){
+        return descriptiveMessageText;
+    }
+
     public double getValue() {
         return value;
     }
@@ -60,7 +69,7 @@ public class Meter {
 
     public String getAdditonalText() {
         List<String> additionalData = new ArrayList<>();
-        if(timeSyncType != null && !timeSyncType.equals(TimeSyncType.SYNCHRON)) {
+        if(timeSyncType != null && !timeSyncType.equals(TimeSyncType.SYNCHRONIZED)) {
             additionalData.add(Translator.get(timeSyncType.message));
         }
         return String.join(", ", additionalData);
@@ -184,8 +193,9 @@ public class Meter {
     }
 
     public enum TimeSyncType {
-        INFORMATIVE("app.informative"),
-        SYNCHRON("app.synchron"),
+        INFORMATIVE("app.informative"), // default, can not be used for billing in any way, might be random or simply wrong, only for information
+        REALTIME("app.realtime"), // clock is not synchronized, but RTC is being utilized: timestamps can not be used for billing, but duration between timestamps may (with no relation to when they occurred)
+        SYNCHRONIZED("app.synchron"), // qualified time, clock is synchronized regularly against something like NTP: timestamps and/or duration may be used for billing
         ;
 
         private final String message;

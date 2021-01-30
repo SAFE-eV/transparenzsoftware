@@ -1,8 +1,10 @@
 package com.hastobe.transparenzsoftware.verification.format.pcdf;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.AlgorithmParameters;
 import java.security.KeyFactory;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.Signature;
@@ -13,6 +15,15 @@ import java.security.spec.ECPoint;
 import java.security.spec.ECPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.InvalidParameterSpecException;
+
+import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.ASN1Integer;
+import org.bouncycastle.asn1.DLSequence;
+import org.bouncycastle.asn1.sec.SECNamedCurves;
+import org.bouncycastle.asn1.x9.X9ECParameters;
+import org.bouncycastle.crypto.params.ECDomainParameters;
+import org.bouncycastle.crypto.params.ECPublicKeyParameters;
+import org.bouncycastle.crypto.signers.ECDSASigner;
 
 import com.hastobe.transparenzsoftware.verification.ContainedPublicKeyParser;
 import com.hastobe.transparenzsoftware.verification.VerificationParser;
@@ -66,24 +77,14 @@ public class PcdfVerificationParser implements VerificationParser, ContainedPubl
 		if ((pos == 0) || (pos == 1) || (pos == 6))
 			return true;
 		else
-			if (data.indexOf("(RV:") != 0)
+			if (data.indexOf("(RV:") > 0)
 				return true;
 		return false;
 	}
 	
 	private boolean checkSignAndPublicKeyByte(String data, String sign, byte[] pke)
 	{
-		try {
-			/*int ln = pk.length();
-			byte[] pke = new byte[ln/2];
-			
-			int i = 0;
-			for(i = 0; i < ln/2;i++)
-			{
-				String val = pk.substring(i * 2, i* 2 + 2);
-				pke[i] = (byte)Integer.parseInt(val, 16);
-			}*/
-			
+		try {			
 			int lns = sign.length();
 			byte[] se = new byte[lns/2];
 			for(int i = 0; i < lns/2;i++)
@@ -98,32 +99,23 @@ public class PcdfVerificationParser implements VerificationParser, ContainedPubl
 		    System.arraycopy(pke, 33, y, 0, 32);	    
 		    
 		    try {
-				KeyFactory kf = KeyFactory.getInstance("EC");
-				
-				AlgorithmParameters parameters = AlgorithmParameters.getInstance("EC");
-				parameters.init(new ECGenParameterSpec("secp256r1"));
-				ECParameterSpec ecParameterSpec = parameters.getParameterSpec(ECParameterSpec.class);
-				
-				ECPublicKeySpec ecPublicKeySpec = new ECPublicKeySpec(new ECPoint(new BigInteger(x), new BigInteger(y)), ecParameterSpec);
-				ECPublicKey ecPublicKey = (ECPublicKey) kf.generatePublic(ecPublicKeySpec);
-				
-				PublicKey publicKey = kf.generatePublic(ecPublicKeySpec);
-				
-				Signature signature = Signature.getInstance("SHA256withECDSA");
-	            signature.initVerify(publicKey);
-	            
-	            byte[] bytes = data.getBytes();
-	            signature.update(bytes);
-	
-	            boolean verified = signature.verify(se);
-	            if (verified) 
-	            {
-	                return true;
-	            } else 
-	            {
-	                return false;
-	            }
-		    } catch (NoSuchAlgorithmException | InvalidParameterSpecException | InvalidKeySpecException e) {
+		    	X9ECParameters params = SECNamedCurves.getByName("secp256r1");
+			    ECDomainParameters ecParams = new ECDomainParameters(params.getCurve(), params.getG(), params.getN(), params.getH());
+			    ECPublicKeyParameters pubKeyParams = new ECPublicKeyParameters(ecParams.getCurve().decodePoint(pke), ecParams);
+			    
+			    ASN1InputStream asn1 = new ASN1InputStream(se);
+			    ECDSASigner signer2 = new ECDSASigner();
+			    //not for signing...
+			    signer2.init(false, pubKeyParams);
+			    DLSequence seq = (DLSequence) asn1.readObject();
+			    BigInteger r = ((ASN1Integer) seq.getObjectAt(0)).getPositiveValue();
+			    BigInteger s = ((ASN1Integer) seq.getObjectAt(1)).getPositiveValue();
+			    
+				MessageDigest digest = MessageDigest.getInstance("SHA-256");
+				byte[] hash = digest.digest(data.getBytes(StandardCharsets.UTF_8));
+			    		
+			    return signer2.verifySignature(hash, r.abs(), s.abs());
+		    } catch (NoSuchAlgorithmException e) {
 				//getLogger().error(e.getClass().getSimpleName() + " occurred when trying to get public key from raw bytes", e);
 		        //return null;
 			}
@@ -237,7 +229,7 @@ public class PcdfVerificationParser implements VerificationParser, ContainedPubl
 	public VerificationResult parseAndVerify(String data, byte[] publicKey) {
 		String pbKeyStr = parsePublicKey(data);
 		PcdfVerifiedData verData = new PcdfVerifiedData(pbKeyStr, data);
-		VerificationResult vr = null;//new VerificationResult(verData);
+		VerificationResult vr = null;
 		byte[] dtPK = makePublicKeyByte(pbKeyStr);
 		
 		

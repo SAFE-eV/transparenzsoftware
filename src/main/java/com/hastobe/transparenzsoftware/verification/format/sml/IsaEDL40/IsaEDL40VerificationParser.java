@@ -86,7 +86,7 @@ public class IsaEDL40VerificationParser extends SMLVerificationParserBase {
 
         IsaSMLVerifiedData verifiedData = new IsaSMLVerifiedData((IsaEDL40Signature)smlSignature, verificationType, encodingType, Utils.toFormattedHex(publicKey));
         if (verifier.verify(publicKey, smlSignature)) {
-            return new VerificationResult(verifiedData);
+            return new VerificationResult(verifiedData, true);
         }
         return new VerificationResult(verifiedData, Error.withVerificationFailed());
     }

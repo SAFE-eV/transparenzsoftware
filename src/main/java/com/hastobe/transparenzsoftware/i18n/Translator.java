@@ -70,25 +70,12 @@ public class Translator {
             init(language);
         }
         try {
-            return getUTF8String(rb.getString(key));
+            return rb.getString(key);
         } catch (Exception e) {
             // just to be sure we do not want to crash our app
             // caused by an missing string
             LOGGER.error("Error on loading localisation text", e);
             return defaultValue;
-        }
-    }
-
-    /**
-     * Takes care of correct encoding for umlaute
-     * @param value string to transform to a valid utf8 string
-     * @return transformed utf8 string
-     */
-    private static String getUTF8String(String value) {
-        try {
-            return new String(value.getBytes("ISO-8859-1"), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return value;
         }
     }
 

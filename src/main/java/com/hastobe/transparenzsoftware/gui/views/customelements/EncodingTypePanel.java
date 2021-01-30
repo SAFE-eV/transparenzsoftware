@@ -8,6 +8,7 @@ import com.hastobe.transparenzsoftware.verification.VerificationType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class EncodingTypePanel extends JPanel {
 
@@ -55,8 +56,9 @@ public class EncodingTypePanel extends JPanel {
         this.add(labelType, gbc);
 
         chooserType = new JComboBox();
-        chooserType.setModel(new DefaultComboBoxModel(VerificationType.values()));
-        chooserType.setSelectedItem(VerificationType.ISA_EDL_40_P);
+        chooserType.setModel(new DefaultComboBoxModel(Arrays.stream(VerificationType.values())
+                .filter(type -> type != VerificationType.EDL_40_MENNEKES).toArray()));
+        chooserType.setSelectedItem(VerificationType.OCMF);
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.ipady = 0;

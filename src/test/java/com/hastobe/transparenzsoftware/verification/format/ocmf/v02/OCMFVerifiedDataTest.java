@@ -280,7 +280,7 @@ public class OCMFVerifiedDataTest {
         OCMFVerifiedData data = new OCMFVerifiedData(ocmf, "", "");
         Assert.assertEquals(2, data.getMeters().size());
         Assert.assertEquals(Meter.TimeSyncType.INFORMATIVE, data.getMeters().get(0).getTimeSyncType());
-        Assert.assertEquals(Meter.TimeSyncType.SYNCHRON, data.getMeters().get(1).getTimeSyncType());
+        Assert.assertEquals(Meter.TimeSyncType.SYNCHRONIZED, data.getMeters().get(1).getTimeSyncType());
 
         Assert.assertEquals(1.3457782, data.getMeters().get(0).getValue(), 0);
         Assert.assertEquals(2, data.getMeters().get(1).getValue(), 0);
@@ -312,7 +312,7 @@ public class OCMFVerifiedDataTest {
         OCMFVerifiedData data = new OCMFVerifiedData(ocmf, "", "");
         Assert.assertEquals(2, data.getMeters().size());
         Assert.assertEquals(Meter.TimeSyncType.INFORMATIVE, data.getMeters().get(0).getTimeSyncType());
-        Assert.assertEquals(Meter.TimeSyncType.SYNCHRON, data.getMeters().get(1).getTimeSyncType());
+        Assert.assertEquals(Meter.TimeSyncType.SYNCHRONIZED, data.getMeters().get(1).getTimeSyncType());
 
         Assert.assertEquals(0, data.getMeters().get(0).getValue(), 0);
         Assert.assertEquals(2, data.getMeters().get(1).getValue(), 0);
