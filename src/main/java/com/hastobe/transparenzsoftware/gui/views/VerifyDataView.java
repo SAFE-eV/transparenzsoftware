@@ -290,14 +290,25 @@ public class VerifyDataView extends JFrame {
         }
 
         if (transactionResult) {
+            Meter.TimeSyncType timeSyncType = Meter.getTimeSyncType(meters);
+            builder.append("<li>&nbsp;</li>");
+            builder.append("<li>");
+            if (timeSyncType == Meter.TimeSyncType.SYNCHRONIZED || timeSyncType == Meter.TimeSyncType.REALTIME) {
+                builder.append(String.format("%s ", Translator.get("app.view.time.difference")));
+            } else {
+                builder.append(String.format("%s ", Translator.get("app.view.time.difference.informative")));
+            }
+            builder.append("<ul style=\"list-style-type: none;margin-left: 0;\">");
+            Duration timeDiff = Meter.getTimeDiff(meters);
+            builder.append(String.format("<li>%s</li>", Utils.formatDuration(timeDiff)));
+            builder.append("</ul>");
+            builder.append("</li>");
 
             builder.append("<li>&nbsp;</li>");
             builder.append("<li>");
-            builder.append(String.format("%s: ", Translator.get("app.view.difference")));
+            builder.append(String.format("%s ", Translator.get("app.view.energy.difference")));
             builder.append("<ul style=\"list-style-type: none;margin-left: 0;\">");
             builder.append(String.format("<li>%.4f kWh</li>", Meter.getDifference(meters)));
-            Duration timeDiff = Meter.getTimeDiff(meters);
-            builder.append(String.format("<li>%s</li>", Utils.formatDuration(timeDiff)));
             builder.append("</ul>");
             builder.append("</li>");
         }

@@ -156,6 +156,34 @@ public class Meter {
         return Duration.between(minimumTime, maximumTime);
     }
 
+    /*
+     * Gets the time synchronization type, qualifying in order:
+     * 1) If any meter value is of type INFORMATIVE, return type is INFORMATIVE
+     * 2) If all meter values are of type SYNCHRONIZED, return type is SYNCHRONIZED
+     * 3) If no meter value is of type INFORMATIVE and any value is of type REALTIME,
+     *    no matter if there are any SYNCHRONIZED values, the return type is REALTIME
+     */
+    public static TimeSyncType getTimeSyncType(List<Meter> meters) {
+        TimeSyncType timeSyncType = null;
+        for (Meter meter : meters) {
+            if (meter.timeSyncType == TimeSyncType.INFORMATIVE) {
+                return TimeSyncType.INFORMATIVE;
+            }
+
+            if (timeSyncType == null) {
+                timeSyncType = meter.timeSyncType;
+            } else if (timeSyncType == TimeSyncType.SYNCHRONIZED && meter.getTimeSyncType() == TimeSyncType.REALTIME) {
+                timeSyncType = TimeSyncType.REALTIME;
+            }
+        }
+
+        if (timeSyncType == null) {
+            return TimeSyncType.INFORMATIVE;
+        }
+
+        return timeSyncType;
+    }
+
     public static void validateListStartStop(List<Meter> startList, List<Meter> stopList) throws ValidationException {
         if (startList == null || startList.isEmpty()) {
             throw new ValidationException("No start values", "error.values.no.start.meter.values");
@@ -194,8 +222,8 @@ public class Meter {
 
     public enum TimeSyncType {
         INFORMATIVE("app.informative"), // default, can not be used for billing in any way, might be random or simply wrong, only for information
-        REALTIME("app.realtime"), // clock is not synchronized, but RTC is being utilized: timestamps can not be used for billing, but duration between timestamps may (with no relation to when they occurred)
-        SYNCHRONIZED("app.synchron"), // qualified time, clock is synchronized regularly against something like NTP: timestamps and/or duration may be used for billing
+        REALTIME("app.informative"), // clock is not synchronized, but RTC is being utilized: timestamps can not be used for billing, but duration between timestamps may (with no relation to when they occurred)
+        SYNCHRONIZED("app.synchronized"), // qualified time, clock is synchronized regularly against something like NTP: timestamps and/or duration may be used for billing
         ;
 
         private final String message;
