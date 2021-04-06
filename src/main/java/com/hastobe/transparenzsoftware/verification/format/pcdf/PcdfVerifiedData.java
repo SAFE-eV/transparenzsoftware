@@ -108,7 +108,7 @@ public class PcdfVerifiedData extends VerifiedData {
 		if (intInt == 3)
 			return Translator.get("app.verify.pcdf.userid.type.creditcard");
 		if (intInt == 4)
-			return Translator.get("app.verify.pcdf.userid.type-remote");
+			return Translator.get("app.verify.pcdf.userid.type.remote");
 		if (intInt == 5)
 			return Translator.get("app.verify.pcdf.userid.type.nfc");
 		return Translator.get("app.verify.pcdf.userid.type.unknown");
