@@ -25,9 +25,19 @@ public class MainViewMenu extends JMenuBar {
         fileItem.getAccessibleContext().setAccessibleDescription(
                 Translator.get("app.view.openfile.description"));
         fileItem.addActionListener(new OpenFileBtnListener(mainView));
+        fileItem.setName("menu.file");
         KeyStroke keyO = KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK);
         fileItem.setAccelerator(keyO);
         fileMenu.add(fileItem);
+
+        JMenuItem pasteItem = new JMenuItem(Translator.get("app.view.pastefile"));
+        pasteItem.getAccessibleContext().setAccessibleDescription(
+                Translator.get("app.view.pastefile.description"));
+        pasteItem.addActionListener(new PasteFileBtnListener(mainView));
+        pasteItem.setName("menu.paste");
+        KeyStroke key1 = KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK);
+        pasteItem.setAccelerator(key1);
+        fileMenu.add(pasteItem);
 
         JMenuItem closeItem = new JMenuItem(Translator.get("app.view.exit"));
         closeItem.getAccessibleContext().setAccessibleDescription(
@@ -36,6 +46,7 @@ public class MainViewMenu extends JMenuBar {
         closeItem.addActionListener(new CloseAppListener(mainView));
         KeyStroke keyQ = KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK);
         closeItem.setAccelerator(keyQ);
+        closeItem.setName("menu.close");
         fileMenu.add(closeItem);
 
         this.add(fileMenu);
@@ -47,12 +58,14 @@ public class MainViewMenu extends JMenuBar {
         setGotoPreviousItemEnabled(false);
         KeyStroke keyP = KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK);
         gotoPreviousItem.setAccelerator(keyP);
+        gotoPreviousItem.setName("menu.prev");
         gotoMenu.add(gotoPreviousItem);
-
+        
         gotoNextItem = new JMenuItem(Translator.get("app.view.next"));
         gotoNextItem.addActionListener(new GotoBtnListener(mainView, GotoBtnListener.Direction.NEXT));
         KeyStroke keyN = KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK);
         gotoNextItem.setAccelerator(keyN);
+        gotoNextItem.setName("menu.next");
 
         setGotoNextItemEnabled(false);
         gotoMenu.add(gotoNextItem);
@@ -63,11 +76,13 @@ public class MainViewMenu extends JMenuBar {
         helpItem.addActionListener(new HelpBtnListener(mainView));
         helpItem.getAccessibleContext().setAccessibleDescription(
                 Translator.get("app.view.help.description"));
+        helpItem.setName("menu.help");
         infoMenu.add(helpItem);
 
         JMenuItem aboutItem = new JMenuItem(Translator.get("app.view.about"));
         aboutItem.getAccessibleContext().setAccessibleDescription("app.view.about.description");
         aboutItem.addActionListener(new AboutBtnListener(mainView));
+        aboutItem.setName("menu.about");
         infoMenu.add(aboutItem);
 
         this.add(infoMenu);

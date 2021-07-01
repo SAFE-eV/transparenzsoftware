@@ -1,17 +1,11 @@
 package com.hastobe.transparenzsoftware.gui.views;
 
-import com.hastobe.transparenzsoftware.Utils;
-import com.hastobe.transparenzsoftware.gui.listeners.CloseBtnListener;
-import com.hastobe.transparenzsoftware.gui.views.customelements.ErrorLog;
-import com.hastobe.transparenzsoftware.gui.views.customelements.StyledButton;
-import com.hastobe.transparenzsoftware.i18n.Translator;
-import com.hastobe.transparenzsoftware.verification.result.VerificationResult;
-import com.hastobe.transparenzsoftware.verification.xml.LocalDateTimeAdapter;
-import com.hastobe.transparenzsoftware.verification.xml.Meter;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.font.TextAttribute;
 import java.net.URL;
 import java.time.Duration;
@@ -20,323 +14,346 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
-public class VerifyDataView extends JFrame {
-    private static final long serialVersionUID = 1L;
+import com.hastobe.transparenzsoftware.Utils;
+import com.hastobe.transparenzsoftware.gui.Colors;
+import com.hastobe.transparenzsoftware.gui.views.customelements.ErrorLog;
+import com.hastobe.transparenzsoftware.gui.views.customelements.VerifyTextArea;
+import com.hastobe.transparenzsoftware.i18n.Translator;
+import com.hastobe.transparenzsoftware.verification.EncodingType;
+import com.hastobe.transparenzsoftware.verification.VerificationType;
+import com.hastobe.transparenzsoftware.verification.result.VerificationResult;
+import com.hastobe.transparenzsoftware.verification.xml.LocalDateTimeAdapter;
+import com.hastobe.transparenzsoftware.verification.xml.Meter;
 
-    private final static int WIDTH = 1024;
-    private final static int HEIGHT = 768;
-    public static final Dimension SIZE_SCROLLPANE_VISIBLE = new Dimension(800, 640);
-    public static final Dimension SIZE_SCROLL_PANE_CLOSED = new Dimension(800, 10);
+public class VerifyDataView extends JPanel {
+	private static final long serialVersionUID = 1L;
 
-    private JLabel iconLabel;
-    private ImageIcon icon;
-    private JLabel imageLabel;
-    private JButton okBtn;
-    private JButton showAdditionalBtn;
-    private JLabel meterLabel;
-    private ErrorLog warningLabel;
-    private JTextPane dataLabel;
-    private JLabel meterDescLabel;
-    private JScrollPane dataScrollpane;
+	private final static int WIDTH = 1024;
+	private final static int HEIGHT = 768;
+	public static final Dimension SIZE_SCROLLPANE_VISIBLE = new Dimension(800, 640);
+	public static final Dimension SIZE_SCROLL_PANE_CLOSED = new Dimension(800, 10);
 
+	private static final String TEXT_NO_DATA_PRESENT = "app.view.nodata";
 
-    public VerifyDataView() {
-        this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+	private static final String TEXT_PLEASE_OPEN_FILE = "app.view.openfile.help";
+	private final static String TEXT_PUBLIC_KEY = "app.public.key";
 
-        JPanel pane = new JPanel();
-        pane.setLayout(new BoxLayout(pane, BoxLayout.PAGE_AXIS));
+	private JLabel iconLabel;
+	private ImageIcon icon;
+	private JLabel imageLabel;
+	private JLabel meterLabel;
+	private ErrorLog warningLabel;
+	private JLabel initialHelpLabel;
+	private JLabel meterDescLabel;
+	private final VerifyTextArea publicKeyField;
+	private final JLabel publicKeyLabel;
 
+	private Border tfDefaultBorder;
 
-        initComponents();
+	public VerifyDataView(MainView mainView) {
+		this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+		this.setName("wnd.verifier");
+		JPanel pane = new JPanel();
+		//pane.setLayout(new BoxLayout(pane, BoxLayout.PAGE_AXIS));
+		pane.setLayout(new BorderLayout(2,2));
+		publicKeyLabel = new JLabel("<html>" + Translator.get(TEXT_PUBLIC_KEY) + "</html>");
+		this.publicKeyField = new VerifyTextArea(mainView);
+		this.publicKeyField.setColumns(60);
+		this.publicKeyField.setRows(4);
+		this.publicKeyField.setName("text.pubkey");
 
-        JPanel paneTop = new JPanel();
-        BoxLayout layoutManagerTop = new BoxLayout(paneTop, BoxLayout.PAGE_AXIS);
-        paneTop.setLayout(layoutManagerTop);
-        paneTop.add(Box.createVerticalGlue());
+		initComponents();
 
-        paneTop.add(Box.createRigidArea(new Dimension(0, 10)));
-        paneTop.add(imageLabel);
-        paneTop.add(iconLabel);
+		JPanel paneTop = new JPanel();
+		BoxLayout layoutManagerTop = new BoxLayout(paneTop, BoxLayout.PAGE_AXIS);
+		paneTop.setLayout(layoutManagerTop);
+		int innerMargin = 5;
+		Border debugBorder = BorderFactory.createEmptyBorder(innerMargin, innerMargin, innerMargin, innerMargin);
+		
+		paneTop.setBorder(debugBorder);
+		//paneTop.add(Box.createVerticalGlue());
+		int westWidth = 180;
+		paneTop.add(Box.createRigidArea(new Dimension(westWidth, 10)));
+		paneTop.add(imageLabel);
+		paneTop.add(iconLabel);
+		paneTop.add(Box.createRigidArea(new Dimension(westWidth, 10)));
+		pane.add(paneTop,BorderLayout.WEST);
 
-        paneTop.add(Box.createVerticalStrut(20));
-        paneTop.add(meterDescLabel);
-        paneTop.add(Box.createVerticalStrut(5));
-        paneTop.add(meterLabel);
-        JPanel paneMiddle = new JPanel();
-        pane.add(paneTop);
-        paneMiddle.add(Box.createVerticalStrut(20));
-        paneMiddle.add(warningLabel);
-        paneMiddle.add(Box.createVerticalStrut(5));
+		JPanel paneMiddle = new JPanel();
+		paneMiddle.setLayout(new BoxLayout(paneMiddle, BoxLayout.PAGE_AXIS));
 
-        paneMiddle.add(Box.createVerticalGlue());
-        pane.add(paneMiddle);
+		paneMiddle.add(Box.createVerticalStrut(20));
+		paneMiddle.add(meterDescLabel);
+		meterDescLabel.setBorder(debugBorder);
+		paneMiddle.add(Box.createVerticalStrut(5));
+		meterLabel.setBorder(debugBorder);
+		paneMiddle.add(meterLabel);
+		paneMiddle.add(Box.createVerticalStrut(20));
+		paneMiddle.add(warningLabel);
+		paneMiddle.add(initialHelpLabel);
+		paneMiddle.add(Box.createVerticalStrut(5));
+		paneMiddle.setBorder(debugBorder);
+		paneMiddle.add(Box.createVerticalGlue());
+		pane.add(paneMiddle,BorderLayout.CENTER);
 //        paneTop.setBorder(BorderFactory.createLineBorder(Color.GREEN));
 
+		JPanel keyPanel = new JPanel();
+		BorderLayout layout = new BorderLayout(50,50);
+		keyPanel.setLayout(layout);
+		// publicKeyLabel.setPreferredSize(new Dimension(100, 100));
+		keyPanel.add(publicKeyLabel, BorderLayout.WEST);
+		JScrollPane scrollPublicKey = new JScrollPane(publicKeyField);
+		keyPanel.add(scrollPublicKey, BorderLayout.CENTER);
 
-        JPanel paneCenter = new JPanel();
-        BoxLayout layoutManagerCenter = new BoxLayout(paneCenter, BoxLayout.PAGE_AXIS);
-        paneCenter.setLayout(layoutManagerCenter);
-        paneCenter.add(Box.createVerticalGlue());
+		JScrollPane scrollData = new JScrollPane(pane);
+		scrollData.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollData.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-        paneCenter.add(showAdditionalBtn);
-        paneCenter.add(Box.createVerticalStrut(5));
-        paneCenter.add(dataScrollpane);
-        paneCenter.add(dataScrollpane);
+		this.setLayout(new BorderLayout(20,20));
+		this.add(scrollData,BorderLayout.CENTER);
+		this.add(keyPanel,BorderLayout.SOUTH);
 
-        paneCenter.add(Box.createVerticalGlue());
-//        paneCenter.setBorder(BorderFactory.createLineBorder(Color.RED));
+		/// pack();
+		clearInputs();
+		validate();
+		repaint();
+		this.setAutoscrolls(true);
+	}
 
-        pane.add(paneCenter);
+	private void initComponents() {
+		meterDescLabel = new JLabel(Translator.get("app.view.meter"));
+		meterDescLabel.setAlignmentX(CENTER_ALIGNMENT);
+		
+		meterLabel = new JLabel("", JLabel.CENTER);
+		meterLabel.setAlignmentX(CENTER_ALIGNMENT);
+		meterLabel.setName("lbl.meter");
 
+		HashMap<TextAttribute, Object> textAttrMap = new HashMap<TextAttribute, Object>();
+		textAttrMap.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+		textAttrMap.put(TextAttribute.FOREGROUND, Color.BLUE);
 
-        JPanel paneBottom = new JPanel();
-        BoxLayout layoutManagerBottom = new BoxLayout(paneBottom, BoxLayout.PAGE_AXIS);
-        paneBottom.setLayout(layoutManagerBottom);
-        paneBottom.add(Box.createVerticalGlue());
+		iconLabel = new JLabel();
+		iconLabel.setAlignmentX(CENTER_ALIGNMENT);
+		iconLabel.setMinimumSize(new Dimension(250,64));
+		iconLabel.setName("lbl.icon");
+		imageLabel = new JLabel();
+		imageLabel.setAlignmentX(CENTER_ALIGNMENT);
+		imageLabel.setName("lbl.image");
+		imageLabel.setMinimumSize(new Dimension(64,64));
+		warningLabel = new ErrorLog();
+		warningLabel.setBorder(new EmptyBorder(15, 15, 15, 15));
+		warningLabel.setName("lbl.warn");
+		initialHelpLabel = new JLabel();
+		initialHelpLabel.setAlignmentX(CENTER_ALIGNMENT);
+		initialHelpLabel.setName("lbl.openfile");
+	}
 
-        paneBottom.add(Box.createVerticalStrut(25));
-        paneBottom.add(okBtn);
-        paneBottom.add(Box.createVerticalStrut(10));
-        paneBottom.add(Box.createVerticalGlue());
-//        paneBottom.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
+	/**
+	 * Controls if a success or failure screen is shown
+	 *
+	 * @param verificationResult
+	 */
+	public void setState(VerificationResult verificationResult) {
+		if (verificationResult == null) {
+			clearVerificationResult();
+			return;
+		}
+		initialHelpLabel.setVisible(false);
+		setVerifyIconAndLabel(verificationResult.isVerified() ? VerifyResult.VERIFIED_OK : VerifyResult.VERIFIED_BAD);
 
-        pane.add(paneBottom);
-        JScrollPane scrollPane = new JScrollPane(pane);
-        add(scrollPane);
+		if (verificationResult.getErrorMessages().size() > 0) {
+			warningLabel.setText(verificationResult.getErrorMessages());
+		} else {
+			warningLabel.setVisible(false);
+		}
+		setMeters(verificationResult.getMeters(), verificationResult.isTransactionResult());
 
-        pack();
-        validate();
-        repaint();
-    }
+		validate();
+		repaint();
+		doLayout();
+		tfDefaultBorder = iconLabel.getBorder();
+	}
 
-    private void initComponents() {
-        meterDescLabel = new JLabel(Translator.get("app.view.meter"));
-        meterDescLabel.setAlignmentX(CENTER_ALIGNMENT);
-        meterLabel = new JLabel("", JLabel.CENTER);
-        meterLabel.setAlignmentX(CENTER_ALIGNMENT);
+	private void setVerifyIconAndLabel(VerifyResult vr) {
+		String imgResourcePath = "";
+		String iconTextLabel = "";
+		switch (vr) {
+		case NOT_YET_VERIFIED:
+			iconTextLabel = "app.view.verify.notYet";
+			imgResourcePath = "gui/not_yet_verified.png";
+			break;
+		case VERIFIED_BAD:
+			iconTextLabel = "app.view.verify.failure";
+			imgResourcePath = "gui/not_verified.png";
+			break;
+		case VERIFIED_OK:
+			iconTextLabel = "app.view.verify.success";
+			imgResourcePath = "gui/verified.png";
+			break;
+		}
+		// is set dynamicaly in this.setState called by manager
+		URL imgStatePath = ClassLoader.getSystemResource(imgResourcePath);
+		String translation = Translator.get(iconTextLabel);
+		// HBO setTitle(translation);
 
-        showAdditionalBtn = new JButton(Translator.get("app.view.show.details"));
-        showAdditionalBtn.setBackground(this.getContentPane().getBackground());
-        showAdditionalBtn.setMargin(new Insets(0, 0, 0, 0));
-        HashMap<TextAttribute, Object> textAttrMap = new HashMap<TextAttribute, Object>();
-        textAttrMap.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-        textAttrMap.put(TextAttribute.FOREGROUND, Color.BLUE);
-        showAdditionalBtn.setFont(showAdditionalBtn.getFont().deriveFont(textAttrMap));
-        showAdditionalBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        showAdditionalBtn.setBorderPainted(false);
-        showAdditionalBtn.setFocusPainted(false);
-        showAdditionalBtn.setContentAreaFilled(false);
-        showAdditionalBtn.addActionListener(actionEvent -> {
-            dataScrollpane.setVisible(!dataScrollpane.isVisible());
-            if (dataScrollpane.isVisible()) {
-                showAdditionalBtn.setText(Translator.get("app.view.hide.details"));
-                dataScrollpane.setMaximumSize(SIZE_SCROLLPANE_VISIBLE);
-                dataScrollpane.setPreferredSize(SIZE_SCROLLPANE_VISIBLE);
-                dataScrollpane.setMinimumSize(SIZE_SCROLLPANE_VISIBLE);
-            } else {
-                showAdditionalBtn.setText(Translator.get("app.view.show.details"));
-                dataScrollpane.setMaximumSize(SIZE_SCROLL_PANE_CLOSED);
-                dataScrollpane.setPreferredSize(SIZE_SCROLL_PANE_CLOSED);
-                dataScrollpane.setMinimumSize(SIZE_SCROLL_PANE_CLOSED);
-            }
-            validate();
-            repaint();
-            doLayout();
-        });
-        dataLabel = new JTextPane();
-        dataLabel.setContentType("text/html");
-        dataLabel.setMaximumSize(SIZE_SCROLLPANE_VISIBLE);
-        dataLabel.setPreferredSize(SIZE_SCROLLPANE_VISIBLE);
-        dataLabel.setMinimumSize(SIZE_SCROLLPANE_VISIBLE);
-        dataLabel.setBackground(null);
-        dataLabel.setEditable(false);
-        dataLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		icon = new ImageIcon(imgStatePath);
+		Image image = icon.getImage();
+		Image scaledImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+		icon = new ImageIcon(scaledImage);
 
-        dataScrollpane = new JScrollPane(dataLabel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        dataScrollpane.setSize(SIZE_SCROLL_PANE_CLOSED);
-        dataScrollpane.setAlignmentX(CENTER_ALIGNMENT);
-        dataScrollpane.setVisible(false);
+		iconLabel.setText(translation);
+		imageLabel.setIcon(icon);
+	}
 
-        okBtn = new StyledButton(Translator.get("app.view.close"));
-        okBtn.setAlignmentX(CENTER_ALIGNMENT);
-        Dimension btnSize = new Dimension(100, 40);
-        okBtn.setMinimumSize(btnSize);
-        okBtn.setSize(btnSize);
-        okBtn.setPreferredSize(btnSize);
-        okBtn.setMargin(new Insets(20, 20, 20, 20));
+	private void clearVerificationResult() {
+		setVerifyIconAndLabel(VerifyResult.NOT_YET_VERIFIED);
+		warningLabel.setVisible(false);
+		initialHelpLabel.setText(Translator.get(TEXT_PLEASE_OPEN_FILE));
+		initialHelpLabel.setVisible(true);
+		meterLabel.setVisible(false);
+		meterDescLabel.setVisible(false);
+	}
+	
+	private String html(String locText) {
+		return "<HTML><BODY>"+
+					Translator.get(locText)+"</BODY></HTML>";
+	}
 
-        okBtn.addActionListener(new CloseBtnListener(this));
-
-        iconLabel = new JLabel();
-        iconLabel.setAlignmentX(CENTER_ALIGNMENT);
-        imageLabel = new JLabel();
-        imageLabel.setAlignmentX(CENTER_ALIGNMENT);
-        warningLabel = new ErrorLog();
-        warningLabel.setBorder(new EmptyBorder(15, 15, 15, 15));
-    }
-
-
-    /**
-     * Controls if a success or failure screen is shown
-     *
-     * @param verificationResult
-     */
-    public void setState(VerificationResult verificationResult) {
-        String imgResourcePath;
-        //is set dynamicaly in this.setState called by manager
-        String iconTextLabel = "";
-        if (verificationResult.isVerified()) {
-            iconTextLabel = "app.view.verify.success";
-            imgResourcePath = "gui/verified.png";
-        } else {
-            iconTextLabel = "app.view.verify.failure";
-            imgResourcePath = "gui/not_verified.png";
-        }
-        //is set dynamicaly in this.setState called by manager
-        URL imgStatePath = ClassLoader.getSystemResource(imgResourcePath);
-        String translation = Translator.get(iconTextLabel);
-        setTitle(translation);
-
-        icon = new ImageIcon(imgStatePath);
-        Image image = icon.getImage();
-        Image scaledImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        icon = new ImageIcon(scaledImage);
-
-        iconLabel.setText(translation);
-        imageLabel.setIcon(icon);
-
-        if (verificationResult.getErrorMessages().size() > 0) {
-            warningLabel.setText(verificationResult.getErrorMessages());
-        } else {
-            warningLabel.setVisible(false);
-        }
-        setMeters(verificationResult.getMeters(), verificationResult.isTransactionResult());
-        setAdditionalData(verificationResult.getAdditionalVerificationData());
-
-        validate();
-        repaint();
-        doLayout();
-    }
+	/**
+	 * called when user changes the public key, before the data is verified again.
+	 */
+	public void clearErrorMessage() {
+		setVerifyIconAndLabel(VerifyResult.NOT_YET_VERIFIED);
+	}
 
 
-    private void setAdditionalData(Map<String, Object> additionalVerificationData) {
-        if (additionalVerificationData.isEmpty()) {
-            dataScrollpane.setVisible(false);
-            return;
-        }
-        StringBuilder bd = new StringBuilder();
-        String fontfamily = this.getFont().getFamily();
-        bd.append("<html><body width=100% style=\"font-family: ")
-                .append(fontfamily)
-                .append("\"><table>");
-        int count = 0;
-        for (String s : additionalVerificationData.keySet()) {
-            Object value = additionalVerificationData.get(s);
-            if (!(value instanceof Map)) {
-                String styleBg = "border-bottom: 1px dotted black;";
-                if (count % 2 != 0) {
-                    styleBg += "background-color: dark-grey;";
-                }
-                String addText = Utils.splitStringToGroups(value != null ? value.toString() : "", 70, "<br/>");
-                bd.append(
-                        String.format(
-                                "<tr style=\"%s\"><td style=\"width: 180px;\">%s</td><td><p>%s</p></td></tr>",
-                                styleBg,
-                                s,
-                                addText)
-                );
-                count++;
-            }
-        }
-        bd.append("</table></body></html>");
-        dataLabel.setText(bd.toString());
-        this.doLayout();
-        this.repaint();
-        this.revalidate();
-    }
+	private void setMeters(List<Meter> meters, boolean transactionResult) {
+		if (meters.size() <= 0) {
+			return;
+		}
+		boolean addStart = false;
+		boolean addStop = false;
+		int numElements = meters.size();
+		int index = 1;
 
-    private void setMeters(List<Meter> meters, boolean transactionResult) {
-        if (meters.size() <= 0) {
-            return;
-        }
-        boolean addStart = false;
-        boolean addStop = false;
-        int numElements = meters.size();
-        int index=1;
+		StringBuilder builder = new StringBuilder();
+		builder.append("<html><body><ul style=\"list-style-type: none; margin-left: 0px\">");
+		for (Meter meter : meters) {
+			if (meter.getType() != null) {
+				if (meter.getType() == Meter.Type.START && !addStart) {
+					addStart = true;
+					AddOverviewDisplayElements(builder, meter);
+				}
 
-        StringBuilder builder = new StringBuilder();
-        builder.append("<html><body><ul style=\"list-style-type: none;\">");
-        for (Meter meter : meters) {
-            if(meter.getType() != null){
-                if(meter.getType() == Meter.Type.START && !addStart)
-                {
-                    addStart = true;
-                    AddOverviewDisplayElements(builder, meter);
-                }
+				if (meter.getType() == Meter.Type.UPDATE && addStart) {
+					AddOverviewDisplayElements(builder, meter);
+				}
 
-                if(meter.getType() == Meter.Type.UPDATE && addStart)
-                {
-                    AddOverviewDisplayElements(builder, meter);
-                }
+				if (meter.getType() == Meter.Type.STOP && !addStop && numElements == index) {
+					addStop = true;
+					AddOverviewDisplayElements(builder, meter);
+				}
+			}
+			index++;
+		}
 
-                if(meter.getType() == Meter.Type.STOP && !addStop && numElements==index)
-                {
-                    addStop = true;
-                    AddOverviewDisplayElements(builder, meter);
-                }
-            }
-            index++;
-        }
+		if (transactionResult) {
+			Meter.TimeSyncType timeSyncType = Meter.getTimeSyncType(meters);
+			builder.append("<li>&nbsp;</li>");
+			builder.append("<li>");
+			if (timeSyncType == Meter.TimeSyncType.SYNCHRONIZED || timeSyncType == Meter.TimeSyncType.REALTIME) {
+				builder.append(String.format("%s ", Translator.get("app.view.time.difference")));
+			} else {
+				builder.append(String.format("%s ", Translator.get("app.view.time.difference.informative")));
+			}
+			builder.append("<ul style=\"list-style-type: none;margin-left: 0;\">");
+			Duration timeDiff = Meter.getTimeDiff(meters);
+			builder.append(String.format("<li>%s</li>", Utils.formatDuration(timeDiff)));
+			builder.append("</ul>");
+			builder.append("</li>");
 
-        if (transactionResult) {
-            Meter.TimeSyncType timeSyncType = Meter.getTimeSyncType(meters);
-            builder.append("<li>&nbsp;</li>");
-            builder.append("<li>");
-            if (timeSyncType == Meter.TimeSyncType.SYNCHRONIZED || timeSyncType == Meter.TimeSyncType.REALTIME) {
-                builder.append(String.format("%s ", Translator.get("app.view.time.difference")));
-            } else {
-                builder.append(String.format("%s ", Translator.get("app.view.time.difference.informative")));
-            }
-            builder.append("<ul style=\"list-style-type: none;margin-left: 0;\">");
-            Duration timeDiff = Meter.getTimeDiff(meters);
-            builder.append(String.format("<li>%s</li>", Utils.formatDuration(timeDiff)));
-            builder.append("</ul>");
-            builder.append("</li>");
+			builder.append("<li>&nbsp;</li>");
+			builder.append("<li>");
+			builder.append(String.format("%s ", Translator.get("app.view.energy.difference")));
+			builder.append("<ul style=\"list-style-type: none;margin-left: 0;\">");
+			builder.append(String.format("<li>%.4f kWh</li>", Meter.getDifference(meters)));
+			builder.append("</ul>");
+			builder.append("</li>");
+		}
 
-            builder.append("<li>&nbsp;</li>");
-            builder.append("<li>");
-            builder.append(String.format("%s ", Translator.get("app.view.energy.difference")));
-            builder.append("<ul style=\"list-style-type: none;margin-left: 0;\">");
-            builder.append(String.format("<li>%.4f kWh</li>", Meter.getDifference(meters)));
-            builder.append("</ul>");
-            builder.append("</li>");
-        }
+		builder.append("</ul></body></html>");
+		meterLabel.setVisible(true);
+		meterDescLabel.setVisible(true);
+		meterLabel.setText(builder.toString());
+		meterLabel.setToolTipText(Translator.get("app.view.datetime.time.station"));
+		this.validate();
+	}
 
-        builder.append("</ul></body></html>");
+	private void AddOverviewDisplayElements(StringBuilder builder, Meter meter) {
+		builder.append("<li>");
+		builder.append(meter.getDescriptiveMessageText() == null ? Translator.get(meter.getType().message)
+				: meter.getDescriptiveMessageText());
+		builder.append("</li>");
 
-        meterLabel.setText(builder.toString());
-        meterLabel.setToolTipText(Translator.get("app.view.datetime.time.station"));
-    }
+		builder.append("<li>");
+		builder.append(String.format("%.4f kWh", meter.getValue()));
+		builder.append("</li><li>");
 
-    private void AddOverviewDisplayElements(StringBuilder builder, Meter meter) {
-        builder.append("<li>");
-        builder.append(meter.getDescriptiveMessageText() == null ? Translator.get(meter.getType().message) : meter.getDescriptiveMessageText());
-        builder.append("</li>");
+		LocalDateTime localDateTime = meter.getTimestamp() != null ? meter.getTimestamp().toLocalDateTime() : null;
+		builder.append(LocalDateTimeAdapter.formattedDateTime(localDateTime));
+		builder.append(" (<span style=\"color: blue\">lokal</span>)");
 
-        builder.append("<li>");
-        builder.append(String.format("%.4f kWh", meter.getValue()));
-        builder.append("</li><li>");
+		if (!meter.getAdditonalText().isEmpty()) {
+			builder.append(String.format(" (%s)", meter.getAdditonalText()));
+		}
+		builder.append("</li>");
+		builder.append("<li>&nbsp;</li>");
+	}
 
-        LocalDateTime localDateTime = meter.getTimestamp() != null ? meter.getTimestamp().toLocalDateTime() : null;
-        builder.append(LocalDateTimeAdapter.formattedDateTime(localDateTime));
-        builder.append(" (<span style=\"color: blue\">lokal</span>)");
+	public void clearInputs() {
+		clearVerificationResult();
+		publicKeyField.setText("");
+		publicKeyField.setEnabled(true);
+	}
 
-        if (!meter.getAdditonalText().isEmpty()) {
-            builder.append(String.format(" (%s)", meter.getAdditonalText()));
-        }
-        builder.append("</li>");
-        builder.append("<li>&nbsp;</li>");
-    }
+	public void fillUpContent(String publicKeyContent) {
+		if (publicKeyContent == null) {
+			publicKeyContent = "";
+		}
+		publicKeyField.setText(publicKeyContent);
+	}
+
+	public VerifyTextArea getPublicKeyField() {
+		return publicKeyField;
+	}
+
+	public void setPublicKey(String parsePublicKey) {
+		fillUpContent(parsePublicKey);
+	}
+
+	public void setPublicKeyWarning(boolean warn) {
+		if (warn) {
+			publicKeyField.setBorder(BorderFactory.createLineBorder(Colors.WARNING_LOG));
+		} else {
+			publicKeyField.setBorder(tfDefaultBorder);
+		}
+	}
+
+	public void setEnabled(boolean b) {
+		this.publicKeyField.setEnabled(b);
+	}
+
 
 }

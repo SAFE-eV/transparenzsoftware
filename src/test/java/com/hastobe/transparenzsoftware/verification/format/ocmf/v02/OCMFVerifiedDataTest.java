@@ -101,6 +101,7 @@ public class OCMFVerifiedDataTest {
 
         Reading startReading = new Reading();
         startReading.setRV((double) 10);
+        startReading.setRU("U");
         startReading.setST("G");
         startReading.setTX("B");
         startReading.setTM("2018-07-24T13:22:04,100+0200 S");
@@ -134,6 +135,7 @@ public class OCMFVerifiedDataTest {
 
         Reading startReading = new Reading();
         startReading.setRV((double) 0.9);
+        startReading.setRU("U");
         startReading.setST("G");
         startReading.setTX("B");
         startReading.setTM("2018-07-24T14:22:04,100+0200 S");
@@ -169,6 +171,7 @@ public class OCMFVerifiedDataTest {
 
         Reading startReading = new Reading();
         startReading.setRV((double) 0.9);
+        startReading.setRU("U");
         startReading.setST("G");
         startReading.setTX("B");
         startReading.setTM("2018-07-24T12:22:04,100+0200 S");
@@ -202,6 +205,7 @@ public class OCMFVerifiedDataTest {
 
         Reading startReading = new Reading();
         startReading.setRV((double) 0.9);
+        startReading.setRU("U");
         startReading.setST("G");
         startReading.setTX("B");
         startReading.setTM("2018-07-24T12:22:04,100+0200 S");
@@ -235,6 +239,7 @@ public class OCMFVerifiedDataTest {
 
         Reading r1 = new Reading();
         r1.setRV((double) 1);
+        r1.setRU("RU");
         r1.setST("G");
         r1.setTX("B");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");
@@ -327,6 +332,7 @@ public class OCMFVerifiedDataTest {
 
         Reading r1 = new Reading();
         r1.setRV((double) 1);
+        r1.setRU("U");
         r1.setST("G");
         r1.setTX("B");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");
@@ -355,6 +361,7 @@ public class OCMFVerifiedDataTest {
 
         Reading r2 = new Reading();
         r2.setRV((double) 2);
+        r2.setRU("U");
         r2.setST("G");
         r2.setTX("E");
         r2.setTM("2018-07-24T13:23:04,000+0200 S");
@@ -377,6 +384,7 @@ public class OCMFVerifiedDataTest {
 
         Reading r1 = new Reading();
         r1.setRV((double) 1);
+        r1.setRU("U");
         r1.setST("G");
         r1.setTX("E");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");
@@ -405,6 +413,7 @@ public class OCMFVerifiedDataTest {
 
         Reading r2 = new Reading();
         r2.setRV((double) 2);
+        r2.setRU("U");
         r2.setST("G");
         r2.setTX("B");
         r2.setTM("2018-07-24T13:23:04,000+0200 S");
@@ -428,6 +437,7 @@ public class OCMFVerifiedDataTest {
 
         Reading r1 = new Reading();
         r1.setRV((double) 15);
+        r1.setRU("U");
         r1.setST("G");
         r1.setTX("B");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");
@@ -456,6 +466,7 @@ public class OCMFVerifiedDataTest {
 
         Reading r1 = new Reading();
         r1.setRV((double) 1);
+        r1.setRU("U");
         r1.setST("G");
         r1.setTX("B");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");
@@ -484,6 +495,7 @@ public class OCMFVerifiedDataTest {
 
         Reading r1 = new Reading();
         r1.setRV((double) 1);
+        r1.setRU("U");
         r1.setST("G");
         r1.setTX("B");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");
@@ -511,6 +523,7 @@ public class OCMFVerifiedDataTest {
 
         Reading r1 = new Reading();
         r1.setRV((double) 1);
+        r1.setRU("U");
         r1.setST("G");
         r1.setTX("B");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");
@@ -538,6 +551,7 @@ public class OCMFVerifiedDataTest {
 
         Reading r1 = new Reading();
         r1.setRV((double) 1);
+        r1.setRU("U");
         r1.setST("G");
         r1.setTX("B");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");

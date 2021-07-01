@@ -8,6 +8,7 @@ public enum VerificationType {
     EDL_40_P(false),
     EDL_40_SIG(true),
     EDL_40_MENNEKES(true),
+    UNKNOWN(false);
     ;
 
     private final boolean publicKeyAware;

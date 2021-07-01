@@ -34,6 +34,6 @@ public class TextareaChangedListeners implements DocumentListener {
 
     private void changedTriggered() {
         mainView.clearErrorMessages();
-        mainView.setEnableVerifyButton(true);
+        mainView.delayedAutoVerify();
     }
 }

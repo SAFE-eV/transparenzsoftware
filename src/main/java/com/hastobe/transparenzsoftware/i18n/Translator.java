@@ -70,7 +70,9 @@ public class Translator {
             init(language);
         }
         try {
-            return rb.getString(key);
+        	String result = rb.getString(key);
+        	result = new String(result.getBytes("ISO-8859-1"), "UTF-8");
+            return result;
         } catch (Exception e) {
             // just to be sure we do not want to crash our app
             // caused by an missing string

@@ -31,14 +31,13 @@ public class MainViewWestPanel extends JPanel {
         this.mainView = mainView;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setAlignmentY(0f);
-        setBorder(new EmptyBorder(0, 10, 50, 100));
+        setBorder(new EmptyBorder(10, 10, 10, 10));
         initEmpty();
         transactionid = null;
     }
 
     private void initEmpty() {
         removeAll();
-        add(Box.createHorizontalStrut(mainView.getPreferredSize().width / 3));
         validate();
         this.tree = null;
         this.transactionid = null;
@@ -49,6 +48,9 @@ public class MainViewWestPanel extends JPanel {
             initEmpty();
             return;
         }
+        removeAll();
+        add(Box.createHorizontalStrut(mainView.getPreferredSize().width / 3));
+
         tree = ValueTree.createFromValues(values);
 
         tree.getSelectionModel().addTreeSelectionListener(e -> {

@@ -18,7 +18,7 @@ public class EncodingTypePanel extends JPanel {
     private final JComboBox chooserEncoding;
     private final JLabel labelEncoding;
     private final JLabel labelType;
-    private final JComboBox chooserType;
+    private final JLabel chooserType;
 
     public EncodingTypePanel(SelectBoxChangedListener selectBoxChangedListener) {
         super();
@@ -55,11 +55,8 @@ public class EncodingTypePanel extends JPanel {
         gbc.weightx = 1;
         this.add(labelType, gbc);
 
-        chooserType = new JComboBox();
-        chooserType.setModel(new DefaultComboBoxModel(Arrays.stream(VerificationType.values())
-                .filter(type -> type != VerificationType.EDL_40_MENNEKES).toArray()));
-        chooserType.setSelectedItem(VerificationType.OCMF);
-
+        chooserType = new JLabel();
+        setType();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.ipady = 0;
         gbc.weighty = 1.0;
@@ -68,17 +65,39 @@ public class EncodingTypePanel extends JPanel {
         gbc.gridy = 1;
         this.add(chooserType, gbc);
     }
+    
+    VerificationType actualType = VerificationType.UNKNOWN;
 
     public void setEncoding(EncodingType encoding) {
         this.chooserEncoding.setSelectedItem(encoding);
     }
 
     public void setVerificationType(VerificationType type) {
-        this.chooserType.setSelectedItem(type);
+        this.actualType = type;
+        setType();
     }
 
-    public VerificationType getVerificationType() {
-        return (VerificationType) this.chooserType.getSelectedItem();
+    private void setType() {
+    	switch (actualType) {
+		case ALFEN:
+		case EDL_40_MENNEKES:
+		case EDL_40_P:
+		case EDL_40_SIG:
+		case ISA_EDL_40_P:
+		case OCMF:
+		case PCDF:
+			chooserType.setText(actualType.name());
+			break;
+		default:
+		case UNKNOWN:
+			chooserType.setText(Translator.get("error.format.unknown"));
+			break;
+    	
+    	}
+	}
+
+	public VerificationType getVerificationType() {
+        return actualType;
     }
 
     public EncodingType getEncoding() {

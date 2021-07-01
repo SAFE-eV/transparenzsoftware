@@ -217,7 +217,7 @@ public class Verifier {
             for (String keyToTry : publicKeysToUse) {
                 try {
                     result = tryParser(parser, keyToTry, data);
-                    if (result.isVerified()) {
+                    if (result != null && result.isVerified()) {
                         //we have found a hit we will stop now
                         break;
                     }
@@ -269,7 +269,7 @@ public class Verifier {
         for (EncodingType encodingType : keyTypes) {
             try {
                 VerificationResult newResult = parser.parseAndVerify(data, EncodingType.decode(encodingType, publicKeyToUse));
-                if (newResult.isVerified()) {
+                if (newResult != null && newResult.isVerified()) {
                     result = newResult;
                     break;
                 } else {

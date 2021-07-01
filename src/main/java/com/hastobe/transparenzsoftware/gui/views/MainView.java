@@ -18,7 +18,12 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +32,7 @@ public class MainView extends JFrame {
     private final static long serialVersionUID = 1L;
     private final static String TEXT_WINDOW_TITEL = "app.title";
     private final static Logger LOGGER = LogManager.getLogger(MainView.class);
+	private static final int VERIFY_DELAY = 500;
     private static MainView instance;
 
     private final VerificationParserFactory factory;
@@ -43,23 +49,30 @@ public class MainView extends JFrame {
 
     private Values values;
     private int currentValuePos;
+    private final Timer delayVerifyTimer;
+	private boolean verifyMode;
 
-
-    private MainView(VerificationParserFactory factory) {
+    public MainView(VerificationParserFactory factory) {
         this.factory = factory;
         verifier = new Verifier(factory);
         currentValuePos = 0;
         initPage();
+        delayVerifyTimer = new Timer(VERIFY_DELAY, e -> delayedVerify());
+        delayVerifyTimer.setRepeats(false);
     }
 
-    public static MainView init(VerificationParserFactory factory) {
+    private void delayedVerify() {
+    	verify();
+	}
+
+	public static MainView init(VerificationParserFactory factory) {
         instance = new MainView(factory);
         return instance;
     }
 
 
     private void initPage() {
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout(10,10));
         this.setTitle(String.format("%s - Version: %s", Translator.get(TEXT_WINDOW_TITEL), Constants.VERSION));
 
         //now create the panels
@@ -75,7 +88,6 @@ public class MainView extends JFrame {
         this.add(centerPanel, BorderLayout.CENTER);
         this.add(southPanel, BorderLayout.SOUTH);
         this.add(westPanel, BorderLayout.WEST);
-        this.add(Box.createHorizontalStrut(getPreferredSize().width / 3), BorderLayout.EAST);
 
         pack();
         setSize(800, 600);
@@ -105,6 +117,7 @@ public class MainView extends JFrame {
     }
 
     public void setEnableVerifyMode(boolean single){
+    	verifyMode = single;
         southPanel.setEnableVerifyMode(single);
         centerPanel.setEnabledFields(single);
     }
@@ -138,6 +151,7 @@ public class MainView extends JFrame {
             // we have not found a parser skip the rest
             return;
         }
+        if (!verifyMode) return;
 
 
         VerificationResult verificationResult = null;
@@ -203,7 +217,7 @@ public class MainView extends JFrame {
                 setErrorMessage(messageBuilder.toString());
             }
         } else {
-            ViewUtils.spawnVerificationWindow(verificationResult);
+        	centerPanel.setVerificationContent(verificationResult);
         }
     }
 
@@ -285,6 +299,9 @@ public class MainView extends JFrame {
                 }
             }
             centerPanel.fillUpContent(signedData.getValue(), publicKeyContent, signedData.getEncodingType(), signedData.getFormatAsVerificationType());
+        	// auto
+        	verify();
+
         } catch (DecodingException exception) {
             LOGGER.error("Error on reading file", exception);
             String localizedMessage = exception.getLocalizedMessage();
@@ -386,7 +403,7 @@ public class MainView extends JFrame {
         menuBar.setGotoNextItemEnabled(false);
         menuBar.setGotoPreviousItemEnabled(false);
         centerPanel.setPublicKeyWarning(false);
-        southPanel.setEnableVerifyMode(true);
+        setEnableVerifyMode(true);
         centerPanel.setEnabledFields(true);
         currentValuePos = 0;
         westPanel.initView();
@@ -505,12 +522,32 @@ public class MainView extends JFrame {
     }
 
     /**
-     * This action is triggered after the user has pasted content into the input field
+     * This action is triggered after 
      */
     public void onPaste() {
-        centerPanel.cleanUpNoiseInRawData();
-        String rawDataContent = centerPanel.getRawDataContent();
-        InputReader reader = new InputReader();
+    	clearState();
+    	Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+    	String rawDataContent = "";
+
+    	try {
+			@SuppressWarnings("unchecked")
+			List<File> board = (List<File>)cb.getData(DataFlavor.javaFileListFlavor);
+			if (board.size() == 1) {
+				onFileOpen(board.get(0).getAbsolutePath());
+				return ;
+			}
+			setErrorMessage(Translator.get("paste.err.onlyOneFile"));
+			return ;
+		} catch (UnsupportedFlavorException | IOException e1) {
+		}
+		try {
+			rawDataContent = (String)cb.getData(DataFlavor.stringFlavor);
+		} catch (IOException | UnsupportedFlavorException e) {
+			setErrorMessage(Translator.get("paste.err.invalidData"));
+			return;
+		}
+
+		InputReader reader = new InputReader();
         Values values;
         try {
             values = reader.readString(rawDataContent);
@@ -519,7 +556,12 @@ public class MainView extends JFrame {
         } catch (InvalidInputException e) {
         	LOGGER.debug("No values pasted");
         }
-
+        if (rawDataContent.isEmpty()) {
+			setErrorMessage(Translator.get("paste.err.empty"));
+			return ;
+        }
+        centerPanel.fillUpContent(rawDataContent, centerPanel.getPublicKeyContent(),
+        		EncodingType.PLAIN,VerificationType.UNKNOWN);
         //we could not read values so it can be a single value
         //flag is necessary to remove the values in the ui which are there at the moment
         boolean singleValueFound = false;
@@ -572,4 +614,9 @@ public class MainView extends JFrame {
             }
         }
     }
+
+	public void delayedAutoVerify() {
+		delayVerifyTimer.restart();
+	}
+
 }

@@ -74,7 +74,7 @@ public class InputReader {
             Values value = (Values) unmarshaller.unmarshal(stringReader);
             value.setRawContent(data);
             return value;
-        } catch (JAXBException e) {
+        } catch (Exception e) {
             throw new InvalidInputException("Cannot read input string", "error.input.string.noxml", e);
         }
     }

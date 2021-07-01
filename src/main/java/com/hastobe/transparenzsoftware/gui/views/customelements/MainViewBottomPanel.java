@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class MainViewBottomPanel extends JPanel {
 
-    private final VerifyButton verifyBtn;
+    //private final VerifyButton verifyBtn;
     private final JLabel pagingLabel;
 
     public MainViewBottomPanel(MainView mainView) {
@@ -17,8 +17,9 @@ public class MainViewBottomPanel extends JPanel {
         this.add(Box.createVerticalStrut(this.getWidth() / 3));
         this.add(Box.createVerticalStrut(this.getWidth() / 3));
         this.add(Box.createHorizontalStrut(this.getWidth() / 3));
-        this.verifyBtn = new VerifyButton(mainView);
-        this.add(verifyBtn);
+        //this.verifyBtn = new VerifyButton(mainView);
+        //this.verifyBtn.setName("btn.verify");
+        //this.add(verifyBtn);
         pagingLabel = new JLabel("");
         pagingLabel.setHorizontalAlignment(SwingConstants.CENTER);
         setPagingCount(0, 0);
@@ -27,10 +28,11 @@ public class MainViewBottomPanel extends JPanel {
         this.add(Box.createHorizontalStrut(this.getWidth() / 3));
         this.add(Box.createVerticalStrut(this.getWidth() / 3));
         this.pagingLabel.setVisible(false);
+        this.pagingLabel.setName("label.paging");
     }
 
     public void setEnableVerifyButton(boolean enable) {
-        this.verifyBtn.setEnabled(enable);
+      //  this.verifyBtn.setEnabled(enable);
     }
 
     public void setPagingCount(int current, int total){
@@ -42,6 +44,6 @@ public class MainViewBottomPanel extends JPanel {
     }
 
     public void setEnableVerifyMode(boolean single) {
-        verifyBtn.setVerifySingle(single);
+      //  verifyBtn.setVerifySingle(single);
     }
 }

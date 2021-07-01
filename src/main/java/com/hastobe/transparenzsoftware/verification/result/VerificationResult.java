@@ -84,7 +84,7 @@ public class VerificationResult {
 
     public boolean containsErrorOfType(Error.Type type) {
         for (Error errorMessage : errorMessages) {
-            if (errorMessage.getType().equals(type)) {
+            if (errorMessage != null && errorMessage.getType().equals(type)) {
                 return true;
             }
         }

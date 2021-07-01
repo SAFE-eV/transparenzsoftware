@@ -3,10 +3,13 @@ package com.hastobe.transparenzsoftware.gui.views.customelements;
 import com.hastobe.transparenzsoftware.gui.Colors;
 import com.hastobe.transparenzsoftware.gui.listeners.ProxyAction;
 import com.hastobe.transparenzsoftware.gui.listeners.SelectBoxChangedListener;
+import com.hastobe.transparenzsoftware.gui.views.DetailDataView;
 import com.hastobe.transparenzsoftware.gui.views.MainView;
+import com.hastobe.transparenzsoftware.gui.views.VerifyDataView;
 import com.hastobe.transparenzsoftware.i18n.Translator;
 import com.hastobe.transparenzsoftware.verification.EncodingType;
 import com.hastobe.transparenzsoftware.verification.VerificationType;
+import com.hastobe.transparenzsoftware.verification.result.VerificationResult;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -14,46 +17,48 @@ import java.awt.*;
 
 public class MainViewCenterPanel extends JPanel {
 
+    private final static String TEXT_USER_DATA = "app.view.userdata";
     private final static String TEXT_RAW_DATA = "app.view.dataset";
-    private final static String TEXT_PUBLIC_KEY = "app.public.key";
+    private final static String TEXT_DETAIL_DATA = "app.view.datadetails";
     public static final String PASTE_FROM_CLIPBOARD_ACTION = "paste-from-clipboard";
 
-    private final VerifyTextArea rawDataField;
-    private final EncodingTypePanel encodingTypePanel;
-    private final VerifyTextArea publicKeyField;
     private final MainViewErrorPanel errorPanel;
-    private final JLabel rawDataLabel;
-    private final JLabel publicKeyLabel;
     private Border tfDefaultBorder;
 
+    private final JTabbedPane tabPane;
+    private final JPanel lowerPanel;
+    
+    private final RawDataPanel raw;
+	private final VerifyDataView verifyDataView;
+	private final DetailDataView detailDataView;
+    
     public MainViewCenterPanel(MainView mainView) {
+    	tabPane = new JTabbedPane();
+    	
+    	this.verifyDataView = new VerifyDataView(mainView);
+    	tabPane.addTab(Translator.get(TEXT_USER_DATA),verifyDataView);
+    	
+    	this.detailDataView = new DetailDataView(mainView);
+    	tabPane.addTab(Translator.get(TEXT_DETAIL_DATA),detailDataView);
+    	
+    	this.raw = new RawDataPanel(mainView);
+    	tabPane.addTab(Translator.get(TEXT_RAW_DATA),raw);
 
-        this.rawDataLabel = new JLabel(Translator.get(TEXT_RAW_DATA));
-        this.setLayout(new GridLayout(0, 1));
-        this.add(rawDataLabel);
+    	lowerPanel = new JPanel();
+    	
+        this.setLayout(new BorderLayout());
 
-        this.rawDataField = new VerifyTextArea(mainView);
-        JScrollPane scrollRawData = new JScrollPane(rawDataField);
-        this.add(scrollRawData);
-        //catch the copy event
-        Action action = rawDataField.getActionMap().get(PASTE_FROM_CLIPBOARD_ACTION);
-        rawDataField.getActionMap().put(PASTE_FROM_CLIPBOARD_ACTION, new ProxyAction(action, mainView));
-
-        this.encodingTypePanel = new EncodingTypePanel(new SelectBoxChangedListener(mainView));
-        this.add(encodingTypePanel);
-
-        publicKeyLabel = new JLabel(Translator.get(TEXT_PUBLIC_KEY));
-        this.add(publicKeyLabel);
-
-        this.publicKeyField = new VerifyTextArea(mainView);
-
-        JScrollPane scrollPublicKey = new JScrollPane(publicKeyField);
-        this.add(scrollPublicKey);
-        errorPanel = new MainViewErrorPanel(new ErrorLog());
+        ErrorLog eLog = new ErrorLog();
+        eLog.setName("lbl.elog");
+        errorPanel = new MainViewErrorPanel(eLog);
+        
+    	this.add(tabPane,BorderLayout.CENTER);
+    	this.add(lowerPanel,BorderLayout.SOUTH);
+        
     }
 
     public void setErrorMessage(String message) {
-        this.add(errorPanel);
+        lowerPanel.add(errorPanel);
         errorPanel.setErrorText(message, false);
     }
 
@@ -65,89 +70,71 @@ public class MainViewCenterPanel extends JPanel {
     public void clearErrorMessage() {
         this.remove(errorPanel);
         errorPanel.setErrorText("", true);
+        verifyDataView.clearErrorMessage();
+        detailDataView.clearErrorMessage();
         this.repaint();
         this.revalidate();
         this.updateUI();
     }
 
     public void clearInputs() {
-        rawDataField.setText("");
-        publicKeyField.setText("");
-        publicKeyField.setEnabled(true);
-        rawDataField.setEnabled(false);
+    	raw.clearInputs();
+    	verifyDataView.clearInputs();
     }
 
     public String getRawDataContent() {
-        return rawDataField.getText();
+        return raw.getRawDataContent();
     }
 
     public void cleanUpNoiseInRawData(){
-        String data = rawDataField.getText();
-        data = data.replaceAll("\n", " ");
-        data = data.replaceAll("\t", " ");
-        data = data.trim();
-        rawDataField.setText(data);
+    	raw.cleanUpNoiseInRawData();
     }
 
     public String getPublicKeyContent() {
-        return publicKeyField.getText();
+        return verifyDataView.getPublicKeyField().getText();
     }
 
     public void fillUpContent(String rawDataContent, String publicKeyContent, EncodingType encoding, VerificationType type) {
-        if (rawDataContent == null) {
-            rawDataContent = "";
-        }
-        if (publicKeyContent == null) {
-            publicKeyContent = "";
-        }
-        if (encoding == null) {
-            encoding = EncodingType.PLAIN;
-        }
-        if (type == null) {
-            type = VerificationType.EDL_40_P;
-        }
-        rawDataField.setText(rawDataContent);
-        publicKeyField.setText(publicKeyContent);
-        tfDefaultBorder = publicKeyField.getBorder();
-        encodingTypePanel.setVerificationType(type);
-        encodingTypePanel.setEncoding(encoding);
+        raw.fillUpContent(rawDataContent, encoding, type);
+        verifyDataView.fillUpContent(publicKeyContent);
     }
 
     public VerificationType getVerificationType() {
-        return encodingTypePanel.getVerificationType();
+        return raw.getVerificationType();
     }
 
     public EncodingType getEncoding() {
-        return encodingTypePanel.getEncoding();
+        return raw.getEncoding();
     }
 
     public void setEncoding(EncodingType encodingType) {
-        encodingTypePanel.setEncoding(encodingType);
+        raw.setEncoding(encodingType);
     }
 
     public void setVerificationType(VerificationType verificationType) {
-        encodingTypePanel.setVerificationType(verificationType);
+        raw.setVerificationType(verificationType);
     }
 
     public void setPublicKey(String parsePublicKey) {
-        publicKeyField.setText(parsePublicKey);
+    	verifyDataView.setPublicKey(parsePublicKey);
     }
 
     public void setPublicKeyWarning(boolean warn) {
-        if(warn) {
-            publicKeyField.setBorder(BorderFactory.createLineBorder(Colors.WARNING_LOG));
-        } else {
-            publicKeyField.setBorder(tfDefaultBorder);
-        }
+    	verifyDataView.setPublicKeyWarning(warn);
     }
 
     public void setEnabledFields(boolean b) {
-        this.publicKeyField.setEnabled(b);
-        this.encodingTypePanel.setEnabledFields(b);
-        this.rawDataField.setEnabled(b);
+    	raw.setEnabled(b);
+    	verifyDataView.setEnabled(b);
+    	
     }
 
     public boolean isErrorMessageSet() {
         return errorPanel.isErrorMessageSet();
     }
+
+	public void setVerificationContent(VerificationResult verificationResult) {
+		verifyDataView.setState(verificationResult);
+		detailDataView.setAdditionalData(verificationResult.getAdditionalVerificationData());
+	}
 }

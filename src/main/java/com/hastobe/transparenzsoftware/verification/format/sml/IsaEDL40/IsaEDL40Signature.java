@@ -324,6 +324,7 @@ public class IsaEDL40Signature extends SMLSignature {
 
     @Override
     public byte[] getTimestamp() {
+    	if (actualEcTimestamp == null) return null;
         return timeToBytes(actualEcTimestamp);
     }
 
