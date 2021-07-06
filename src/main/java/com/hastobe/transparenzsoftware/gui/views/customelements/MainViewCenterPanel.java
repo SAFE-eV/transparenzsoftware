@@ -1,8 +1,10 @@
 package com.hastobe.transparenzsoftware.gui.views.customelements;
 
-import com.hastobe.transparenzsoftware.gui.Colors;
-import com.hastobe.transparenzsoftware.gui.listeners.ProxyAction;
-import com.hastobe.transparenzsoftware.gui.listeners.SelectBoxChangedListener;
+import java.awt.BorderLayout;
+
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
 import com.hastobe.transparenzsoftware.gui.views.DetailDataView;
 import com.hastobe.transparenzsoftware.gui.views.MainView;
 import com.hastobe.transparenzsoftware.gui.views.VerifyDataView;
@@ -10,10 +12,6 @@ import com.hastobe.transparenzsoftware.i18n.Translator;
 import com.hastobe.transparenzsoftware.verification.EncodingType;
 import com.hastobe.transparenzsoftware.verification.VerificationType;
 import com.hastobe.transparenzsoftware.verification.result.VerificationResult;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
 
 public class MainViewCenterPanel extends JPanel {
 
@@ -23,8 +21,6 @@ public class MainViewCenterPanel extends JPanel {
     public static final String PASTE_FROM_CLIPBOARD_ACTION = "paste-from-clipboard";
 
     private final MainViewErrorPanel errorPanel;
-    private Border tfDefaultBorder;
-
     private final JTabbedPane tabPane;
     private final JPanel lowerPanel;
     
@@ -58,17 +54,19 @@ public class MainViewCenterPanel extends JPanel {
     }
 
     public void setErrorMessage(String message) {
+    	lowerPanel.removeAll();
         lowerPanel.add(errorPanel);
         errorPanel.setErrorText(message, false);
     }
 
     public void setWarningMessage(String message) {
-        this.add(errorPanel);
-        errorPanel.setErrorText(message, true);
+    	lowerPanel.removeAll();
+        lowerPanel.add(errorPanel);
+        errorPanel.setErrorText(message, false);
     }
 
     public void clearErrorMessage() {
-        this.remove(errorPanel);
+    	lowerPanel.removeAll();
         errorPanel.setErrorText("", true);
         verifyDataView.clearErrorMessage();
         detailDataView.clearErrorMessage();

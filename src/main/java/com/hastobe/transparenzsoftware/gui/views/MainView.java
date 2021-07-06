@@ -407,6 +407,7 @@ public class MainView extends JFrame {
         centerPanel.setEnabledFields(true);
         currentValuePos = 0;
         westPanel.initView();
+        delayVerifyTimer.stop();
     }
 
     private void setErrorMessage(String message) {
@@ -521,31 +522,21 @@ public class MainView extends JFrame {
         frame.setVisible(true);
     }
 
+    private String trimString(String other)
+    {
+    	other = other.replace('\n',' ');
+    	other = other.replace('\r',' ');
+    	other = other.trim();
+    	return other;
+    }
+    
     /**
      * This action is triggered after 
      */
-    public void onPaste() {
+    public void onPaste(String rawData, String pubKey) {
     	clearState();
     	Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
-    	String rawDataContent = "";
-
-    	try {
-			@SuppressWarnings("unchecked")
-			List<File> board = (List<File>)cb.getData(DataFlavor.javaFileListFlavor);
-			if (board.size() == 1) {
-				onFileOpen(board.get(0).getAbsolutePath());
-				return ;
-			}
-			setErrorMessage(Translator.get("paste.err.onlyOneFile"));
-			return ;
-		} catch (UnsupportedFlavorException | IOException e1) {
-		}
-		try {
-			rawDataContent = (String)cb.getData(DataFlavor.stringFlavor);
-		} catch (IOException | UnsupportedFlavorException e) {
-			setErrorMessage(Translator.get("paste.err.invalidData"));
-			return;
-		}
+    	String rawDataContent = rawData;
 
 		InputReader reader = new InputReader();
         Values values;
@@ -560,7 +551,8 @@ public class MainView extends JFrame {
 			setErrorMessage(Translator.get("paste.err.empty"));
 			return ;
         }
-        centerPanel.fillUpContent(rawDataContent, centerPanel.getPublicKeyContent(),
+        pubKey = trimString(pubKey);
+        centerPanel.fillUpContent(rawDataContent, pubKey,
         		EncodingType.PLAIN,VerificationType.UNKNOWN);
         //we could not read values so it can be a single value
         //flag is necessary to remove the values in the ui which are there at the moment

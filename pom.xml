@@ -110,6 +110,8 @@
 	<properties>
 		<bouncycastle.version>1.59</bouncycastle.version>
 		<jdk.version>1.8</jdk.version>
+		<file.encoding>UTF-8</file.encoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<junit.version>4.12</junit.version>
 		<jsml.version>1.1.2</jsml.version>

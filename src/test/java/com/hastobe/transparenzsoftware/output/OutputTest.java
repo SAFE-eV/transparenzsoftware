@@ -94,7 +94,8 @@ public class OutputTest {
         Assert.assertNotNull(result3.getTimeDiff());
         Assert.assertNotNull(result3.getMeterDiff());
         Assert.assertEquals(2, result3.getMeters().size());
-        
-        Assert.assertEquals("Paginierung von Startwert ist größer oder gleich dem Endwert", result3.getErrorMessage());
+        String e = result3.getErrorMessage();
+        Assert.assertTrue(e.indexOf("Paginierung von Startwert ist gr") >= 0);
+        Assert.assertTrue(e.indexOf("oder gleich dem Endwert") >= 0);
     }
 }

@@ -28,7 +28,7 @@ public class AboutView extends JFrame {
 
         add(Box.createRigidArea(new Dimension(0, 10)));
 
-        JLabel hastobe = new JLabel(" © 2020 S.A.F.E. e.V. - " + String.format("Version: %s", Constants.VERSION));
+        JLabel hastobe = new JLabel(" © 2021 S.A.F.E. e.V. - " + String.format("Version: %s", Constants.VERSION));
         hastobe.setAlignmentX(0.5f);
         add(hastobe);
 

@@ -33,9 +33,9 @@ public class MainViewMenu extends JMenuBar {
         JMenuItem pasteItem = new JMenuItem(Translator.get("app.view.pastefile"));
         pasteItem.getAccessibleContext().setAccessibleDescription(
                 Translator.get("app.view.pastefile.description"));
-        pasteItem.addActionListener(new PasteFileBtnListener(mainView));
+        pasteItem.addActionListener(new ManualInputBtnListener(mainView));
         pasteItem.setName("menu.paste");
-        KeyStroke key1 = KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK);
+        KeyStroke key1 = KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_DOWN_MASK);
         pasteItem.setAccelerator(key1);
         fileMenu.add(pasteItem);
 

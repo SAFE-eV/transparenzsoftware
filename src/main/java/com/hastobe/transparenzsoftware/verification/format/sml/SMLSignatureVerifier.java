@@ -27,13 +27,13 @@ public class SMLSignatureVerifier implements Verifier {
     /**
      * "Vorzeichen" we want to make sure that all points are seen as positive
      */
-    protected static int PLUS_SIGN = 1;
-    protected static String SIGNATURE_ALGORITHM = "NonewithECDSA";
-    protected static int CROPPED_DATA_LENGTH = 24;
-    protected static String ELLIPTIC_CURVE_ALGORITHM = "secp192r1";
-    protected static String KEY_ALGORITHM = "EC";
-    protected static int KEY_POINT_DATA_LENGTH = 24;
-    protected static int PUBLIC_KEY_BYTES_LENGTH = 48;
+    protected  int PLUS_SIGN = 1;
+    protected  String SIGNATURE_ALGORITHM = "NonewithECDSA";
+    protected  int CROPPED_DATA_LENGTH = 24;
+    protected  String ELLIPTIC_CURVE_ALGORITHM = "secp192r1";
+    protected  String KEY_ALGORITHM = "EC";
+    protected  int KEY_POINT_DATA_LENGTH = 24;
+    protected  int PUBLIC_KEY_BYTES_LENGTH = 48;
 
     /**
      * Initializes the verifier and also the bouncy castle library as security
@@ -92,7 +92,7 @@ public class SMLSignatureVerifier implements Verifier {
      * @param signature signature with the two containing points
      * @return
      */
-    public static byte[] signatureToDER(byte[] signature) {
+    public  byte[] signatureToDER(byte[] signature) {
         byte[] r = Arrays.copyOfRange(signature, 0, signature.length / 2);
         byte[] s = Arrays.copyOfRange(signature, signature.length / 2, signature.length);
 
@@ -119,7 +119,7 @@ public class SMLSignatureVerifier implements Verifier {
      * @return calculated public key out of the two points of the byte array
      * @throws ValidationException if public key cannot be created
      */
-    public static PublicKey getPublicKeyFromBytes(byte[] pubKey) throws ValidationException {
+    public  PublicKey getPublicKeyFromBytes(byte[] pubKey) throws ValidationException {
 
         if (pubKey.length != PUBLIC_KEY_BYTES_LENGTH) {
             LOGGER.error("Invalid public key length received");
@@ -147,7 +147,7 @@ public class SMLSignatureVerifier implements Verifier {
      * @throws NoSuchAlgorithmException
      * @throws InvalidParameterSpecException
      */
-    private static ECPublicKeySpec initPublicKeyCryptoSpecs(byte[] pubKey) throws NoSuchProviderException, NoSuchAlgorithmException, InvalidParameterSpecException {
+    private  ECPublicKeySpec initPublicKeyCryptoSpecs(byte[] pubKey) throws NoSuchProviderException, NoSuchAlgorithmException, InvalidParameterSpecException {
         assert pubKey.length == PUBLIC_KEY_BYTES_LENGTH;
         //sets up the Elliptic curve algorithm with bouncy castle
         AlgorithmParameters parameters = AlgorithmParameters.getInstance(KEY_ALGORITHM, Constants.BOUNCY_CASTLE_PROVIDER_CODE);
@@ -171,7 +171,7 @@ public class SMLSignatureVerifier implements Verifier {
      * @param pubKey byte array of the public key
      * @return big integer represents a point coordinate on the curve
      */
-    private static BigInteger getPointXKeyCurve(byte[] pubKey) {
+    private  BigInteger getPointXKeyCurve(byte[] pubKey) {
         assert pubKey.length == PUBLIC_KEY_BYTES_LENGTH;
 
         byte[] x = new byte[KEY_POINT_DATA_LENGTH];
@@ -187,7 +187,7 @@ public class SMLSignatureVerifier implements Verifier {
      * @param pubKey byte array of the public key
      * @return big integer represents a point coordinate on the curve
      */
-    private static BigInteger getPointYKeyCurve(byte[] pubKey) {
+    private  BigInteger getPointYKeyCurve(byte[] pubKey) {
         assert pubKey.length == PUBLIC_KEY_BYTES_LENGTH;
 
         byte[] y = new byte[KEY_POINT_DATA_LENGTH];

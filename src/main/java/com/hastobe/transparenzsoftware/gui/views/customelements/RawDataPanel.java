@@ -1,7 +1,6 @@
 package com.hastobe.transparenzsoftware.gui.views.customelements;
 
 import com.hastobe.transparenzsoftware.gui.Colors;
-import com.hastobe.transparenzsoftware.gui.listeners.ProxyAction;
 import com.hastobe.transparenzsoftware.gui.listeners.SelectBoxChangedListener;
 import com.hastobe.transparenzsoftware.gui.views.MainView;
 import com.hastobe.transparenzsoftware.i18n.Translator;
@@ -33,9 +32,6 @@ public class RawDataPanel extends JPanel {
 		this.rawDataField = new VerifyTextArea(mainView);
 		JScrollPane scrollRawData = new JScrollPane(getRawDataField());
 		this.add(scrollRawData, BorderLayout.CENTER);
-		// catch the copy event
-		Action action = getRawDataField().getActionMap().get(PASTE_FROM_CLIPBOARD_ACTION);
-		getRawDataField().getActionMap().put(PASTE_FROM_CLIPBOARD_ACTION, new ProxyAction(action, mainView));
 		getRawDataField().setName("text.rawdata");
 
 		ErrorLog eLog = new ErrorLog();
@@ -44,6 +40,7 @@ public class RawDataPanel extends JPanel {
 
 		this.encodingTypePanel = new EncodingTypePanel(new SelectBoxChangedListener(mainView));
 		this.add(encodingTypePanel, BorderLayout.SOUTH);
+		getRawDataField().setEnabled(false);
 
 	}
 
@@ -96,10 +93,6 @@ public class RawDataPanel extends JPanel {
 		encodingTypePanel.setVerificationType(type);
 		encodingTypePanel.setEncoding(encoding);
 		getRawDataField().setText(rawDataContent);
-	}
-
-	public void setEnabledFields(boolean b) {
-		this.getRawDataField().setEnabled(b);
 	}
 
 	public boolean isErrorMessageSet() {
