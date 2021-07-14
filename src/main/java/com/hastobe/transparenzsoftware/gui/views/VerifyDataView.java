@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -61,7 +62,8 @@ public class VerifyDataView extends JPanel {
 	private final JLabel publicKeyLabel;
 
 	private Border tfDefaultBorder;
-
+	private AtomicBoolean eventsEnabled = new AtomicBoolean();
+	
 	public VerifyDataView(MainView mainView) {
 		this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 		this.setName("wnd.verifier");
@@ -69,7 +71,7 @@ public class VerifyDataView extends JPanel {
 		//pane.setLayout(new BoxLayout(pane, BoxLayout.PAGE_AXIS));
 		pane.setLayout(new BorderLayout(2,2));
 		publicKeyLabel = new JLabel("<html>" + Translator.get(TEXT_PUBLIC_KEY) + "</html>");
-		this.publicKeyField = new VerifyTextArea(mainView);
+		this.publicKeyField = new VerifyTextArea(mainView,eventsEnabled);
 		this.publicKeyField.setColumns(60);
 		this.publicKeyField.setRows(4);
 		this.publicKeyField.setName("text.pubkey");
@@ -324,14 +326,15 @@ public class VerifyDataView extends JPanel {
 
 	public void clearInputs() {
 		clearVerificationResult();
+		setEnabled(false);
 		publicKeyField.setText("");
-		publicKeyField.setEnabled(true);
 	}
 
 	public void fillUpContent(String publicKeyContent) {
 		if (publicKeyContent == null) {
 			publicKeyContent = "";
 		}
+		setEnabled(false);
 		publicKeyField.setText(publicKeyContent);
 	}
 
@@ -351,7 +354,11 @@ public class VerifyDataView extends JPanel {
 		}
 	}
 
+	/**
+	 * Set at the end of the verification or at the end of data input to let the user enter a public key.
+	 */
 	public void setEnabled(boolean b) {
+		eventsEnabled.set(b);
 		this.publicKeyField.setEnabled(b);
 	}
 

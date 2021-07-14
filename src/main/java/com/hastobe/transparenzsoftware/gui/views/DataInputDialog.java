@@ -29,6 +29,7 @@ public class DataInputDialog extends JDialog {
     	//app.view.datain.txt=Rohdaten
     	//		app.view.datain.key=Ãffentlicher SchlÃ¼ssel
     	setSize(mainView.getWidth(),mainView.getHeight());
+    	this.setName("dialog.input");
     	JPanel inner = (JPanel)getContentPane();
         setTitle(Translator.get("app.view.datainput"));
         setLayout(new BoxLayout(inner, BoxLayout.Y_AXIS));
@@ -45,6 +46,8 @@ public class DataInputDialog extends JDialog {
         inner.add(Box.createRigidArea(new Dimension(0, 2)));
         
         JTextArea taData = new JTextArea(5,80);
+        taData.setName("paste.data");
+        taData.setLineWrap(true);
         inner.add(taData);
         inner.add(Box.createRigidArea(new Dimension(0, 10)));
         
@@ -54,10 +57,13 @@ public class DataInputDialog extends JDialog {
         inner.add(Box.createRigidArea(new Dimension(0, 2)));
         
         JTextArea taKey = new JTextArea(5,80);
+        taKey.setLineWrap(true);
+        taKey.setName("paste.key");
         inner.add(taKey);
         inner.add(Box.createRigidArea(new Dimension(0, 10)));
 
         JButton close = new JButton(Translator.get("app.view.verify"));
+        close.setName("paste.close");
         close.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 mainView.onPaste(taData.getText(),taKey.getText());

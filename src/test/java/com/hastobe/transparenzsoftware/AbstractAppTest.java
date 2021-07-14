@@ -18,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import org.assertj.swing.core.BasicRobot;
+import org.assertj.swing.core.KeyPressInfo;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.finder.WindowFinder;
 import org.assertj.swing.fixture.DialogFixture;
@@ -48,14 +49,30 @@ public class AbstractAppTest {
         VerificationParserFactory factory = new VerificationParserFactory();
 		MainView app = GuiActionRunner.execute( () -> new MainView(factory));
 		window = new FrameFixture(app);
-		Dimension d = new Dimension(800,600);
-		window.show(d);
+//		Dimension d = new Dimension(800,600);
+//		window.show(d);
 		
 	}
 	
 	@After
 	public void tearDown() {
 		window.cleanUp();
+	}
+	
+	protected void chooseByPaste(String data, String pubkey) {
+		delay();
+		window.menuItem("menu.paste").click();
+		delay();
+		DialogFixture d = window.dialog("dialog.input");
+		delay();
+		d.textBox("paste.data").focus();
+		delay();
+		d.textBox("paste.data").setText(data);
+		delay();
+		d.textBox("paste.key").setText(pubkey);
+		delay();
+		d.button("paste.close").click();
+		delay();
 	}
 	
 	protected void chooseFile(File subdir, String file) {

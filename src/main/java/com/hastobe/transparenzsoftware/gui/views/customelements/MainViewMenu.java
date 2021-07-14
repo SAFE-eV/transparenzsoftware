@@ -20,6 +20,7 @@ public class MainViewMenu extends JMenuBar {
 
     public MainViewMenu(MainView mainView) {
         fileMenu = new JMenu(Translator.get("app.view.file"));
+        fileMenu.setName("menu.top");
 
         JMenuItem fileItem = new JMenuItem(Translator.get("app.view.openfile"));
         fileItem.getAccessibleContext().setAccessibleDescription(

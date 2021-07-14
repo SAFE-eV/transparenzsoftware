@@ -31,19 +31,11 @@ public class MainViewBottomPanel extends JPanel {
         this.pagingLabel.setName("label.paging");
     }
 
-    public void setEnableVerifyButton(boolean enable) {
-      //  this.verifyBtn.setEnabled(enable);
-    }
-
     public void setPagingCount(int current, int total){
         this.pagingLabel.setText(String.format(Translator.get("app.view.pageof"), current, total));
     }
 
     public void showPaginationCount() {
         this.pagingLabel.setVisible(true);
-    }
-
-    public void setEnableVerifyMode(boolean single) {
-      //  verifyBtn.setVerifySingle(single);
     }
 }

@@ -57,9 +57,9 @@ public class MainViewWestPanel extends JPanel {
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
             if (selectedNode.getUserObject() instanceof NodeValueHolder) {
                 NodeValueHolder valueHolder = (NodeValueHolder) selectedNode.getUserObject();
-                mainView.stepToValue(valueHolder.getValue().getInitIndex());
-                mainView.setEnableVerifyMode(true);
                 transactionid = null;
+                mainView.setEnableVerifyMode(true);
+                mainView.stepToValue(valueHolder.getValue().getInitIndex());
             } else if (selectedNode.getUserObject() instanceof NodeHeadingHolder) {
                 NodeHeadingHolder valueHolder = (NodeHeadingHolder) selectedNode.getUserObject();
                 mainView.setEnableVerifyMode(false);

@@ -6,11 +6,18 @@ import org.apache.logging.log4j.Logger;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import java.util.ResourceBundle.Control;
 
 /**
  * Translation helper which provides a simple interface to load
@@ -28,8 +35,21 @@ public class Translator {
      */
     public static void init(Locale locale) {
         Translator.locale = locale;
-        Translator.rb = ResourceBundle.getBundle("i18n/lang", locale);
-        LOGGER.debug(String.format("Locale used will be %s", locale.getLanguage()));
+        
+        ResourceBundle.Control control = Control.getControl(Control.FORMAT_PROPERTIES);
+        String bname = control.toBundleName("i18n/lang", locale);
+        String resname = control.toResourceName(bname,  "properties");
+        resname = resname.replaceAll("_DE", "");
+        InputStream ins = Translator.class.getClassLoader().getResourceAsStream(resname);
+        Reader rdr = new InputStreamReader(ins,Charset.forName("UTF-8"));
+        try {
+			Translator.rb = new PropertyResourceBundle(rdr);
+		} catch (IOException e) {
+		}
+        if (Translator.rb == null) {
+        	Translator.rb = ResourceBundle.getBundle("i18n/lang",locale);
+        }
+        LOGGER.debug(String.format("Locale used will be '%s'", locale.getLanguage()));
     }
     /**
      * Initialises the resource bundles
@@ -71,7 +91,6 @@ public class Translator {
         }
         try {
         	String result = rb.getString(key);
-        	result = new String(result.getBytes("ISO-8859-1"), "UTF-8");
             return result;
         } catch (Exception e) {
             // just to be sure we do not want to crash our app

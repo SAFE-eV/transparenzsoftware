@@ -4,6 +4,9 @@ import com.hastobe.transparenzsoftware.gui.TransparenzSoftwareMain;
 import com.hastobe.transparenzsoftware.i18n.Translator;
 import com.hastobe.transparenzsoftware.output.ConsoleFileProcessor;
 import com.hastobe.transparenzsoftware.verification.VerificationParserFactory;
+
+import javax.swing.UIManager;
+
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -12,17 +15,24 @@ import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 
-public class App {
+public class Transparenzsoftware {
 
-    private final static Logger LOGGER = LogManager.getLogger(App.class);
+    private final static Logger LOGGER = LogManager.getLogger(Transparenzsoftware.class);
     private static boolean testEnvironment;
 
     static void main(String[] args, boolean testEnvironment) throws Exception {
-        App.testEnvironment = testEnvironment;
+        Transparenzsoftware.testEnvironment = testEnvironment;
         main(args);
     }
 
     public static void main(String[] args) throws Exception {
+
+        try {
+            String cn = UIManager.getSystemLookAndFeelClassName();
+            UIManager.setLookAndFeel(cn);
+        } catch (Exception cnf) {
+        }
+
 
         VerificationParserFactory factory = new VerificationParserFactory();
         CommandLineParser commandLineParser = new DefaultParser();

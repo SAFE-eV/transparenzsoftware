@@ -52,6 +52,11 @@ public class MainViewCenterPanel extends JPanel {
     	this.add(lowerPanel,BorderLayout.SOUTH);
         
     }
+    
+    public void showFirstPane()
+    {
+    	this.tabPane.setSelectedIndex(0);
+    }
 
     public void setErrorMessage(String message) {
     	lowerPanel.removeAll();
@@ -121,8 +126,12 @@ public class MainViewCenterPanel extends JPanel {
     	verifyDataView.setPublicKeyWarning(warn);
     }
 
+    /**
+     * Called at the end of data input to let the user change the data
+     * @param b
+     */
     public void setEnabledFields(boolean b) {
-    	raw.setEnabled(b);
+    	raw.setEnabled(false);
     	verifyDataView.setEnabled(b);
     	
     }

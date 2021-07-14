@@ -57,13 +57,18 @@ public class MainView extends JFrame {
         verifier = new Verifier(factory);
         currentValuePos = 0;
         initPage();
-        delayVerifyTimer = new Timer(VERIFY_DELAY, e -> delayedVerify());
+        delayVerifyTimer = new Timer(VERIFY_DELAY, e -> verify());
         delayVerifyTimer.setRepeats(false);
     }
 
-    private void delayedVerify() {
-    	verify();
+    private void verify() {
+    	try {
+    		verify_();
+    	} finally {
+            centerPanel.setEnabledFields(true);
+    	}
 	}
+    
 
 	public static MainView init(VerificationParserFactory factory) {
         instance = new MainView(factory);
@@ -98,6 +103,10 @@ public class MainView extends JFrame {
         westPanel.initView();
     }
 
+    public void showFirstPane()
+    {
+    	centerPanel.showFirstPane();
+    }
 
     /**
      * Clears the error messages of the view
@@ -113,19 +122,18 @@ public class MainView extends JFrame {
      * @param enable if true will be enable otherwise disabled
      */
     public void setEnableVerifyButton(boolean enable) {
-        southPanel.setEnableVerifyButton(enable);
+        centerPanel.setEnabledFields(enable);
     }
 
     public void setEnableVerifyMode(boolean single){
     	verifyMode = single;
-        southPanel.setEnableVerifyMode(single);
         centerPanel.setEnabledFields(single);
     }
     /**
      * Loads the content of the fields and tries to verify it
      * If it was successfully a new window will be opened
      */
-    public void verify() {
+    private void verify_() {
         setEnableVerifyButton(false);
         //only use he first value
         VerificationParser parser;
@@ -231,6 +239,7 @@ public class MainView extends JFrame {
         //cleanup state
         LOGGER.info(String.format("Try to open file %s", filename));
         clearState();
+        showFirstPane();
         
         if (filename.indexOf(".pcdf") != -1)
         {
@@ -264,6 +273,7 @@ public class MainView extends JFrame {
 	        }
         }
         onValuesRead(values);
+        centerPanel.setEnabledFields(true);
     }
 
     /**
@@ -273,6 +283,8 @@ public class MainView extends JFrame {
      */
     public void stepToValue(int index) {
         currentValuePos = index;
+        setEnableVerifyButton(false);
+
         //validate will throw an error so the first one will have an error anyway
         Value firstValue = values.getValues().get(currentValuePos);
         //set the view fields
@@ -535,7 +547,7 @@ public class MainView extends JFrame {
      */
     public void onPaste(String rawData, String pubKey) {
     	clearState();
-    	Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+    	showFirstPane();
     	String rawDataContent = rawData;
 
 		InputReader reader = new InputReader();
@@ -605,9 +617,11 @@ public class MainView extends JFrame {
                 LOGGER.error("Error on cleaning tree");
             }
         }
+        delayedAutoVerify();
     }
 
 	public void delayedAutoVerify() {
+        centerPanel.setEnabledFields(false);
 		delayVerifyTimer.restart();
 	}
 

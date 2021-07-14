@@ -39,7 +39,7 @@ public class AppXMLTest extends AbstractAppTest {
     	chooseFile(testDirXML,"test_input_invalid_xml.xml");
     	String pubKey = getWindow().textBox("text.pubkey").text();
     	assertEquals("", pubKey);
-    	getWindow().label("lbl.elog").requireText("Die Eingabedaten sind kein gültiges XML-Format");
+    	getWindow().label("lbl.elog").requireText("Fehler 1306: Die Eingabedaten sind kein gültiges XML-Format");
     	delay();
     }
 
@@ -49,7 +49,7 @@ public class AppXMLTest extends AbstractAppTest {
     	String pubKey = getWindow().textBox("text.pubkey").text();
     	assertEquals("6DACB9C5466A25B3EB9F6466B53457C84A27448B01A64A278C0A28DAC95F2B45DF39B79918A9A4D2E3551F3FE925D09D", pubKey);
     	delayForVerify();
-    	getWindow().label("lbl.elog").requireText("Unbekanntes Format");
+    	getWindow().label("lbl.elog").requireText("Fehler 1305: Unbekanntes Datenformat");
     	delay();
     }
 

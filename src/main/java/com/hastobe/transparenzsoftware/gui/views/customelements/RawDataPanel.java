@@ -10,6 +10,7 @@ import com.hastobe.transparenzsoftware.verification.VerificationType;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The raw data panel
@@ -24,12 +25,12 @@ public class RawDataPanel extends JPanel {
 	private final VerifyTextArea rawDataField;
 	private final MainViewErrorPanel errorPanel;
 	private final EncodingTypePanel encodingTypePanel;
-
+	private AtomicBoolean eventsEnabled = new AtomicBoolean();
 	public RawDataPanel(MainView mainView) {
 
 		this.setLayout(new BorderLayout(20, 20));
 
-		this.rawDataField = new VerifyTextArea(mainView);
+		this.rawDataField = new VerifyTextArea(mainView,eventsEnabled);
 		JScrollPane scrollRawData = new JScrollPane(getRawDataField());
 		this.add(scrollRawData, BorderLayout.CENTER);
 		getRawDataField().setName("text.rawdata");

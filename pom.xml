@@ -169,9 +169,9 @@
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.hastobe.transparenzsoftware.App</mainClass>
+									<mainClass>com.hastobe.transparenzsoftware.Transparenzsoftware</mainClass>
 									<manifestEntries>
-										<Main-Class>com.hastobe.transparenzsoftware.App</Main-Class>
+										<Main-Class>com.hastobe.transparenzsoftware.Transparenzsoftware</Main-Class>
 										<Build-Number>1</Build-Number>
 									</manifestEntries>
 								</transformer>

@@ -2,6 +2,8 @@ package com.hastobe.transparenzsoftware.gui.listeners;
 
 import com.hastobe.transparenzsoftware.gui.views.MainView;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -12,9 +14,10 @@ import javax.swing.event.DocumentListener;
 public class TextareaChangedListeners implements DocumentListener {
 
     private final MainView mainView;
-
-    public TextareaChangedListeners(MainView mainView) {
+    private final AtomicBoolean eventsEnabled;
+    public TextareaChangedListeners(MainView mainView, AtomicBoolean eventsEnabled) {
         this.mainView = mainView;
+        this.eventsEnabled = eventsEnabled;
     }
 
     @Override
@@ -33,7 +36,9 @@ public class TextareaChangedListeners implements DocumentListener {
     }
 
     private void changedTriggered() {
-        mainView.clearErrorMessages();
-        mainView.delayedAutoVerify();
+    	if (eventsEnabled.get()) {
+    		mainView.clearErrorMessages();
+    		mainView.delayedAutoVerify();
+    	}
     }
 }
