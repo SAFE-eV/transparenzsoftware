@@ -13,6 +13,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 
@@ -95,7 +99,9 @@ public class AboutView extends JFrame {
     private static String getCheckSum() {
         StringBuilder sb = new StringBuilder();
         try {
-            File currentJavaJarFile = new File(AboutView.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        	URL u = AboutView.class.getProtectionDomain().getCodeSource().getLocation();
+        	String path = URLDecoder.decode(u.getPath(), Charset.forName("UTF-8"));
+            File currentJavaJarFile = new File(path);
             String filepath = currentJavaJarFile.getAbsolutePath();
 
             MessageDigest md = MessageDigest.getInstance("SHA-256");// MD5

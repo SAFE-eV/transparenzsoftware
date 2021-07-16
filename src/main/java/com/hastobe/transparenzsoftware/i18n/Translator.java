@@ -41,10 +41,10 @@ public class Translator {
         String resname = control.toResourceName(bname,  "properties");
         resname = resname.replaceAll("_DE", "");
         InputStream ins = Translator.class.getClassLoader().getResourceAsStream(resname);
-        Reader rdr = new InputStreamReader(ins,Charset.forName("UTF-8"));
         try {
+            Reader rdr = new InputStreamReader(ins,Charset.forName("UTF-8"));
 			Translator.rb = new PropertyResourceBundle(rdr);
-		} catch (IOException e) {
+		} catch (Exception e) {
 		}
         if (Translator.rb == null) {
         	Translator.rb = ResourceBundle.getBundle("i18n/lang",locale);
