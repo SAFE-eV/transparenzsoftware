@@ -27,7 +27,7 @@ public class VerificationParserFactory {
         this.parser.add(new AlfenVerificationParser());
         this.parser.add(new EDL40VerificationParser());
         this.parser.add(new SignatureOnlyVerificationParser());
-        //this.parser.add(new EDLMennekesVerificationParser());
+        this.parser.add(new EDLMennekesVerificationParser());
     }
 
     /**

@@ -50,7 +50,11 @@ public class EDLMennekesSignature extends SMLSignature {
         //we assume its always wh
         setUnit(30);
         byte[] signature = measurement.getSignatureAsBytes();
-        setBytesLog(signature[signature.length - 2], signature[signature.length - 1]);
+        if (signature.length > 48) {
+        	setBytesLog(signature[signature.length - 2], signature[signature.length - 1]);
+        } else {
+        	setBytesLog((byte)((this.eventCounter >> 8) & 0xff), (byte)(this.eventCounter & 0xff));
+        }
         setContractId(Hex.decode(chargingProcess.getCustomerIdent()), true);
         providedSignature = signature;
     }

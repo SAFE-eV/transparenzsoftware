@@ -10,6 +10,7 @@ import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.DEROutputStream;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.util.encoders.Hex;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -51,7 +52,12 @@ public class SMLSignatureVerifier implements Verifier {
         byte[] derSignature = signatureToDER(signature);
         try {
             Signature signatureVerifier = initSignature(publicKey, payloadData);
-            return signatureVerifier.verify(derSignature);
+            LOGGER.info("Signature:    "+Hex.toHexString(signature));
+            LOGGER.info("Public key:   "+Hex.toHexString(publicKey));
+            LOGGER.info("Hashed data:  "+Hex.toHexString(payloadData));
+            boolean result = signatureVerifier.verify(derSignature);
+            LOGGER.info("Verified:     "+result);
+            return result;
         } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             throw new ValidationException("Failure on initialising the crypto algorithms", e);
         } catch (SignatureException e) {
@@ -76,12 +82,14 @@ public class SMLSignatureVerifier implements Verifier {
      * @throws ValidationException
      */
     public boolean verify(byte[] publicKeyBytes, SMLSignature SMLSignature) throws ValidationException {
-        byte[] hashedData = Utils.hashSHA256(SMLSignature.buildExtendedSignatureData());
+    	byte[] providedData = SMLSignature.buildExtendedSignatureData();
+        LOGGER.info("Provided:    "+Hex.toHexString(providedData));
+        byte[] hashedData = Utils.hashSHA256(providedData);
         byte[] hashedDataCropped = Arrays.copyOfRange(hashedData, 0, 24);
 
         //48 bytes because the last 2 bytes are from the logbook
-        byte[] signatureCropped = Arrays.copyOfRange(SMLSignature.getProvidedSignature(), 0, 48);
-
+        byte[] signedData = SMLSignature.getProvidedSignature();
+        byte[] signatureCropped = Arrays.copyOfRange(signedData, 0, 48);
         return verify(publicKeyBytes, signatureCropped, hashedDataCropped);
     }
 

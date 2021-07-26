@@ -1,0 +1,85 @@
+<Billing xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://www.mennekes.de/Mennekes.EdlVerification.xsd">    <!-- Version is important, format will change for future tariff support, different meter types, ... -->
+    <Customer>
+        <CustomerId>296824</CustomerId>
+        <Name1><![CDATA[Alexander]]> <![CDATA[Vollmers]]></Name1>
+        <ZipCode>57399</ZipCode>
+        <Street><![CDATA[Aloys-Mennekes-Straße]]> 1</Street>
+        <Town><![CDATA[Kirchhundem]]></Town>
+    </Customer>
+    <Supplier>
+        <Name1><![CDATA[MENNEKES Fertigung]]></Name1>
+        <ZipCode>57399</ZipCode>
+        <Street><![CDATA[Aloys-Mennekes-Straße 1 ]]></Street>
+        <Town><![CDATA[Kirchhundem]]></Town>
+        <Phone></Phone>
+        <Fax></Fax>
+        <MailAddress><![CDATA[]]></MailAddress>
+        <MailAddressLinkText><![CDATA[]]></MailAddressLinkText>
+        <MailSubject><![CDATA[]]></MailSubject>
+        <MailBody><![CDATA[]]></MailBody>
+        <WebAddress><![CDATA[]]></WebAddress>
+        <WebAddressLinkText><![CDATA[]]></WebAddressLinkText>
+    </Supplier>
+    <BillingPeriods>
+        <BillingPeriod>
+            <BillingNo>RE2017-01</BillingNo>
+            <ObisCode>1.8.0</ObisCode>
+            <Title>Lieferung Strom</Title>
+            <Begin>2021-02-23T10:17:23+01:00</Begin>
+            <End>2021-02-23T10:19:42+01:00</End>
+            <ChargingProcesses>
+                <ChargingProcess>
+                    <ServerId>0901454D4800007F87B0</ServerId>
+                    <PublicKey>ddb6d736e4664afbf2748436dfbfbee1975803561fa75ba2b770ce93d10a5b3fd61e0017ffad7917d0146c5abe38c1a5</PublicKey>
+                    <!-- Public key is 48 bytes, 96 chars in Base16 notation. Letters are uppercase -->
+                    <MeteringPoint>DE*MEK*E001000*001</MeteringPoint>
+                    <!-- Zählpunktbezeichnung or Id Messlokation -->
+                    <SiteAddress> <!-- Installation place -->
+                        <ZipCode>57399</ZipCode>
+                        <Street>Auf dem Niedern Bruch 5</Street>
+                        <Town>Würdinghausen</Town>
+                    </SiteAddress>
+                    <CustomerIdent>044A34B2DA3F80</CustomerIdent>
+                    <TimestampCustomerIdent>2021-02-23T10:17:14+01:00</TimestampCustomerIdent>
+
+                    <MeasurementStart> <!-- Begin of charging process -->
+                        <Timestamp>2021-02-23T10:17:23+01:00</Timestamp>
+                        <Signature>7A846C210CEF860B5D638FB52698AE54889BA6DCB2DA878C725E740E45AE25FF1FAF685CD1C8E91701FE9261108F46A4</Signature>
+                        <EventCounter>377</EventCounter>
+                        <MeterStatus>136</MeterStatus>
+                        <Value>248490</Value>
+                        <Scaler>-1</Scaler>
+                        <Pagination>4392</Pagination>
+                        <SecondIndex>15406637</SecondIndex>
+                    </MeasurementStart>
+
+                    <MeasurementEnd> <!-- End of charging process -->
+                        <Timestamp>2021-02-23T10:19:42+01:00</Timestamp>
+                        <Signature>82CC514346724E74375BDB1C6F8F880588062EBF69482642D7E810F6121C4B11AEB337104D97304AD96924058D407ED7</Signature>
+                        <EventCounter>377</EventCounter>
+                        <MeterStatus>136</MeterStatus>
+                        <Value>248495</Value>
+                        <Scaler>-1</Scaler>
+                        <Pagination>4393</Pagination>
+                        <SecondIndex>15406776</SecondIndex>
+                    </MeasurementEnd>
+
+                    <EventLogItems>
+                        <!-- normally this collection is empty as MENNEKES blocks clock setting during an active charging process -->
+                        <EventLogItem>
+                            <TimeBefore/>
+                            <TimeAfter/>
+                            <MeterStatus/>
+                            <EventCounter/>
+                            <EventCode/>
+                            <Signature/>
+                            <SecondIndex/>
+                        </EventLogItem>
+                    </EventLogItems>
+                </ChargingProcess>
+            </ChargingProcesses>
+        </BillingPeriod>
+    </BillingPeriods>
+</Billing>
+

@@ -33,7 +33,7 @@ public class Meter {
     private TimeSyncType timeSyncType;
 
 
-    public Meter() {
+    private Meter() {
         value = 0;
         timestamp = null;
         type = null;

@@ -32,6 +32,12 @@ public class EDLMennekesVerificationParser extends SMLVerificationParserBase imp
             EDLMennekesSignature mennekesSignatureStart = new EDLMennekesSignature(chargingProcess, EDLMennekesSignature.ReadingType.MEASUREMENT_START);
             EDLMennekesSignature mennekesSignatureEnd = new EDLMennekesSignature(chargingProcess, EDLMennekesSignature.ReadingType.MEASUREMENT_END);
             EDLMennekesVerifiedData verifiedData = new EDLMennekesVerifiedData(chargingProcess, mennekesSignatureStart, mennekesSignatureEnd);
+            if (!verifier.verify(publicKey, mennekesSignatureStart)) {
+                return new VerificationResult(verifiedData, Error.withVerificationFailed());
+            }
+            if (!verifier.verify(publicKey, mennekesSignatureEnd)) {
+                return new VerificationResult(verifiedData, Error.withVerificationFailed());
+            }
             verificationResult = new VerificationResult(verifiedData, true);
             try {
                 verifiedData.checkLawIntegrityForTransaction();

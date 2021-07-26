@@ -312,7 +312,7 @@ public class MainView extends JFrame {
             }
             centerPanel.fillUpContent(signedData.getValue(), publicKeyContent, signedData.getEncodingType(), signedData.getFormatAsVerificationType());
         	// auto
-        	verify();
+        	delayedAutoVerify();
 
         } catch (DecodingException exception) {
             LOGGER.error("Error on reading file", exception);

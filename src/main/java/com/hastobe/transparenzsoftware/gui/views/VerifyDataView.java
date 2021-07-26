@@ -267,6 +267,8 @@ public class VerifyDataView extends JPanel {
 					addStop = true;
 					AddOverviewDisplayElements(builder, meter);
 				}
+			} else {
+				AddOverviewDisplayElements(builder, meter);
 			}
 			index++;
 		}
@@ -305,8 +307,13 @@ public class VerifyDataView extends JPanel {
 
 	private void AddOverviewDisplayElements(StringBuilder builder, Meter meter) {
 		builder.append("<li>");
-		builder.append(meter.getDescriptiveMessageText() == null ? Translator.get(meter.getType().message)
-				: meter.getDescriptiveMessageText());
+		if (meter.getDescriptiveMessageText() != null) {
+			builder.append(meter.getDescriptiveMessageText());
+		} else if (meter.getType() != null) {
+			builder.append(Translator.get(meter.getType().message));
+		} else {
+			// no type.
+		}
 		builder.append("</li>");
 
 		builder.append("<li>");

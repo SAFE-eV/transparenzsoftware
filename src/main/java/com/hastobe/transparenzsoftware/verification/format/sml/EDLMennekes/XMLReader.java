@@ -49,10 +49,10 @@ public class XMLReader {
         try {
             return (ChargingProcess) unmarshaller.unmarshal(reader);
         } catch (JAXBException e) {
-            LOGGER.error("JAXB error on loading mennekes file", e);
+            LOGGER.debug("JAXB error on loading mennekes file", e);
             throw new ValidationException("Could not read mennekes xml data");
         } catch (ClassCastException e) {
-            LOGGER.error("Class cast error in loading mennekes file", e);
+            LOGGER.debug("Class cast error in loading mennekes file", e);
             throw new ValidationException("Could not read mennekes xml data");
         }
     }
