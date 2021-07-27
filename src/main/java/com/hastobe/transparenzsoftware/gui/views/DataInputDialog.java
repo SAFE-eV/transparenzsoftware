@@ -11,6 +11,8 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -62,6 +64,8 @@ public class DataInputDialog extends JDialog {
         inner.add(taKey);
         inner.add(Box.createRigidArea(new Dimension(0, 10)));
 
+        JPanel buttonBox = new JPanel();
+        
         JButton close = new JButton(Translator.get("app.view.verify"));
         close.setName("paste.close");
         close.addActionListener(new ActionListener() {
@@ -70,9 +74,24 @@ public class DataInputDialog extends JDialog {
                 dialogClose();
             }
         });
-
+        close.setDefaultCapable(true);
         close.setAlignmentX(0.5f);
-        inner.add(close);
+
+        JButton abort = new JButton(Translator.get("app.view.verify.abort"));
+        abort.setName("paste.abort");
+        abort.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                dialogClose();
+            }
+        });
+        abort.setAlignmentX(0.5f);
+
+        buttonBox.add(abort);
+        buttonBox.add(Box.createRigidArea(new Dimension(0, 40)));
+        buttonBox.add(close);
+        
+        buttonBox.setAlignmentX(0.5f);
+        inner.add(buttonBox);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -80,6 +99,27 @@ public class DataInputDialog extends JDialog {
             public void windowClosing(WindowEvent e) {
             }
         });
+        taData.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					dialogClose();
+				}
+			}
+		});
         this.setModal(true);
         this.setVisible(true);
         

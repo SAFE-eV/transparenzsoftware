@@ -86,7 +86,7 @@ public class AlfenVerifiedData extends VerifiedData {
         this.encodingType = encodingType;
         meters = new ArrayList<>();
         double kwhMeterValue = value != 0 ? value * Math.pow(10, signatureData.getScalar()) / 1000 : 0;
-        meters.add(new Meter(kwhMeterValue, timestamp));
+        meters.add(new Meter(kwhMeterValue, timestamp, signatureData.getScalar()));
     }
 
     @Override

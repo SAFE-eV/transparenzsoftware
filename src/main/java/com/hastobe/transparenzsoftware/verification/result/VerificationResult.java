@@ -131,11 +131,11 @@ public class VerificationResult {
 
         if(!(start.getVerifiedData() instanceof OCMFVerifiedData)){
             for (Meter meter : start.getMeters()) {
-                verificationResult.meters.add(new Meter(meter.getValue(), meter.getTimestamp(), Meter.Type.START, meter.getTimeSyncType()));
+                verificationResult.meters.add(new Meter(meter.getValue(), meter.getTimestamp(), Meter.Type.START, meter.getTimeSyncType(),meter.getScaling()));
             }
 
             for (Meter meter : stop.getMeters()) {
-                verificationResult.meters.add(new Meter(meter.getValue(), meter.getTimestamp(), Meter.Type.STOP, meter.getTimeSyncType()));
+                verificationResult.meters.add(new Meter(meter.getValue(), meter.getTimestamp(), Meter.Type.STOP, meter.getTimeSyncType(),meter.getScaling()));
             }
         } else {
             verificationResult.meters.addAll(start.getMeters());

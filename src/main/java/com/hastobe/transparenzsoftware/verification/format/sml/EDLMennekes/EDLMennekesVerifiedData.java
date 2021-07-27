@@ -67,7 +67,7 @@ public class EDLMennekesVerifiedData extends VerifiedData {
             //calculate kWh
             meterStart = start.getMeterPositionAsLong();
             meterStart = meterStart != 0 ? meterStart * Math.pow(10, start.getScaler()) / 1000 : 0;
-            meters.add(new Meter(meterStart, start.getTimestampAsDate(), Meter.Type.START, Meter.TimeSyncType.INFORMATIVE));
+            meters.add(new Meter(meterStart, start.getTimestampAsDate(), Meter.Type.START, Meter.TimeSyncType.INFORMATIVE, start.getScaler()));
             obisIdStart = Utils.toFormattedHex(start.getObisNr());
             statusStart = Utils.toFormattedHex(start.getStatus());
             paginationStart = chargingProcess.getMeasurementStart().getPagination();
@@ -80,7 +80,7 @@ public class EDLMennekesVerifiedData extends VerifiedData {
             //calculate kWh
             meterStop = stop.getMeterPositionAsLong();
             meterStop = meterStop != 0 ? meterStop * Math.pow(10, stop.getScaler()) / 1000 : 0;
-            meters.add(new Meter(meterStop, stop.getTimestampAsDate(), Meter.Type.STOP, Meter.TimeSyncType.INFORMATIVE));
+            meters.add(new Meter(meterStop, stop.getTimestampAsDate(), Meter.Type.STOP, Meter.TimeSyncType.INFORMATIVE, stop.getScaler()));
             obisIdEnd = Utils.toFormattedHex(stop.getObisNr());
             statusEnd = Utils.toFormattedHex(stop.getStatus());
             paginationEnd = chargingProcess.getMeasurementEnd().getPagination();

@@ -32,6 +32,9 @@ public class Meter {
     @XmlTransient
     private TimeSyncType timeSyncType;
 
+    @XmlTransient
+	private int scaling = -1;
+
 
     private Meter() {
         value = 0;
@@ -39,15 +42,24 @@ public class Meter {
         type = null;
     }
 
-    public Meter(double value, OffsetDateTime timestamp) {
-        this(value, timestamp, null, TimeSyncType.INFORMATIVE);
+    /**
+     * 
+     * @param value
+     * @param timestamp
+     * @param scale 0= 1/1000 1= 10/1000 2= 100/1000 3 = 1000/1000
+     */
+    public Meter(double value, OffsetDateTime timestamp, int scale) {
+        this(value, timestamp, null, TimeSyncType.INFORMATIVE, scale);
     }
 
-    public Meter(double value, OffsetDateTime timestamp, Type type, TimeSyncType timeSyncType) {
+    public Meter(double value, OffsetDateTime timestamp, Type type, TimeSyncType timeSyncType, int scaling) {
         this.value = value;
         this.timestamp = timestamp;
         this.type = type;
         this.timeSyncType = timeSyncType;
+        if (scaling > 3) scaling = 3;
+        if (scaling < -1) scaling = -1;
+        this.scaling = scaling;
     }
 
     public void setDescriptiveMessageText(String text){
@@ -234,4 +246,22 @@ public class Meter {
 
 
     }
+
+    /**
+     * The precision of the meter, format is 3-scaling.
+     * -1 = 1/10000  4 digits
+     * 0 = 1/1000    3 digits
+     * 1 = 1/100     2 digits
+     * 2 = 1/10      1 digit
+     * 3 = 1.0       0 digit
+     * @return
+     */
+	public String getScalingFormat() {
+		int format = 3-scaling;
+		return "%."+format+"f";
+	}
+	
+	public int getScaling() {
+		return scaling;
+	}
 }

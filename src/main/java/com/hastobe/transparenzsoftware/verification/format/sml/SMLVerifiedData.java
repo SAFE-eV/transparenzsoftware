@@ -58,7 +58,7 @@ public class SMLVerifiedData extends VerifiedData {
             //calculate kWh
             meter = meter != 0 ? meter * Math.pow(10, smlSignature.getScaler()) / 1000 : 0;
 
-            meters.add(new Meter(meter, smlSignature.getTimestampAsDate()));
+            meters.add(new Meter(meter, smlSignature.getTimestampAsDate(),smlSignature.getScaler()));
             status = Utils.toFormattedHex(smlSignature.getStatus());
             secondsIndex = Utils.toFormattedHex(smlSignature.getSecondsIndex());
             pagination = new BigInteger(Utils.reverseByteOrder(smlSignature.getPagination())).intValue();

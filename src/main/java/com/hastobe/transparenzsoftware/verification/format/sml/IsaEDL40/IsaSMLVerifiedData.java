@@ -103,14 +103,14 @@ public class IsaSMLVerifiedData extends VerifiedData {
             startEValue = startEValue != 0 ? (startEValue * Math.pow(10, smlSignature.getStartEcScaler()) / 1000.0)  : 0;
             actualEValueHexString = Utils.toFormattedHex(smlSignature.getActualEcValue());
             actualEValue = actualEValue != 0 ? (actualEValue * Math.pow(10, smlSignature.getActualEcScaler()) / 1000.0)  : 0;
-            Meter startMeter = new Meter(startEValue, startEcTime, Meter.Type.START, Meter.TimeSyncType.INFORMATIVE);
+            Meter startMeter = new Meter(startEValue, startEcTime, Meter.Type.START, Meter.TimeSyncType.INFORMATIVE,smlSignature.getStartEcScaler());
             startMeter.setDescriptiveMessageText("Z&auml;hlerstand zu Beginn der Ladetransaktion");
             meters.add(startMeter);
             Meter stopMeter = new Meter(
                     actualEValue,
                     actualEcTime,
                     getListName.equals("81 80 81 62 00 FF") || getListName.equals("81 80 81 62 02 FF") ? Meter.Type.STOP : Meter.Type.UPDATE,
-                    Meter.TimeSyncType.INFORMATIVE);
+                    Meter.TimeSyncType.INFORMATIVE,smlSignature.getActualEcScaler());
             stopMeter.setDescriptiveMessageText(endMessageDescriptiveText);
             meters.add(stopMeter);
         }

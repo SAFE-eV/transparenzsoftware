@@ -46,11 +46,11 @@ public class PcdfVerifiedData extends VerifiedData {
 		String tsStr = extractAttribute("CT", chData);
 		OffsetDateTime odt = OffsetDateTime.parse(timeNormalizer(startTime) + "+00:00");
 		
-		Meter first = new Meter(0.0, odt, Type.START, TimeSyncType.REALTIME);
+		Meter first = new Meter(0.0, odt, Type.START, TimeSyncType.REALTIME,-1);
 		meters.add(first);
 		
 		OffsetDateTime odt2 = OffsetDateTime.parse(timeNormalizer(stopTime) + "+00:00");
-		Meter met = new Meter(consDou, odt2, Type.STOP, TimeSyncType.REALTIME);
+		Meter met = new Meter(consDou, odt2, Type.STOP, TimeSyncType.REALTIME,-1);
 		
 		meters.add(met);
 		

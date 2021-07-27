@@ -15,8 +15,8 @@ public class MeterTest {
     public void testMeterValues1(){
         LocalDateTime timestamp = LocalDateTime.of(2018, Month.NOVEMBER, 23, 14, 41, 1);
         OffsetDateTime offsetDateTime = OffsetDateTime.of(timestamp, ZoneOffset.UTC);
-        Meter meter1 = new Meter(50.0, offsetDateTime);
-        Meter meter2 = new Meter(51.0, offsetDateTime);
+        Meter meter1 = new Meter(50.0, offsetDateTime,0);
+        Meter meter2 = new Meter(51.0, offsetDateTime,0);
         List<Meter> meterList = new ArrayList<>();
         meterList.add(meter1);
         meterList.add(meter2);
@@ -26,9 +26,9 @@ public class MeterTest {
     public void testMeterValues2(){
         LocalDateTime timestamp = LocalDateTime.of(2018, Month.NOVEMBER, 23, 14, 41, 1);
         OffsetDateTime offsetDateTime = OffsetDateTime.of(timestamp, ZoneOffset.UTC);
-        Meter meter1 = new Meter(50.0, offsetDateTime);
-        Meter meter2 = new Meter(51.0, offsetDateTime);
-        Meter meter3 = new Meter(53.8, offsetDateTime);
+        Meter meter1 = new Meter(50.0, offsetDateTime,0);
+        Meter meter2 = new Meter(51.0, offsetDateTime,0);
+        Meter meter3 = new Meter(53.8, offsetDateTime,0);
         List<Meter> meterList = new ArrayList<>();
         meterList.add(meter1);
         meterList.add(meter2);
@@ -40,17 +40,17 @@ public class MeterTest {
     public void testMeterValuesValidate1() throws ValidationException {
         LocalDateTime timestamp = LocalDateTime.of(2018, Month.NOVEMBER, 23, 14, 41, 1);
         OffsetDateTime offsetDateTime = OffsetDateTime.of(timestamp, ZoneOffset.UTC);
-        Meter meter1 = new Meter(50.0, offsetDateTime);
-        Meter meter2 = new Meter(51.0, offsetDateTime);
-        Meter meter3 = new Meter(53.8, offsetDateTime);
+        Meter meter1 = new Meter(50.0, offsetDateTime,0);
+        Meter meter2 = new Meter(51.0, offsetDateTime,0);
+        Meter meter3 = new Meter(53.8, offsetDateTime,0);
         List<Meter> meterListStart = new ArrayList<>();
         meterListStart.add(meter1);
         meterListStart.add(meter2);
         meterListStart.add(meter3);
 
-        Meter meter4 = new Meter(41.0, offsetDateTime);
-        Meter meter5 = new Meter(51.0, offsetDateTime);
-        Meter meter6 = new Meter(53.8, offsetDateTime);
+        Meter meter4 = new Meter(41.0, offsetDateTime,0);
+        Meter meter5 = new Meter(51.0, offsetDateTime,0);
+        Meter meter6 = new Meter(53.8, offsetDateTime,0);
         List<Meter> meterStopList = new ArrayList<>();
         meterStopList.add(meter4);
         meterStopList.add(meter5);
@@ -64,9 +64,9 @@ public class MeterTest {
         OffsetDateTime offsetDateTime1 = OffsetDateTime.of(timestamp1, ZoneOffset.UTC);
         LocalDateTime timestamp2 = LocalDateTime.of(2018, Month.NOVEMBER, 23, 14, 42, 1);
         OffsetDateTime offsetDateTime2 = OffsetDateTime.of(timestamp2, ZoneOffset.UTC);
-        Meter meter1 = new Meter(50.0, offsetDateTime1);
-        Meter meter2 = new Meter(51.0, offsetDateTime2);
-        Meter meter3 = new Meter(53.8, offsetDateTime1);
+        Meter meter1 = new Meter(50.0, offsetDateTime1,0);
+        Meter meter2 = new Meter(51.0, offsetDateTime2,0);
+        Meter meter3 = new Meter(53.8, offsetDateTime1,0);
         List<Meter> meterListStart = new ArrayList<>();
         meterListStart.add(meter1);
         meterListStart.add(meter2);
@@ -84,9 +84,9 @@ public class MeterTest {
         OffsetDateTime offsetDateTime2 = OffsetDateTime.of(timestamp2, ZoneOffset.UTC);
         LocalDateTime timestamp3 = LocalDateTime.of(2018, Month.NOVEMBER, 23, 14, 43, 1);
         OffsetDateTime offsetDateTime3 = OffsetDateTime.of(timestamp3, ZoneOffset.UTC);
-        Meter meter1 = new Meter(50.0, offsetDateTime1, Meter.Type.START, Meter.TimeSyncType.INFORMATIVE);
-        Meter meter2 = new Meter(51.0, offsetDateTime2, Meter.Type.STOP, Meter.TimeSyncType.INFORMATIVE);
-        Meter meter3 = new Meter(53.8, offsetDateTime3);
+        Meter meter1 = new Meter(50.0, offsetDateTime1, Meter.Type.START, Meter.TimeSyncType.INFORMATIVE,MS);
+        Meter meter2 = new Meter(51.0, offsetDateTime2, Meter.Type.STOP, Meter.TimeSyncType.INFORMATIVE,MS);
+        Meter meter3 = new Meter(53.8, offsetDateTime3,0);
         List<Meter> meterListStart = new ArrayList<>();
         meterListStart.add(meter1);
         meterListStart.add(meter2);
@@ -101,9 +101,9 @@ public class MeterTest {
         OffsetDateTime offsetDateTime1 = OffsetDateTime.of(timestamp1, ZoneOffset.UTC);
         LocalDateTime timestamp2 = LocalDateTime.of(2018, Month.NOVEMBER, 23, 14, 42, 1);
         OffsetDateTime offsetDateTime2 = OffsetDateTime.of(timestamp2, ZoneOffset.UTC);
-        Meter meter1 = new Meter(50.0, offsetDateTime1);
-        Meter meter2 = new Meter(51.0, offsetDateTime2);
-        Meter meter3 = new Meter(53.8, offsetDateTime1);
+        Meter meter1 = new Meter(50.0, offsetDateTime1,0);
+        Meter meter2 = new Meter(51.0, offsetDateTime2,0);
+        Meter meter3 = new Meter(53.8, offsetDateTime1,0);
         List<Meter> meterListStart = new ArrayList<>();
         meterListStart.add(meter1);
         meterListStart.add(meter2);
@@ -113,6 +113,7 @@ public class MeterTest {
         Assert.assertEquals(3.8, diff, 0.1);
     }
 
+    public static final int MS = -1;	// meter scaling
     @Test
     public void testMeterDiff2() throws ValidationException {
         LocalDateTime timestamp1 = LocalDateTime.of(2018, Month.NOVEMBER, 23, 14, 41, 1);
@@ -121,9 +122,9 @@ public class MeterTest {
         OffsetDateTime offsetDateTime2 = OffsetDateTime.of(timestamp2, ZoneOffset.UTC);
         LocalDateTime timestamp3 = LocalDateTime.of(2018, Month.NOVEMBER, 23, 14, 43, 1);
         OffsetDateTime offsetDateTime3 = OffsetDateTime.of(timestamp3, ZoneOffset.UTC);
-        Meter meter1 = new Meter(50.0, offsetDateTime1, Meter.Type.START, Meter.TimeSyncType.INFORMATIVE);
-        Meter meter2 = new Meter(51.0, offsetDateTime2, Meter.Type.STOP, Meter.TimeSyncType.INFORMATIVE);
-        Meter meter3 = new Meter(53.8, offsetDateTime3);
+        Meter meter1 = new Meter(50.0, offsetDateTime1, Meter.Type.START, Meter.TimeSyncType.INFORMATIVE,MS);
+        Meter meter2 = new Meter(51.0, offsetDateTime2, Meter.Type.STOP, Meter.TimeSyncType.INFORMATIVE,MS);
+        Meter meter3 = new Meter(53.8, offsetDateTime3,0);
         List<Meter> meterListStart = new ArrayList<>();
         meterListStart.add(meter1);
         meterListStart.add(meter2);
@@ -138,7 +139,7 @@ public class MeterTest {
         LocalDateTime timestamp1 = LocalDateTime.of(2018, Month.DECEMBER, 25, 7, 30, 0);
         OffsetDateTime offsetDateTime1 = OffsetDateTime.of(timestamp1, ZoneOffset.UTC);
 
-        Meter meter1 = new Meter(50.0, offsetDateTime1, Meter.Type.START, Meter.TimeSyncType.INFORMATIVE);
+        Meter meter1 = new Meter(50.0, offsetDateTime1, Meter.Type.START, Meter.TimeSyncType.INFORMATIVE,MS);
         Assert.assertEquals(Translator.get("app.informative"), meter1.getAdditonalText());
 
 

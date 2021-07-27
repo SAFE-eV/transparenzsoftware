@@ -252,7 +252,9 @@ public class VerifyDataView extends JPanel {
 
 		StringBuilder builder = new StringBuilder();
 		builder.append("<html><body><ul style=\"list-style-type: none; margin-left: 0px\">");
+		String preci = null;
 		for (Meter meter : meters) {
+			if (preci == null) preci = meter.getScalingFormat();
 			if (meter.getType() != null) {
 				if (meter.getType() == Meter.Type.START && !addStart) {
 					addStart = true;
@@ -292,7 +294,7 @@ public class VerifyDataView extends JPanel {
 			builder.append("<li>");
 			builder.append(String.format("%s ", Translator.get("app.view.energy.difference")));
 			builder.append("<ul style=\"list-style-type: none;margin-left: 0;\">");
-			builder.append(String.format("<li>%.4f kWh</li>", Meter.getDifference(meters)));
+			builder.append(String.format("<li>"+preci+" kWh</li>", Meter.getDifference(meters)));
 			builder.append("</ul>");
 			builder.append("</li>");
 		}
@@ -317,7 +319,8 @@ public class VerifyDataView extends JPanel {
 		builder.append("</li>");
 
 		builder.append("<li>");
-		builder.append(String.format("%.4f kWh", meter.getValue()));
+		String preci = meter.getScalingFormat();
+		builder.append(String.format(preci+" kWh", meter.getValue()));
 		builder.append("</li><li>");
 
 		LocalDateTime localDateTime = meter.getTimestamp() != null ? meter.getTimestamp().toLocalDateTime() : null;

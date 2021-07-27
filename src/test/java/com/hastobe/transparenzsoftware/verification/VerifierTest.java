@@ -351,8 +351,8 @@ public class VerifierTest {
         stopValue1.setSignedData(new SignedData());
 
         VerifySingleMock verifier = new VerifySingleMock(factory);
-        Meter meterStart = new Meter(100, OffsetDateTime.now());
-        Meter meterStop = new Meter(101, OffsetDateTime.now().plusMinutes(1));
+        Meter meterStart = new Meter(100, OffsetDateTime.now(),0);
+        Meter meterStop = new Meter(101, OffsetDateTime.now().plusMinutes(1),0);
         VerifiedDataStubs startData = new VerifiedDataStubs(Collections.singletonList(meterStart), false);
         VerifiedDataStubs stopData = new VerifiedDataStubs(Collections.singletonList(meterStop), false);
         VerificationResult resultStart = new VerificationResult(startData);
@@ -382,8 +382,8 @@ public class VerifierTest {
         stopValue1.setSignedData(new SignedData());
 
         VerifySingleMock verifier = new VerifySingleMock(factory);
-        Meter meterStart = new Meter(100, OffsetDateTime.now());
-        Meter meterStop = new Meter(101, OffsetDateTime.now().plusMinutes(1));
+        Meter meterStart = new Meter(100, OffsetDateTime.now(),0);
+        Meter meterStop = new Meter(101, OffsetDateTime.now().plusMinutes(1),0);
         VerifiedDataStubs startData = new VerifiedDataStubs(Collections.singletonList(meterStart), true);
         VerifiedDataStubs stopData = new VerifiedDataStubs(Collections.singletonList(meterStop), false);
         VerificationResult resultStart = new VerificationResult(startData);
@@ -410,8 +410,8 @@ public class VerifierTest {
         stopValue1.setSignedData(new SignedData());
 
         VerifySingleMock verifier = new VerifySingleMock(factory);
-        Meter meterStart = new Meter(105, OffsetDateTime.now());
-        Meter meterStop = new Meter(101, OffsetDateTime.now().plusMinutes(1));
+        Meter meterStart = new Meter(105, OffsetDateTime.now(),0);
+        Meter meterStop = new Meter(101, OffsetDateTime.now().plusMinutes(1),0);
         VerifiedDataStubs startData = new VerifiedDataStubs(Collections.singletonList(meterStart), false);
         VerifiedDataStubs stopData = new VerifiedDataStubs(Collections.singletonList(meterStop), false);
         VerificationResult resultStart = new VerificationResult(startData);
@@ -454,8 +454,8 @@ public class VerifierTest {
     @Test
     public void testVerificationErrorBeforeValidationError() throws VerificationException {
         VerifySingleMock verifier = new VerifySingleMock(factory);
-        Meter meterStart = new Meter(100, OffsetDateTime.now());
-        Meter meterStop = new Meter(0, OffsetDateTime.now());
+        Meter meterStart = new Meter(100, OffsetDateTime.now(),0);
+        Meter meterStop = new Meter(0, OffsetDateTime.now(),0);
         VerifiedDataStubs wantedResult = new VerifiedDataStubs(Collections.singletonList(meterStart), false);
 
         VerifiedDataStubs notWanted = new VerifiedDataStubs(Collections.singletonList(meterStart), false);
@@ -474,8 +474,8 @@ public class VerifierTest {
     @Test
     public void testVerificationSuccessBeforeError() throws VerificationException {
         VerifySingleMock verifier = new VerifySingleMock(factory);
-        Meter meterStart = new Meter(100, OffsetDateTime.now());
-        Meter meterStop = new Meter(0, OffsetDateTime.now());
+        Meter meterStart = new Meter(100, OffsetDateTime.now(),0);
+        Meter meterStop = new Meter(0, OffsetDateTime.now(),0);
         VerifiedDataStubs wantedResult = new VerifiedDataStubs(Collections.singletonList(meterStart), false);
 
         VerifiedDataStubs notWanted = new VerifiedDataStubs(Collections.singletonList(meterStart), false);

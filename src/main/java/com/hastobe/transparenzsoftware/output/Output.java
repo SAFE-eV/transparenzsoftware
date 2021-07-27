@@ -58,9 +58,10 @@ public class Output {
             }
 
             List<Meter> meters = verificationResult.getMeters();
+            String preci = meters.get(0).getScalingFormat();
             if (verificationResult.isTransactionResult() && verificationResult.getTransactionId() != null) {
                 result.setTransactionId(verificationResult.getTransactionId());
-                result.setMeterDiff(String.format("%.4f kWh", Meter.getDifference(meters)));
+                result.setMeterDiff(String.format(preci+" kWh", Meter.getDifference(meters)));
                 Duration timeDiff = Meter.getTimeDiff(meters);
                 result.setTimeDiff(Utils.formatDuration(timeDiff));
             }
