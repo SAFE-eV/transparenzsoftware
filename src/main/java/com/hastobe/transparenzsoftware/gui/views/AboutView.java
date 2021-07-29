@@ -32,10 +32,13 @@ public class AboutView extends JFrame {
 
         add(Box.createRigidArea(new Dimension(0, 10)));
 
-        JLabel hastobe = new JLabel(" © 2021 S.A.F.E. e.V. - " + String.format("Version: %s", Constants.VERSION));
+        JLabel hastobe = new JLabel("Transparenzssoftware " + String.format("Version: %s", Constants.VERSION));
         hastobe.setAlignmentX(0.5f);
         add(hastobe);
-
+        add(Box.createRigidArea(new Dimension(0, 20)));
+        JLabel creator = new JLabel("Hersteller: © 2021 S.A.F.E. e.V.");
+        creator.setAlignmentX(0.5f);
+        add(creator);
         if (Constants.BETA) {
             JLabel betaText = new JLabel("Es handelt sich hierbei um eine nicht freigegebene, nicht geprüfte Testversion.");
             betaText.setAlignmentX(0.5f);
@@ -43,7 +46,7 @@ public class AboutView extends JFrame {
         }
 
         add(Box.createRigidArea(new Dimension(0, 20)));
-        JLabel checksumText = new JLabel(Translator.get("app.view.checksum")+" (SHA-256):");
+        JLabel checksumText = new JLabel(Translator.get("app.view.checksum")+" Transparenzssoftware (SHA-256):");
         checksumText.setAlignmentX(0.5f);
         add(checksumText);
         JLabel checksum = new JLabel(getCheckSum());
