@@ -113,4 +113,27 @@ public class ReadingTest {
         reading.setTM("2018-07-24T13:22:04,000+0200 R");
         Assert.assertFalse(reading.isTimeInformativeOnly());
     }
+
+    @Test
+    public void testDigitNumbering() {
+    	Reading r = new Reading();
+    	r.setRVasString("1.2345");
+    	Assert.assertEquals("Expect -1", -1, r.getRVDigits());
+    	r.setRVasString("1.234");
+    	Assert.assertEquals("Expect 0", 0, r.getRVDigits());
+    	r.setRVasString("1.23");
+    	Assert.assertEquals("Expect 1", 1, r.getRVDigits());
+    	r.setRVasString("1.2");
+    	Assert.assertEquals("Expect 2", 2, r.getRVDigits());
+    	r.setRVasString("1.");
+    	Assert.assertEquals("Expect 3", 3, r.getRVDigits());
+    	r.setRVasString("10");
+    	Assert.assertEquals("Expect 3", 3, r.getRVDigits());
+    	r.setRVasString("10.1234");
+    	Assert.assertEquals("Expect -1", -1, r.getRVDigits());
+    	r.setRVasString("10.1");
+    	Assert.assertEquals("Expect 2", 2, r.getRVDigits());
+    	
+    }
+
 }

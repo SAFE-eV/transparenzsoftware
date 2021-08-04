@@ -138,4 +138,5 @@ public class OCMFVerificationParserTest {
         Assert.assertNotNull(verificationResult.getAdditionalVerificationData());
         Assert.assertFalse(verificationResult.getAdditionalVerificationData().isEmpty());
     }
+
 }

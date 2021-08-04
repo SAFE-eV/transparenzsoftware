@@ -43,7 +43,7 @@ public class AppPCDFTest extends AbstractAppTest {
     	delayForVerify();
     	getWindow().label("lbl.icon").requireText(Daten_wurden_verifiziert);
     	getWindow().label("lbl.meter").requireText(Pattern.compile(".*01.05.2020 16:20:25.*"));
-    	getWindow().label("lbl.meter").requireText(Pattern.compile(".*3,2760 kWh.*"));
+    	getWindow().label("lbl.meter").requireText(Pattern.compile(".*3,276 kWh.*"));
     }
  
 	@Test
@@ -73,7 +73,7 @@ public class AppPCDFTest extends AbstractAppTest {
     	assertEquals(pubkey, pubKey);
     	getWindow().label("lbl.icon").requireText(Daten_wurden_verifiziert);
     	getWindow().label("lbl.meter").requireText(Pattern.compile(".*01.05.2020 16:20:25.*"));
-    	getWindow().label("lbl.meter").requireText(Pattern.compile(".*3,2760 kWh.*"));
+    	getWindow().label("lbl.meter").requireText(Pattern.compile(".*3,276 kWh.*"));
     	delay();
     }
 
@@ -116,7 +116,7 @@ public class AppPCDFTest extends AbstractAppTest {
     	assertEquals(pubkey, pubKey);
     	getWindow().label("lbl.icon").requireText(Daten_wurden_verifiziert);
     	getWindow().label("lbl.meter").requireText(Pattern.compile(".*01.05.2020 16:20:25.*"));
-    	getWindow().label("lbl.meter").requireText(Pattern.compile(".*3,2760 kWh.*"));
+    	getWindow().label("lbl.meter").requireText(Pattern.compile(".*3,276 kWh.*"));
     	delay();
 
     	chooseFile(testDirPCDF,"BVinvalid.pcdf");

@@ -14,4 +14,8 @@ public class Reading extends com.hastobe.transparenzsoftware.verification.format
     public void setEI(Double EI) {
         this.EI = EI;
     }
+
+	public void setRVasString(String RV) {
+		this.RV = RV;	
+	}
 }

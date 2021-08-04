@@ -25,7 +25,7 @@ public abstract class Reading {
     /**
      * Reading value (meter value)
      */
-    protected Double RV;
+    protected String RV;
     /**
      * Reading Identification (OBIS Code)
      */
@@ -141,11 +141,12 @@ public abstract class Reading {
     }
 
     public Double getRV() {
-        return RV;
+    	if (RV == null) return null;
+        return Double.parseDouble(RV);
     }
 
     public void setRV(Double RV) {
-        this.RV = RV;
+        this.RV = (RV == null) ? null : Double.toString(RV);
     }
 
     public String getRI() {
@@ -195,4 +196,20 @@ public abstract class Reading {
     public String getEF(){
         return null;
     }
+
+	public int getRVDigits() {
+		if (RV == null || RV.length() == 0) return -1;
+		int k = RV.indexOf('.');
+		int l = RV.length();
+		if (k < 0) return 3; // no digits
+		l -= k;
+		switch (l) {
+		case 1: return 3;
+		case 2: return 2; // one digit
+		case 3: return 1; // two digits
+		case 4: return 0; // three digits
+		case 5: return -1; // four digits
+		}
+		return -1; // default;
+	}
 }

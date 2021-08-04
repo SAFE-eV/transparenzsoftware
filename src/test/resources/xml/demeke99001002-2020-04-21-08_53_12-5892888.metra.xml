@@ -1,0 +1,84 @@
+<Billing xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://www.mennekes.de/Mennekes.EdlVerification.xsd">    <!-- Version is important, format will change for future tariff support, different meter types, ... -->
+    <Customer>
+        <CustomerId>3403</CustomerId>
+        <Name1><![CDATA[Nutzergruppe]]> <![CDATA[Fertigung]]></Name1>
+        <ZipCode>00000</ZipCode>
+        <Street><![CDATA[]]> </Street>
+        <Town><![CDATA[]]></Town>
+    </Customer>
+    <Supplier>
+        <Name1><![CDATA[MENNEKES Fertigung]]></Name1>
+        <ZipCode>57399</ZipCode>
+        <Street><![CDATA[Aloys-Mennekes-Straße 1 ]]></Street>
+        <Town><![CDATA[Kirchhundem]]></Town>
+        <Phone></Phone>
+        <Fax></Fax>
+        <MailAddress><![CDATA[]]></MailAddress>
+        <MailAddressLinkText><![CDATA[]]></MailAddressLinkText>
+        <MailSubject><![CDATA[]]></MailSubject>
+        <MailBody><![CDATA[]]></MailBody>
+        <WebAddress><![CDATA[]]></WebAddress>
+        <WebAddressLinkText><![CDATA[]]></WebAddressLinkText>
+    </Supplier>
+    <BillingPeriods>
+        <BillingPeriod>
+            <BillingNo>RE2017-01</BillingNo>
+            <ObisCode>1.8.0</ObisCode>
+            <Title>Lieferung Strom</Title>
+            <Begin>2020-03-18T07:33:45+01:00</Begin>
+            <End>2020-03-18T07:34:24+01:00</End>
+            <ChargingProcesses>
+                <ChargingProcess>
+                    <ServerId>0901454D4800008A2939</ServerId>
+                    <PublicKey>ed9cd49c6170f3a9502ecd61d3151be7148515da1ca5c214f77a4c4904a715d4cc97097e44a47b5e1d81706d4ed5b601</PublicKey>
+                    <!-- Public key is 48 bytes, 96 chars in Base16 notation. Letters are uppercase -->
+                    <MeteringPoint>DE*MEK*E99001*002</MeteringPoint>
+                    <!-- Zählpunktbezeichnung or Id Messlokation -->
+                    <SiteAddress> <!-- Installation place -->
+                        <ZipCode>57399</ZipCode>
+                        <Street>Auf dem Niedern Bruch 5</Street>
+                        <Town>Würdinghausen</Town>
+                    </SiteAddress>
+                    <CustomerIdent>1AA58986</CustomerIdent>
+                    <TimestampCustomerIdent>2020-03-18T07:33:42+01:00</TimestampCustomerIdent>
+
+                    <MeasurementStart> <!-- Begin of charging process -->
+                        <Timestamp>2020-03-18T07:33:45+01:00</Timestamp>
+                        <Signature>021A4622965DD6ABFBB87AF0215F35B9DD9FA105360CEA0148F99815A3AD9072FB692E12EC73AAD59986436D37CB0AE2</Signature>
+                        <EventCounter>5</EventCounter>
+                        <MeterStatus>8</MeterStatus>
+                        <Value>108994</Value>
+                        <Scaler>-1</Scaler>
+                        <Pagination>4</Pagination>
+                        <SecondIndex>7662</SecondIndex>
+                    </MeasurementStart>
+
+                    <MeasurementEnd> <!-- End of charging process -->
+                        <Timestamp>2020-03-18T07:34:24+01:00</Timestamp>
+                        <Signature>D22B2032E8873927EFB61C2ECB62F7ECFCE4723709CAEAC3824989C6632CCB075E0622F5DC07984E8FB149D5A65E8C2C</Signature>
+                        <EventCounter>5</EventCounter>
+                        <MeterStatus>8</MeterStatus>
+                        <Value>108994</Value>
+                        <Scaler>-1</Scaler>
+                        <Pagination>5</Pagination>
+                        <SecondIndex>7701</SecondIndex>
+                    </MeasurementEnd>
+
+                    <EventLogItems>
+                        <!-- normally this collection is empty as MENNEKES blocks clock setting during an active charging process -->
+                        <EventLogItem>
+                            <TimeBefore/>
+                            <TimeAfter/>
+                            <MeterStatus/>
+                            <EventCounter/>
+                            <EventCode/>
+                            <Signature/>
+                            <SecondIndex/>
+                        </EventLogItem>
+                    </EventLogItems>
+                </ChargingProcess>
+            </ChargingProcesses>
+        </BillingPeriod>
+    </BillingPeriods>
+</Billing>
