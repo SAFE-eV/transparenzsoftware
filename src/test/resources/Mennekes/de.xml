@@ -1,0 +1,50 @@
+<ChargingProcess>
+  <ServerId>0901454D4800007F87B0</ServerId>
+                    <PublicKey>ddb6d736e4664afbf2748436dfbfbee1975803561fa75ba2b770ce93d10a5b3fd61e0017ffad7917d0146c5abe38c1a5</PublicKey>
+                    <!-- Public key is 48 bytes, 96 chars in Base16 notation. Letters are uppercase -->
+                    <MeteringPoint>DE*MEK*E001000*001</MeteringPoint>
+                    <!-- Zählpunktbezeichnung or Id Messlokation -->
+                    <SiteAddress> <!-- Installation place -->
+                        <ZipCode>57399</ZipCode>
+                        <Street>Auf dem Niedern Bruch 5</Street>
+                        <Town>Würdinghausen</Town>
+                    </SiteAddress>
+                    <CustomerIdent>0473A44A3F3E80</CustomerIdent>
+                    <TimestampCustomerIdent>2021-07-23T10:44:07+02:00</TimestampCustomerIdent>
+
+                    <MeasurementStart> <!-- Begin of charging process -->
+                        <Timestamp>2021-07-23T10:44:16+02:00</Timestamp>
+                        <Signature>ECD42E4B580E110CFB4D5873B3F054C474B7CAD47E8D56DCDD81A3E8FA4AFEC34E88F266A9517E06090A2319384310B1</Signature>
+                        <EventCounter>422</EventCounter>
+                        <MeterStatus>136</MeterStatus>
+                        <Value>314940</Value>
+                        <Scaler>-1</Scaler>
+                        <Pagination>4480</Pagination>
+                        <SecondIndex>17679320</SecondIndex>
+                    </MeasurementStart>
+
+                    <MeasurementEnd> <!-- End of charging process -->
+                        <Timestamp>2021-07-23T10:45:15+02:00</Timestamp>
+                        <Signature>883E7576592CD7B4BEE072EC95F95E1BE9E891FC9BCCB055CC43CB5F05C584209090082C78700CEA2C6240204018D688</Signature>
+                        <EventCounter>422</EventCounter>
+                        <MeterStatus>136</MeterStatus>
+                        <Value>314942</Value>
+                        <Scaler>-1</Scaler>
+                        <Pagination>4481</Pagination>
+                        <SecondIndex>17679379</SecondIndex>
+                    </MeasurementEnd>
+
+                    <EventLogItems>
+                        <!-- normally this collection is empty as MENNEKES blocks clock setting during an active charging process -->
+                        <EventLogItem>
+                            <TimeBefore/>
+                            <TimeAfter/>
+                            <MeterStatus/>
+                            <EventCounter/>
+                            <EventCode/>
+                            <Signature/>
+                            <SecondIndex/>
+                        </EventLogItem>
+                    </EventLogItems>
+</ChargingProcess>
+

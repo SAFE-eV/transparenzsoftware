@@ -61,7 +61,7 @@ public class OCMFVerifiedData extends VerifiedData {
             Meter.TimeSyncType timeSyncType = reading.isTimeInformativeOnly() ? Meter.TimeSyncType.INFORMATIVE : Meter.TimeSyncType.SYNCHRONIZED;
             int digits = reading.getRVDigits();
             
-            meters.add(new Meter(rv, reading.getTimestamp(), type, timeSyncType,-1));
+            meters.add(new Meter(rv, reading.getTimestamp(), type, timeSyncType, digits));
         }
         this.publicKey = publicKey;
         this.encoding = encoding;

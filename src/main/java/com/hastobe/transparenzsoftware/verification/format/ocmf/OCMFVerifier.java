@@ -4,6 +4,7 @@ import com.hastobe.transparenzsoftware.verification.ASN1Exception;
 import com.hastobe.transparenzsoftware.verification.ASN1Utils;
 import com.hastobe.transparenzsoftware.Utils;
 import com.hastobe.transparenzsoftware.verification.ValidationException;
+import com.hastobe.transparenzsoftware.verification.VerificationLogger;
 import com.hastobe.transparenzsoftware.verification.format.sml.Verifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,6 +51,7 @@ public class OCMFVerifier implements Verifier {
         byte[] hashedMessage = Utils.hashSHA256(payloadData);
 
         boolean verify = signer.verifySignature(hashedMessage, signatureRS.getR(), signatureRS.getS());
+        VerificationLogger.log("OCMF", "ECDSA", publicKey, hashedMessage, signature, verify);
         return verify;
     }
 

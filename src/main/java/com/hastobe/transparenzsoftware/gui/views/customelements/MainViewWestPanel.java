@@ -62,7 +62,7 @@ public class MainViewWestPanel extends JPanel {
                 mainView.stepToValue(valueHolder.getValue().getInitIndex());
             } else if (selectedNode.getUserObject() instanceof NodeHeadingHolder) {
                 NodeHeadingHolder valueHolder = (NodeHeadingHolder) selectedNode.getUserObject();
-                mainView.setEnableVerifyMode(false);
+                mainView.setEnableVerifyMode(true);
                 transactionid = valueHolder.getTransactionId();
                 if (tree.getTransactionMap().get(transactionid) != null && tree.getTransactionMap().get(transactionid).size() > 0) {
                     mainView.stepToValue(tree.getTransactionMap().get(transactionid).get(0).getInitIndex());

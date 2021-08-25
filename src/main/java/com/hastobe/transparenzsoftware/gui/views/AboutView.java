@@ -90,7 +90,7 @@ public class AboutView extends JFrame {
 
     private ArrayList<String> openSourceNames() {
         ArrayList<String> libraryNames = new ArrayList<>();
-        libraryNames.add("Bouncy Castle (https://www.bouncycastle.org) - MIT License");
+        libraryNames.add("Bouncy Castle Version 1.59 (https://www.bouncycastle.org) - MIT License");
         libraryNames.add("jSML Openmuc (https://www.openmuc.org/sml/) - MPL v2.0 License");
         libraryNames.add("Gson (https://github.com/google/gson) - Apache 2.0 License");
         libraryNames.add("Guava (https://github.com/google/guava) - Apache 2.0 License");

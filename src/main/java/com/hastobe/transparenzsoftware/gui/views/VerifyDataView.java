@@ -253,8 +253,12 @@ public class VerifyDataView extends JPanel {
 		StringBuilder builder = new StringBuilder();
 		builder.append("<html><body><ul style=\"list-style-type: none; margin-left: 0px\">");
 		String preci = null;
+		int digitsScaler = Integer.MAX_VALUE;
 		for (Meter meter : meters) {
-			if (preci == null) preci = meter.getScalingFormat();
+			if (meter.getScaling() < digitsScaler) {
+				preci = meter.getScalingFormat();
+				digitsScaler = meter.getScaling();
+			}
 			if (meter.getType() != null) {
 				if (meter.getType() == Meter.Type.START && !addStart) {
 					addStart = true;

@@ -39,6 +39,17 @@ public class IsaSmlSignatureVerifierTest {
         boolean result = verifier.verify(publicKey, signature, hashData);
         Assert.assertTrue(result);
     }
+    @Test
+    public void testDataSignatureFail() throws ValidationException {
+
+        byte[] publicKey = Utils.hexStringToByteArray(PUBLIC_KEY_TEST_1);
+        byte[] hashData = Utils.hexStringToByteArray(WRONG_HASH_DATA_TEST);
+        byte[] signature = Utils.hexStringToByteArray(SIGNATURE_TEST_1);
+
+        IsaSMLSignatureVerifier verifier = new IsaSMLSignatureVerifier();
+        boolean result = verifier.verify(publicKey, signature, hashData);
+        Assert.assertFalse(result);
+    }
 
     //HBO : NPE: @Test
     public void endContextSignatureVerify() throws ValidationException {

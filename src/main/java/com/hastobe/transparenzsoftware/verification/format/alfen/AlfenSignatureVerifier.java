@@ -2,6 +2,7 @@ package com.hastobe.transparenzsoftware.verification.format.alfen;
 
 import com.hastobe.transparenzsoftware.Utils;
 import com.hastobe.transparenzsoftware.verification.ValidationException;
+import com.hastobe.transparenzsoftware.verification.VerificationLogger;
 import com.hastobe.transparenzsoftware.verification.format.sml.Verifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,6 +66,7 @@ public class AlfenSignatureVerifier implements Verifier {
 
         signer.init(false, publicKeyParsed);
         boolean verify = signer.verifySignature(hashedData, signatureR, signatureS);
+        VerificationLogger.log("ALFEN", ELLIPTIC_CURVE_ALGORITHM, publicKey, hashedData, signature, verify);
         return verify;
 
     }

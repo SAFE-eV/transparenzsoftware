@@ -16,8 +16,8 @@ import java.time.ZoneOffset;
 
 public class SignatureOnlyVerificationParserTest  {
 
-    public static String PUBLIC_KEY_BASE_64 = "XLyYACZ8/kaDQB+WzaTo8xhfl7xmo46vNhk2bPxA8v79MSaMV3z1mmnBCEYaqm2z";
-    public static String PUBLIC_KEY_FALSE_BASE_64 = "XLyYACZ8/kaDQB+WzaTo7xhfl7xmo46vNhk2bPxA8v79MSaMV3z1mmnBCEYaqm2z";
+    private static String PUBLIC_KEY_BASE_64 = "XLyYACZ8/kaDQB+WzaTo8xhfl7xmo46vNhk2bPxA8v79MSaMV3z1mmnBCEYaqm2z";
+    private static String PUBLIC_KEY_FALSE_BASE_64 = "XLyYACZ8/kaDQB+WzaTo7xhfl7xmo46vNhk2bPxA8v79MSaMV3z1mmnBCEYaqm2z";
 
     public static String TEST_SIG_ONLY_NO_XML = "&lt;?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" +
             "&lt;signedMeterValue>\n" +
@@ -36,6 +36,20 @@ public class SignatureOnlyVerificationParserTest  {
             "&lt;signedMeterValue>\n" +
             "&lt;meterValueSignature encoding=\"base64\">\n" +
             "5YP4W8xZDLC1Cr9uX5BiWYKFeBUP+t4i6fnt58dadMxk20zbgnxZgjrYH8Kl0xzbAAI=&lt;/meterValueSignature>\n" +
+            "&lt;signatureMethod>\n" +
+            "ECDSA192SHA256&lt;/signatureMethod>\n" +
+            "&lt;encodingMethod>\n" +
+            "EDL&lt;/encodingMethod>\n" +
+            "&lt;encodedMeterValue encoding=\"base64\">\n" +
+            "CQFFTUgAAH7gNd8UrVsItpUAAAcAAAABAAERAP8e/4oQAAAAAAAAAAIxYTdkNmE0MwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAN4UrVsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=&lt;/encodedMeterValue>\n" +
+            "&lt;/signedMeterValue>";
+
+    public static String TEST_SIG_INV_DATA = "&lt;?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" +
+            "&lt;signedMeterValue>\n" +
+            "&lt;publicKey encoding=\"base64\">\n" +
+            "XLyYACZ8/kaDQB+WzaTo8xhfl7xmo46vNhk2bPxA8v79MSaMV3z1mmnBCEYaqm2z&lt;/publicKey>\n" +
+            "&lt;meterValueSignature encoding=\"base64\">\n" +
+            "5YP4W8xZDLC1Cr9uX5BiWYKFeBUP+t4i6fnt58dadMxk20zbgmxZgjrYH8Kl0xzbAAI=&lt;/meterValueSignature>\n" +
             "&lt;signatureMethod>\n" +
             "ECDSA192SHA256&lt;/signatureMethod>\n" +
             "&lt;encodingMethod>\n" +
@@ -123,13 +137,26 @@ public class SignatureOnlyVerificationParserTest  {
     @Test
     public void verify_wrong_pk() throws DecodingException {
         SignatureOnlyVerificationParser parser = new SignatureOnlyVerificationParser();
-        VerificationResult verificationResult = parser.parseAndVerify(TestUtils.TEST_SIG_ONLY, EncodingType.base64Decode(PUBLIC_KEY_BASE_64));
+        VerificationResult verificationResult = parser.parseAndVerify(TestUtils.TEST_SIG_ONLY, EncodingType.base64Decode(PUBLIC_KEY_FALSE_BASE_64));
         //this is true as the embedded key is used
-        Assert.assertTrue(verificationResult.isVerified());
-        Assert.assertEquals(1, verificationResult.getMeters().size());
+        Assert.assertFalse(verificationResult.isVerified());
+        Assert.assertEquals(0, verificationResult.getMeters().size());
 
     }
 
+    /**
+     * Verifies that the xml can be read and a result with verified
+     * true will be returned. Also additional fields will be set
+     */
+    @Test
+    public void verify_wrong_data() throws DecodingException {
+        SignatureOnlyVerificationParser parser = new SignatureOnlyVerificationParser();
+        VerificationResult verificationResult = parser.parseAndVerify(TEST_SIG_INV_DATA, EncodingType.base64Decode(PUBLIC_KEY_BASE_64));
+        //this is true as the embedded key is used
+        Assert.assertFalse(verificationResult.isVerified());
+        Assert.assertEquals(1, verificationResult.getMeters().size());
+
+    }
     /**
      * Verifies that the xml can be read and a result with verified
      * true will be returned. Also additional fields will be set

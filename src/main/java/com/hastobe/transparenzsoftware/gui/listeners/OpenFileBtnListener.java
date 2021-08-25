@@ -34,6 +34,7 @@ public class OpenFileBtnListener implements ActionListener {
         JFileChooser jfc = new JFileChooser(currentDir);
         jfc.setName("chooser");
         jfc.setDialogTitle(Translator.get("app.view.select.file"));
+        UIManager.put("FileChooser.readOnly", Boolean.TRUE);
         //disable it otherwise it will always be on the first place
         jfc.setAcceptAllFileFilterUsed(false);
         if (!ignoreXML) jfc.addChoosableFileFilter(new FileNameExtensionFilter(Translator.get("app.view.extensions.xml"), "xml"));

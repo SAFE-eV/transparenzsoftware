@@ -3,6 +3,8 @@ package com.hastobe.transparenzsoftware.verification.format.sml;
 import com.hastobe.transparenzsoftware.Constants;
 import com.hastobe.transparenzsoftware.Utils;
 import com.hastobe.transparenzsoftware.verification.ValidationException;
+import com.hastobe.transparenzsoftware.verification.VerificationLogger;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bouncycastle.asn1.ASN1EncodableVector;
@@ -51,12 +53,10 @@ public class SMLSignatureVerifier implements Verifier {
         payloadData = Arrays.copyOfRange(payloadData, 0, CROPPED_DATA_LENGTH);
         byte[] derSignature = signatureToDER(signature);
         try {
-            Signature signatureVerifier = initSignature(publicKey, payloadData);
-            LOGGER.info("Signature:    "+Hex.toHexString(signature));
-            LOGGER.info("Public key:   "+Hex.toHexString(publicKey));
-            LOGGER.info("Hashed data:  "+Hex.toHexString(payloadData));
+            PublicKey parsed = getPublicKeyFromBytes(publicKey);
+            Signature signatureVerifier = initSignature(parsed, payloadData);
             boolean result = signatureVerifier.verify(derSignature);
-            LOGGER.info("Verified:     "+result);
+            VerificationLogger.log("SML",ELLIPTIC_CURVE_ALGORITHM,publicKey,payloadData,signature,result);
             return result;
         } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             throw new ValidationException("Failure on initialising the crypto algorithms", e);
@@ -67,10 +67,10 @@ public class SMLSignatureVerifier implements Verifier {
         }
     }
 
-    private Signature initSignature(byte[] publicKey, byte[] croppedPayloadData) throws NoSuchProviderException, NoSuchAlgorithmException, ValidationException, SignatureException, InvalidKeyException {
+    private Signature initSignature(PublicKey publicKey, byte[] croppedPayloadData) throws NoSuchProviderException, NoSuchAlgorithmException, ValidationException, SignatureException, InvalidKeyException {
         assert croppedPayloadData.length == CROPPED_DATA_LENGTH;
         Signature signatureVerifier = Signature.getInstance(SIGNATURE_ALGORITHM, BOUNCY_CASTLE_PROVIDER_CODE);
-        signatureVerifier.initVerify(getPublicKeyFromBytes(publicKey));
+        signatureVerifier.initVerify(publicKey);
         signatureVerifier.update(croppedPayloadData);
         return signatureVerifier;
     }

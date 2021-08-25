@@ -209,6 +209,7 @@ public abstract class Reading {
 		case 3: return 1; // two digits
 		case 4: return 0; // three digits
 		case 5: return -1; // four digits
+		case 6: return -2; // five digits
 		}
 		return -1; // default;
 	}

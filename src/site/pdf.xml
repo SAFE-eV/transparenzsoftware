@@ -1,0 +1,21 @@
+<document xmlns="http://maven.apache.org/DOCUMENT/1.0.1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/DOCUMENT/1.0.1 http://maven.apache.org/xsd/document-1.0.1.xsd"
+          outputName="${artifactId}_surefire-report">
+
+    <meta>
+        <title>${artifactId} - Test Report</title>
+        <author>S.A.F.E. e.V. QA Team</author>
+    </meta>
+
+    <toc  name="Contents">
+    <item  name="Test Report"/>
+    </toc>
+
+    <cover>
+        <coverTitle>TNT:${artifactId}</coverTitle>
+        <coverdate>${dateTime}</coverdate>
+        <coverSubTitle>Surefire Test Report</coverSubTitle>
+        <projectName>${project.name}</projectName>
+    </cover>
+</document>

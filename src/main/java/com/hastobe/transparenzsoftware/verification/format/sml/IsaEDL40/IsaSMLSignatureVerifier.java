@@ -3,6 +3,7 @@ package com.hastobe.transparenzsoftware.verification.format.sml.IsaEDL40;
 import com.hastobe.transparenzsoftware.Constants;
 import com.hastobe.transparenzsoftware.Utils;
 import com.hastobe.transparenzsoftware.verification.ValidationException;
+import com.hastobe.transparenzsoftware.verification.VerificationLogger;
 import com.hastobe.transparenzsoftware.verification.format.sml.SMLSignature;
 import com.hastobe.transparenzsoftware.verification.format.sml.SMLSignatureVerifier;
 import org.apache.logging.log4j.LogManager;
@@ -58,6 +59,7 @@ public class IsaSMLSignatureVerifier extends SMLSignatureVerifier {
         try {
             Signature signatureVerifier = initSignature(publicKey, hashData);
             verify = signatureVerifier.verify(derSignature);
+            VerificationLogger.log("IsaSML",ELLIPTIC_CURVE_ALGORITHM,publicKey,hashData,derSignature,verify);
         } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             throw new ValidationException("Failure on initialising the crypto algorithms", e);
         } catch (SignatureException e) {

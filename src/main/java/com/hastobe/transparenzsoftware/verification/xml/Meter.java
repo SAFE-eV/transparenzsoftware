@@ -58,7 +58,7 @@ public class Meter {
         this.type = type;
         this.timeSyncType = timeSyncType;
         if (scaling > 3) scaling = 3;
-        if (scaling < -1) scaling = -1;
+        if (scaling < -2) scaling = -2;
         this.scaling = scaling;
     }
 
@@ -249,6 +249,7 @@ public class Meter {
 
     /**
      * The precision of the meter, format is 3-scaling.
+     * -2 = 1/100000  5 digits
      * -1 = 1/10000  4 digits
      * 0 = 1/1000    3 digits
      * 1 = 1/100     2 digits
