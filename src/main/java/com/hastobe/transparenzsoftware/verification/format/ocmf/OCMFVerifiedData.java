@@ -44,6 +44,7 @@ public class OCMFVerifiedData extends VerifiedData {
 
         for (Reading reading : ocmfPayloadData.getRD()) {
             Meter.Type type = null;
+            int digits = reading.getRVDigits();
             if (reading.isStartTransaction()) {
                 type = Meter.Type.START;
             }
@@ -53,13 +54,13 @@ public class OCMFVerifiedData extends VerifiedData {
             Double rv = reading.getRV();
             if (rv != null && reading.getRU() != null && reading.getRU().trim().toLowerCase().equals("wh")) {
                 rv = rv / 1000;
+                digits -= 3;
             }
             //rv might be null here
             if (rv == null) {
                 rv = (double) 0;
             }
             Meter.TimeSyncType timeSyncType = reading.isTimeInformativeOnly() ? Meter.TimeSyncType.INFORMATIVE : Meter.TimeSyncType.SYNCHRONIZED;
-            int digits = reading.getRVDigits();
             
             meters.add(new Meter(rv, reading.getTimestamp(), type, timeSyncType, digits));
         }
