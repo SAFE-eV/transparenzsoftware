@@ -113,7 +113,7 @@ public class VerificationResult {
         for (String key : start.getAdditionalVerificationData().keySet()) {
             Object o1 = start.getAdditionalVerificationData().get(key);
             Object o2 = stop.getAdditionalVerificationData().get(key);
-            if (o1.equals(o2)) {
+            if (o1 == o2 || (o1 != null && o1.equals(o2))) {
                 additionalDataMerged.put(key, o1);
             } else {
                 additionalDataMerged.put(String.format("%s (start)", key), o1);
