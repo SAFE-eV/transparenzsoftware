@@ -118,7 +118,7 @@
 		<file.encoding>UTF-8</file.encoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<junit.version>4.12</junit.version>
+		<junit.version>4.13.1</junit.version>
 		<jsml.version>1.1.2</jsml.version>
 		<log4j-core.version>2.13.2</log4j-core.version>
 		<commons-cli.version>1.4</commons-cli.version>
