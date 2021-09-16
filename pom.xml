@@ -113,7 +113,7 @@
 	</dependencies>
 
 	<properties>
-		<bouncycastle.version>1.59</bouncycastle.version>
+		<bouncycastle.version>1.67</bouncycastle.version>
 		<jdk.version>1.8</jdk.version>
 		<file.encoding>UTF-8</file.encoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
