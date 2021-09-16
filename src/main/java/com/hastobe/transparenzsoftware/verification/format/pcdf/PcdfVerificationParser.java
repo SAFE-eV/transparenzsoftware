@@ -26,6 +26,7 @@ import org.bouncycastle.crypto.params.ECPublicKeyParameters;
 import org.bouncycastle.crypto.signers.ECDSASigner;
 
 import com.hastobe.transparenzsoftware.verification.ContainedPublicKeyParser;
+import com.hastobe.transparenzsoftware.verification.VerificationLogger;
 import com.hastobe.transparenzsoftware.verification.VerificationParser;
 import com.hastobe.transparenzsoftware.verification.VerificationType;
 import com.hastobe.transparenzsoftware.verification.result.VerificationResult;
@@ -113,8 +114,9 @@ public class PcdfVerificationParser implements VerificationParser, ContainedPubl
 			    
 				MessageDigest digest = MessageDigest.getInstance("SHA-256");
 				byte[] hash = digest.digest(data.getBytes(StandardCharsets.UTF_8));
-			    		
-			    return signer2.verifySignature(hash, r.abs(), s.abs());
+			    boolean result = signer2.verifySignature(hash, r.abs(), s.abs());
+			    VerificationLogger.log("PCDF","secp256r1",pke,hash,se,result);
+			    return result;
 		    } catch (NoSuchAlgorithmException e) {
 				//getLogger().error(e.getClass().getSimpleName() + " occurred when trying to get public key from raw bytes", e);
 		        //return null;
