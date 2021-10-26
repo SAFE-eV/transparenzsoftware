@@ -1,5 +1,6 @@
 package com.hastobe.transparenzsoftware.verification.result;
 
+import com.hastobe.transparenzsoftware.gui.views.helper.DetailsList;
 import com.hastobe.transparenzsoftware.verification.RegulationLawException;
 import com.hastobe.transparenzsoftware.verification.ValidationException;
 import com.hastobe.transparenzsoftware.verification.format.ocmf.OCMFVerifiedData;
@@ -13,7 +14,7 @@ public class VerificationResult {
 
     private List<Meter> meters;
     private boolean verified;
-    private Map<String, Object> additionalVerificationData;
+    private DetailsList additionalVerificationData;
     private VerifiedData verifiedData;
 
     private List<Error> errorMessages;
@@ -45,7 +46,7 @@ public class VerificationResult {
             this.meters = verifiedData.getMeters();
             this.additionalVerificationData = verifiedData.getAdditionalData();
         } else {
-            this.additionalVerificationData = new HashMap<>();
+            this.additionalVerificationData = new DetailsList();
         }
         this.verified = false;
         this.errorMessages.addAll(errors);
@@ -66,7 +67,7 @@ public class VerificationResult {
     }
 
 
-    public Map<String, Object> getAdditionalVerificationData() {
+    public DetailsList getAdditionalVerificationData() {
         return additionalVerificationData;
     }
 
@@ -109,7 +110,7 @@ public class VerificationResult {
     public static VerificationResult mergeVerificationData(VerificationResult start, VerificationResult stop, BigInteger transactionId) throws ValidationException {
         VerificationResult verificationResult = new VerificationResult();
         verificationResult.verified = start.isVerified() && stop.isVerified();
-        Map<String, Object> additionalDataMerged = new HashMap<>();
+        DetailsList additionalDataMerged = new DetailsList();
         for (String key : start.getAdditionalVerificationData().keySet()) {
             Object o1 = start.getAdditionalVerificationData().get(key);
             Object o2 = stop.getAdditionalVerificationData().get(key);

@@ -1,5 +1,6 @@
 package com.hastobe.transparenzsoftware.verification.xml;
 
+import com.hastobe.transparenzsoftware.gui.views.helper.DetailsList;
 import com.hastobe.transparenzsoftware.verification.RegulationLawException;
 import com.hastobe.transparenzsoftware.verification.ValidationException;
 
@@ -23,7 +24,7 @@ public abstract class VerifiedData {
     public abstract String getEncoding();
 
     @XmlTransient
-    public abstract HashMap<String, Object> getAdditionalData();
+    public abstract DetailsList getAdditionalData();
 
     /**
      * Indicates if a Eichrechts necessary data change

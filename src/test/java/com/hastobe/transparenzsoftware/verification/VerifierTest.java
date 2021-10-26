@@ -1,6 +1,7 @@
 package com.hastobe.transparenzsoftware.verification;
 
 import com.hastobe.transparenzsoftware.TestUtils;
+import com.hastobe.transparenzsoftware.gui.views.helper.DetailsList;
 import com.hastobe.transparenzsoftware.output.MockVerificationContainedKeyParser;
 import com.hastobe.transparenzsoftware.output.MockVerificationParser;
 import com.hastobe.transparenzsoftware.verification.format.alfen.AlfenVerificationParser;
@@ -547,8 +548,8 @@ public class VerifierTest {
         }
 
         @Override
-        public HashMap<String, Object> getAdditionalData() {
-            return new HashMap<>();
+        public DetailsList getAdditionalData() {
+            return new DetailsList();
         }
 
         @Override

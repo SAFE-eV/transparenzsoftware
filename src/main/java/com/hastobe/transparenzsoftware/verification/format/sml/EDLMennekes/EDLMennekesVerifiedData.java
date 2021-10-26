@@ -2,6 +2,7 @@ package com.hastobe.transparenzsoftware.verification.format.sml.EDLMennekes;
 
 
 import com.hastobe.transparenzsoftware.Utils;
+import com.hastobe.transparenzsoftware.gui.views.helper.DetailsList;
 import com.hastobe.transparenzsoftware.i18n.Translator;
 import com.hastobe.transparenzsoftware.verification.*;
 import com.hastobe.transparenzsoftware.verification.format.sml.EDLMennekes.embedded.ChargingProcess;
@@ -113,8 +114,8 @@ public class EDLMennekesVerifiedData extends VerifiedData {
     }
 
     @Override
-    public HashMap<String, Object> getAdditionalData() {
-        LinkedHashMap<String, Object> additionalData = new LinkedHashMap<>();
+    public DetailsList getAdditionalData() {
+    	DetailsList additionalData = new DetailsList();
         additionalData.put(Translator.get("app.verify.sml.customerId"), getContractId());
         additionalData.put(Translator.get("app.verify.sml.timestampCustomer"), OffsetDateTimeAdapter.formattedDateTime(getTimestampContract()));
         additionalData.put(Translator.get("app.verify.sml.serverId"), getServerId());

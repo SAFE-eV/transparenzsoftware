@@ -1,5 +1,6 @@
 package com.hastobe.transparenzsoftware.output;
 
+import com.hastobe.transparenzsoftware.gui.views.helper.DetailsList;
 import com.hastobe.transparenzsoftware.verification.RegulationLawException;
 import com.hastobe.transparenzsoftware.verification.xml.Meter;
 import com.hastobe.transparenzsoftware.verification.xml.VerifiedData;
@@ -12,7 +13,7 @@ public class MockVerifiedData extends VerifiedData {
 
     double value = 0;
     OffsetDateTime timestamp;
-    HashMap<String, Object> additionalData;
+    DetailsList additionalData;
     List<Meter> meters;
 
     @Override
@@ -36,7 +37,7 @@ public class MockVerifiedData extends VerifiedData {
     }
 
     @Override
-    public HashMap<String, Object> getAdditionalData() {
+    public DetailsList getAdditionalData() {
         return additionalData;
     }
 

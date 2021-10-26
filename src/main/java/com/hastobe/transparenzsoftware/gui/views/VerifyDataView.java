@@ -254,6 +254,14 @@ public class VerifyDataView extends JPanel {
 		builder.append("<html><body><ul style=\"list-style-type: none; margin-left: 0px\">");
 		String preci = null;
 		int digitsScaler = Integer.MAX_VALUE;
+		int lastStopIndex = -1;
+		for (Meter meter : meters) {
+			if (meter.getType() == Meter.Type.STOP) {
+				lastStopIndex = index;
+			}
+			index++;
+		}
+		index = 1;
 		for (Meter meter : meters) {
 			if (meter.getScaling() < digitsScaler) {
 				preci = meter.getScalingFormat();
@@ -269,7 +277,7 @@ public class VerifyDataView extends JPanel {
 					AddOverviewDisplayElements(builder, meter);
 				}
 
-				if (meter.getType() == Meter.Type.STOP && !addStop && numElements == index) {
+				if (meter.getType() == Meter.Type.STOP && !addStop && lastStopIndex == index) {
 					addStop = true;
 					AddOverviewDisplayElements(builder, meter);
 				}
@@ -312,6 +320,7 @@ public class VerifyDataView extends JPanel {
 	}
 
 	private void AddOverviewDisplayElements(StringBuilder builder, Meter meter) {
+		if (!meter.isLawRelevant()) return;
 		builder.append("<li>");
 		if (meter.getDescriptiveMessageText() != null) {
 			builder.append(meter.getDescriptiveMessageText());

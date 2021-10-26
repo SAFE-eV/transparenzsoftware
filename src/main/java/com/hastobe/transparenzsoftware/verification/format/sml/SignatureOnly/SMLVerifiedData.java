@@ -29,7 +29,7 @@ public class SMLVerifiedData extends com.hastobe.transparenzsoftware.verificatio
     }
 
     private String hexRepresentation(String format){
-        if(format != null && Utils.hexToAscii(format).matches("[A-Za-z0-9]*")){
+        if(format != null && Utils.hexToAscii(format).matches("[A-Za-z0-9!#/ ]*")){
             return String.format("%s (%s)", format, Utils.hexToAscii(format));
         } else {
             return format;

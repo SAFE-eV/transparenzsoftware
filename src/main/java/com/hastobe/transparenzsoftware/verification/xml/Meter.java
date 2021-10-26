@@ -35,6 +35,9 @@ public class Meter {
     @XmlTransient
 	private int scaling = -1;
 
+    @XmlTransient
+	private boolean lawRelevant = true;
+
 
     private Meter() {
         value = 0;
@@ -103,7 +106,7 @@ public class Meter {
 
     private static double[] getMinMax(List<Meter> values) {
         double minimum = Double.MAX_VALUE;
-        double max = Double.MIN_VALUE;
+        double max = Double.NEGATIVE_INFINITY;
         boolean startMarkerFound = false;
         boolean stopMarkerFound = false;
         for (Meter meter : values) {
@@ -264,5 +267,19 @@ public class Meter {
 	
 	public int getScaling() {
 		return scaling;
+	}
+
+	/**
+	 * Default: this meter value is relevant.
+	 */
+	public boolean isLawRelevant() {
+		return lawRelevant;
+	}
+
+	/**
+	 * Default: this meter value is relevant. Can be set to false to hide this value in the overview window.
+	 */
+	public void setLawRelevant(boolean lawRelevant) {
+		this.lawRelevant = lawRelevant;
 	}
 }

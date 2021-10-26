@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.hastobe.transparenzsoftware.gui.views.helper.DetailsList;
 import com.hastobe.transparenzsoftware.i18n.Translator;
 import com.hastobe.transparenzsoftware.verification.RegulationLawException;
 import com.hastobe.transparenzsoftware.verification.ValidationException;
@@ -21,7 +22,7 @@ public class PcdfVerifiedData extends VerifiedData {
 	
 	private List<Meter> meters;
 	
-	private HashMap<String, Object> addData;
+	private DetailsList addData;
 	
 	public PcdfVerifiedData(String pk, String chData)
 	{
@@ -31,7 +32,7 @@ public class PcdfVerifiedData extends VerifiedData {
 		String cons = extractAttribute("RV", chData);
 		cons = cons.replace("*kWh", "");
 		
-		addData = new HashMap<String, Object>();
+		addData = new DetailsList();
 		
 		String startTime = extractAttribute("ST", chData);
 		
@@ -182,7 +183,7 @@ public class PcdfVerifiedData extends VerifiedData {
 	}
 
 	@Override
-	public HashMap<String, Object> getAdditionalData() {
+	public DetailsList getAdditionalData() {
 		// TODO Auto-generated method stub
 		return addData;
 	}

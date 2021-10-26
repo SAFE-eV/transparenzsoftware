@@ -34,7 +34,7 @@ import com.hastobe.transparenzsoftware.verification.VerificationParserFactory;
 
 public class AppOCMFTest extends AbstractAppTest {
 
-	@Test
+	//@Test
     public void test_ocmf_keba_kcp30() throws Exception {
     	chooseFile(testDirXML,"test_ocmf_keba_kcp30.xml");
     	String pubKey = getWindow().textBox("text.pubkey").text();
@@ -46,7 +46,7 @@ public class AppOCMFTest extends AbstractAppTest {
     	delay();
     }
 
-	@Test
+	//@Test
     public void test_ocmf_keba_kcp30_fail() throws Exception {
     	chooseFile(testDirXML,"test_ocmf_keba_kcp30_fail.xml");
     	String pubKey = getWindow().textBox("text.pubkey").text();
@@ -57,5 +57,18 @@ public class AppOCMFTest extends AbstractAppTest {
     	getWindow().label("lbl.meter").requireText(Pattern.compile(".*0,2597 kWh.*"));
     	delay();
     }
+
+	@Test
+    public void test_ocmf_brainpoolP() throws Exception {
+    	chooseFile(testDirXML,"brainpoolP256r1.xml");
+    	String pubKey = getWindow().textBox("text.pubkey").text();
+    	assertEquals("305A301406072A8648CE3D020106092B240303020801010703420004607201339EF7C61EB1270C0BEA675585711CB160835F0F55975A311EA6F14AE98981A9276ABC6C70ADA4F8CE25A5502336C738B9E86FB1ED62150FF1B0FAD5A2", pubKey);
+    	delayForVerify();
+    	getWindow().label("lbl.icon").requireText(Daten_wurden_verifiziert);
+    	getWindow().label("lbl.meter").requireText(Pattern.compile(".*1,833 kWh.*"));
+    	getWindow().label("lbl.meter").requireText(Pattern.compile(".*0,000 kWh.*"));
+    	delay();
+    }
+
 
 }

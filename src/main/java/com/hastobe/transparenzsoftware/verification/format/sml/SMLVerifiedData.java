@@ -2,6 +2,7 @@ package com.hastobe.transparenzsoftware.verification.format.sml;
 
 
 import com.hastobe.transparenzsoftware.Utils;
+import com.hastobe.transparenzsoftware.gui.views.helper.DetailsList;
 import com.hastobe.transparenzsoftware.i18n.Translator;
 import com.hastobe.transparenzsoftware.verification.*;
 import com.hastobe.transparenzsoftware.verification.xml.LocalDateTimeAdapter;
@@ -95,8 +96,8 @@ public class SMLVerifiedData extends VerifiedData {
     }
 
     @Override
-    public HashMap<String, Object> getAdditionalData() {
-        HashMap<String, Object> additionalData = new HashMap<>();
+    public DetailsList getAdditionalData() {
+    	DetailsList additionalData = new DetailsList();
         additionalData.put(Translator.get("app.verify.sml.customerId"), getCustomerId());
         additionalData.put(Translator.get("app.verify.sml.secondsIndex"), getSecondsIndex());
         additionalData.put(Translator.get("app.verify.sml.logbook"), getLogbookHigh() + " " + getLogbookLow());

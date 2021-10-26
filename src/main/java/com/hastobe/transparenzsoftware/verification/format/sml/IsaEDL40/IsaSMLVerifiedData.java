@@ -1,6 +1,7 @@
 package com.hastobe.transparenzsoftware.verification.format.sml.IsaEDL40;
 
 import com.hastobe.transparenzsoftware.Utils;
+import com.hastobe.transparenzsoftware.gui.views.helper.DetailsList;
 import com.hastobe.transparenzsoftware.i18n.Translator;
 import com.hastobe.transparenzsoftware.verification.EncodingType;
 import com.hastobe.transparenzsoftware.verification.RegulationLawException;
@@ -137,8 +138,8 @@ public class IsaSMLVerifiedData extends VerifiedData {
     }
 
     @Override
-    public LinkedHashMap<String, Object> getAdditionalData() {
-        LinkedHashMap<String, Object> additionalData = new LinkedHashMap<String, Object>();
+    public DetailsList getAdditionalData() {
+    	DetailsList additionalData = new DetailsList();
         additionalData.put("Datensatznummer:", pagination);
         additionalData.put("OBIS-ID Datensatzkontext", context);
         additionalData.put("ServerId:", getServerId());

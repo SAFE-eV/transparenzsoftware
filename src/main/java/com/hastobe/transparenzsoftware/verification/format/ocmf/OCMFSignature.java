@@ -68,7 +68,10 @@ public class OCMFSignature {
         if(splitted.length != 3){
             throw new OCMFValidationException("Invalid signature algorithm for OCMF", "error.ocmf.invalid.signaturealgorithm");
         }
-        splitted[1] = splitted[1].replaceAll("brainpool", "brainpoolp");
+        splitted[1] = splitted[1].toLowerCase();
+        if (splitted[1].indexOf("brainpoolp") < 0) {
+        	splitted[1] = splitted[1].replaceAll("brainpool", "brainpoolp");
+        }
         return splitted;
     }
 

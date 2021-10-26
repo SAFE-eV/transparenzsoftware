@@ -2,6 +2,7 @@ package com.hastobe.transparenzsoftware.verification.format.sml;
 
 import com.hastobe.transparenzsoftware.TestUtils;
 import com.hastobe.transparenzsoftware.Utils;
+import com.hastobe.transparenzsoftware.gui.views.helper.DetailsList;
 import com.hastobe.transparenzsoftware.i18n.Translator;
 import com.hastobe.transparenzsoftware.verification.DecodingException;
 import com.hastobe.transparenzsoftware.verification.EncodingType;
@@ -107,7 +108,7 @@ public class SMLVerificationParserTest {
         signatureData.setProvidedSignature(new byte[48]);
         SMLVerifiedData smlVerifiedData = new SMLVerifiedData(signatureData, VerificationType.EDL_40_SIG, EncodingType.PLAIN, "test");
 
-        HashMap<String, Object> additionalData = smlVerifiedData.getAdditionalData();
+        DetailsList additionalData = smlVerifiedData.getAdditionalData();
         Assert.assertEquals(11, additionalData.size());
         Assert.assertEquals("09 01 45 4D 48 00 00 6B B3 28", additionalData.get(Translator.get("app.verify.sml.serverId")));
         Assert.assertEquals("01 04 05", additionalData.get(Translator.get("app.verify.sml.customerId")));

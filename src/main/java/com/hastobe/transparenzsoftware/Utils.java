@@ -456,4 +456,12 @@ public class Utils {
         }
 
     }
+
+	public static String toASCIIOrFormattedHex(byte[] bytes) {
+		// Check for ASCII values:
+		for (byte b : bytes) {
+			if (b < 32) return toFormattedHex(bytes);
+		}
+		return new String(bytes);
+	}
 }

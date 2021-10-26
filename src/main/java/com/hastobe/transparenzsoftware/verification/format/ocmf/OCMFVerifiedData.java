@@ -1,5 +1,6 @@
 package com.hastobe.transparenzsoftware.verification.format.ocmf;
 
+import com.hastobe.transparenzsoftware.gui.views.helper.DetailsList;
 import com.hastobe.transparenzsoftware.i18n.Translator;
 import com.hastobe.transparenzsoftware.verification.FormatComparisonException;
 import com.hastobe.transparenzsoftware.verification.RegulationLawException;
@@ -61,8 +62,9 @@ public class OCMFVerifiedData extends VerifiedData {
                 rv = (double) 0;
             }
             Meter.TimeSyncType timeSyncType = reading.isTimeInformativeOnly() ? Meter.TimeSyncType.INFORMATIVE : Meter.TimeSyncType.SYNCHRONIZED;
-            
-            meters.add(new Meter(rv, reading.getTimestamp(), type, timeSyncType, digits));
+            Meter m = new Meter(rv, reading.getTimestamp(), type, timeSyncType, digits);
+            m.setLawRelevant(isLawRelevant(reading));
+            meters.add(m);
         }
         this.publicKey = publicKey;
         this.encoding = encoding;
@@ -108,8 +110,8 @@ public class OCMFVerifiedData extends VerifiedData {
     }
 
     @Override
-    public HashMap<String, Object> getAdditionalData() {
-        HashMap<String, Object> addData = new HashMap<>();
+    public DetailsList getAdditionalData() {
+    	DetailsList addData = new DetailsList();
         addData.put(Translator.get("app.verify.ocmf.version"), getFormatVersion());
         addData.put(Translator.get("app.verify.ocmf.vendorIdentifier"), getVendorIdentification());
         addData.put(Translator.get("app.verify.ocmf.vendorVersion"), getVendorVersion());
@@ -144,6 +146,9 @@ public class OCMFVerifiedData extends VerifiedData {
         if (this.ocmfPayloadData.getRD() != null) {
             int count = 1;
             for (Reading reading : this.ocmfPayloadData.getRD()) {
+            	String time = reading.getTM() != null ? reading.getTM() : "-";
+            	String val = time+" "+reading.getRV()+" "+reading.getRU();
+                addData.put(Translator.get("app.view.single.value")+ " " + count,val);
                 if (reading.getTimeSynchronicity() != null) {
                     String label = Translator.get("app.verify.ocmf.timesynchronicity");
                     addData.put(String.format("%s %s", label, count), Translator.get(reading.getLabelForTimeFlag()));
@@ -196,6 +201,7 @@ public class OCMFVerifiedData extends VerifiedData {
         String previousST = null;
         String previousRU = null;
         for (Reading reading : readings) {
+        	if (!isLawRelevant(reading)) continue;
             if (reading.getST() == null) {
                 if (previousST == null) {
                     throw new OCMFValidationException("Missing mandatory ST parameter for first reading.", "error.values.missing.st");
@@ -264,7 +270,14 @@ public class OCMFVerifiedData extends VerifiedData {
         return true;
     }
 
-    private void checkErrorFlag(Reading startValue) throws RegulationLawException {
+    private boolean isLawRelevant(Reading reading) {
+    	String ri = reading.getRI();
+    	if (ri == null) return false;
+    	if (!(ri.startsWith("1-0:1.8.") || ri.startsWith("1-b:1.8.")  || ri.startsWith("1-b:1.8."))) return false;
+    	return true;
+	}
+
+	private void checkErrorFlag(Reading startValue) throws RegulationLawException {
         if (startValue.getEF() != null) {
             if (startValue.getEF().equals("E")) {
                 throw new RegulationLawException("Error flag set on energy", "app.verify.law.conform.error.flag.energy");

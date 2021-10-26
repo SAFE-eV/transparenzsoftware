@@ -1,6 +1,7 @@
 package com.hastobe.transparenzsoftware.verification.format.alfen;
 
 import com.hastobe.transparenzsoftware.Utils;
+import com.hastobe.transparenzsoftware.gui.views.helper.DetailsList;
 import com.hastobe.transparenzsoftware.i18n.Translator;
 import com.hastobe.transparenzsoftware.verification.*;
 import com.hastobe.transparenzsoftware.verification.xml.Meter;
@@ -100,8 +101,8 @@ public class AlfenVerifiedData extends VerifiedData {
     }
 
     @Override
-    public HashMap<String, Object> getAdditionalData() {
-        HashMap<String, Object> addData = new HashMap<>();
+    public DetailsList getAdditionalData() {
+    	DetailsList addData = new DetailsList();
         String publicKey = getPublicKey() != null ? getPublicKey().toLowerCase() : "";
         addData.put(Translator.get("app.verify.alfen.publicKey"), Utils.splitStringToGroups(publicKey, 4));
         addData.put(Translator.get("app.verify.alfen.adapterId"), getAdapterId());

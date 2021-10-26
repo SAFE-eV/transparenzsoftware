@@ -105,6 +105,7 @@ public class OCMFVerifiedDataTest {
         startReading.setST("G");
         startReading.setTX("B");
         startReading.setTM("2018-07-24T13:22:04,100+0200 S");
+        startReading.setRI("1-0:1.8.0");
         ocmfPayloadDataStart.getRD().add(startReading);
 
         OCMFPayloadData ocmfPayloadDataStop = new OCMFPayloadData();
@@ -115,6 +116,7 @@ public class OCMFVerifiedDataTest {
         stopReading.setST("G");
         stopReading.setTX("E");
         stopReading.setTM("2018-07-24T13:22:04,000+0200 S");
+        stopReading.setRI("1-0:1.8.0");
         ocmfPayloadDataStop.getRD().add(stopReading);
 
         ocmfPayloadDataStop.setIS("1");
@@ -139,6 +141,7 @@ public class OCMFVerifiedDataTest {
         startReading.setST("G");
         startReading.setTX("B");
         startReading.setTM("2018-07-24T14:22:04,100+0200 S");
+        startReading.setRI("1-0:1.8.0");
         ocmfPayloadDataStart.getRD().add(startReading);
 
         OCMFPayloadData ocmfPayloadDataStop = new OCMFPayloadData();
@@ -149,6 +152,7 @@ public class OCMFVerifiedDataTest {
         stopReading.setST("G");
         stopReading.setTX("E");
         stopReading.setTM("2018-07-24T13:22:04,000+0200 S");
+        stopReading.setRI("1-0:1.8.0");
         ocmfPayloadDataStop.getRD().add(stopReading);
 
         ocmfPayloadDataStop.setIS("1");
@@ -175,6 +179,7 @@ public class OCMFVerifiedDataTest {
         startReading.setST("G");
         startReading.setTX("B");
         startReading.setTM("2018-07-24T12:22:04,100+0200 S");
+        startReading.setRI("1-0:1.8.0");
         ocmfPayloadDataStart.getRD().add(startReading);
 
         OCMFPayloadData ocmfPayloadDataStop = new OCMFPayloadData();
@@ -185,6 +190,7 @@ public class OCMFVerifiedDataTest {
         stopReading.setST("G");
         stopReading.setTX("E");
         stopReading.setTM("2018-07-24T13:22:04,000+0200 S");
+        stopReading.setRI("1-0:1.8.0");
         ocmfPayloadDataStop.getRD().add(stopReading);
 
         ocmfPayloadDataStop.setIS("1");
@@ -209,6 +215,7 @@ public class OCMFVerifiedDataTest {
         startReading.setST("G");
         startReading.setTX("B");
         startReading.setTM("2018-07-24T12:22:04,100+0200 S");
+        startReading.setRI("1-0:1.8.0");
         ocmfPayloadDataStart.getRD().add(startReading);
 
         OCMFPayloadData ocmfPayloadDataStop = new OCMFPayloadData();
@@ -219,6 +226,7 @@ public class OCMFVerifiedDataTest {
         stopReading.setST("G");
         stopReading.setTX("E");
         stopReading.setTM("2018-07-24T13:22:04,000+0200 S");
+        stopReading.setRI("1-0:1.8.0");
         ocmfPayloadDataStop.getRD().add(stopReading);
         ocmfPayloadDataStop.setIS("MISMATCH");
 
@@ -243,6 +251,7 @@ public class OCMFVerifiedDataTest {
         r1.setST("G");
         r1.setTX("B");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");
+        r1.setRI("1-0:1.8.0");
         ocmfPayloadData.getRD().add(r1);
 
         Reading r2 = new Reading();
@@ -250,6 +259,7 @@ public class OCMFVerifiedDataTest {
         r2.setST("G");
         r2.setTX("E");
         r2.setTM("2018-07-24T13:23:04,000+0200 S");
+        r2.setRI("1-0:1.8.0");
         ocmfPayloadData.getRD().add(r2);
         ocmfPayloadData.setIS("1");
 
@@ -388,6 +398,7 @@ public class OCMFVerifiedDataTest {
         r1.setST("G");
         r1.setTX("E");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");
+        r1.setRI("1-0:1.8.0");
         ocmfPayloadData.getRD().add(r1);
 
         Reading r2 = new Reading();
@@ -395,6 +406,7 @@ public class OCMFVerifiedDataTest {
         r2.setST("G");
         r2.setTX("E");
         r2.setTM("2018-07-24T13:23:04,000+0200 S");
+        r2.setRI("1-0:1.8.0");
         ocmfPayloadData.getRD().add(r2);
         ocmfPayloadData.setIS("1");
 
@@ -417,6 +429,7 @@ public class OCMFVerifiedDataTest {
         r2.setST("G");
         r2.setTX("B");
         r2.setTM("2018-07-24T13:23:04,000+0200 S");
+        r2.setRI("1-0:1.8.0");
         ocmfPayloadData.getRD().add(r2);
         ocmfPayloadData.setIS("1");
 
@@ -441,6 +454,7 @@ public class OCMFVerifiedDataTest {
         r1.setST("G");
         r1.setTX("B");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");
+        r1.setRI("1-0:1.8.0");
         ocmfPayloadData.getRD().add(r1);
 
         Reading r2 = new Reading();
@@ -448,6 +462,7 @@ public class OCMFVerifiedDataTest {
         r2.setST("G");
         r2.setTX("E");
         r2.setTM("2018-07-24T13:23:04,000+0200 S");
+        r2.setRI("1-0:1.8.0");
         ocmfPayloadData.getRD().add(r2);
         ocmfPayloadData.setIS("1");
 
@@ -470,6 +485,7 @@ public class OCMFVerifiedDataTest {
         r1.setST("G");
         r1.setTX("B");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");
+        r1.setRI("1-0:1.8.0");
         ocmfPayloadData.getRD().add(r1);
 
         Reading r2 = new Reading();
@@ -477,6 +493,7 @@ public class OCMFVerifiedDataTest {
         r2.setST("G");
         r2.setTX("E");
         r2.setTM("2018-07-24T13:23:04,000+0200 S");
+        r2.setRI("1-0:1.8.0");
         ocmfPayloadData.getRD().add(r2);
         ocmfPayloadData.setIS("UNKNOWN");
 
@@ -499,6 +516,7 @@ public class OCMFVerifiedDataTest {
         r1.setST("G");
         r1.setTX("B");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");
+        r1.setRI("1-0:1.8.0");
         ocmfPayloadData.getRD().add(r1);
 
         Reading r2 = new Reading();
@@ -506,6 +524,7 @@ public class OCMFVerifiedDataTest {
         r2.setST("H");
         r2.setTX("E");
         r2.setTM("2018-07-24T13:23:04,000+0200 S");
+        r2.setRI("1-0:1.8.0");
         ocmfPayloadData.getRD().add(r2);
         ocmfPayloadData.setIS("1");
 
@@ -527,6 +546,7 @@ public class OCMFVerifiedDataTest {
         r1.setST("G");
         r1.setTX("B");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");
+        r1.setRI("1-0:1.8.0");
         ocmfPayloadData.getRD().add(r1);
 
         Reading r2 = new Reading();
@@ -534,6 +554,8 @@ public class OCMFVerifiedDataTest {
         r2.setST("G");
         r2.setTX("E");
         r2.setTM("2018-07-24T13:23:04,000+0200 T");
+        r2.setRI("1-0:1.8.0");
+
         ocmfPayloadData.getRD().add(r2);
         ocmfPayloadData.setIS("1");
 
@@ -555,6 +577,7 @@ public class OCMFVerifiedDataTest {
         r1.setST("G");
         r1.setTX("B");
         r1.setTM("2018-07-24T13:22:04,000+0200 S");
+        r1.setRI("1-0:1.8.0");
         ocmfPayloadData.getRD().add(r1);
 
         Reading r2 = new Reading();
@@ -562,6 +585,7 @@ public class OCMFVerifiedDataTest {
         r2.setST("G");
         r2.setTX("E");
         r2.setTM("2018-07-24T13:23:04,000+0200 S");
+        r2.setRI("1-0:1.8.0");
         ocmfPayloadData.getRD().add(r2);
         ocmfPayloadData.setIS("1");
 

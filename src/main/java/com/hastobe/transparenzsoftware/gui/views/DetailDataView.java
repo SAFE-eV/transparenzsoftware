@@ -29,6 +29,7 @@ import com.hastobe.transparenzsoftware.Utils;
 import com.hastobe.transparenzsoftware.gui.Colors;
 import com.hastobe.transparenzsoftware.gui.views.customelements.ErrorLog;
 import com.hastobe.transparenzsoftware.gui.views.customelements.VerifyTextArea;
+import com.hastobe.transparenzsoftware.gui.views.helper.DetailsList;
 import com.hastobe.transparenzsoftware.i18n.Translator;
 import com.hastobe.transparenzsoftware.verification.EncodingType;
 import com.hastobe.transparenzsoftware.verification.VerificationType;
@@ -67,8 +68,8 @@ public class DetailDataView extends JScrollPane {
         this.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
     }
 
-    public void setAdditionalData(Map<String, Object> additionalVerificationData) {
-        if (additionalVerificationData.isEmpty()) {
+    public void setAdditionalData(DetailsList detailsList) {
+        if (detailsList.isEmpty()) {
         	dataLabel.setText(Translator.get(TEXT_NO_DATA_DETAILS));
             return;
         }
@@ -78,8 +79,8 @@ public class DetailDataView extends JScrollPane {
                 .append(fontfamily)
                 .append("\"><table>");
         int count = 0;
-        for (String s : additionalVerificationData.keySet()) {
-            Object value = additionalVerificationData.get(s);
+        for (String s : detailsList.keySet()) {
+            Object value = detailsList.get(s);
             if (!(value instanceof Map)) {
                 String styleBg = "border-bottom: 1px dotted black;";
                 if (count % 2 != 0) {
