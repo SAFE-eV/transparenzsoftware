@@ -86,7 +86,12 @@ public class DetailDataView extends JScrollPane {
                 if (count % 2 != 0) {
                     styleBg += "background-color: dark-grey;";
                 }
+                String pre = "<span style=\"white-space: nowrap;\">";
+                String post = "</span>";
                 String addText = Utils.splitStringToGroups(value != null ? value.toString() : "", 70, "<br/>");
+                // Don't break kw/h:
+                addText = addText.replaceAll("kw/h", pre+"kw/h"+post);
+                addText = addText.replaceAll("kW/h", pre+"kW/h"+post);
                 bd.append(
                         String.format(
                                 "<tr style=\"%s\"><td style=\"width: 180px;\">%s</td><td><p>%s</p></td></tr>",

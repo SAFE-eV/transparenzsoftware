@@ -273,8 +273,16 @@ public class OCMFVerifiedData extends VerifiedData {
     private boolean isLawRelevant(Reading reading) {
     	String ri = reading.getRI();
     	if (ri == null) return false;
-    	if (!(ri.startsWith("1-0:1.8.") || ri.startsWith("1-b:1.8.")  || ri.startsWith("1-b:1.8."))) return false;
-    	return true;
+    	try {
+    		OBISCode obis = new OBISCode(ri);
+    		if (obis.getA() == 1 && obis.getC() == 1 && obis.getD() == 8) {
+    			return true;
+    		}
+    	}
+    	catch (Exception e) {
+    		
+    	}
+    	return false;
 	}
 
 	private void checkErrorFlag(Reading startValue) throws RegulationLawException {

@@ -13,9 +13,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.JAXBException;
+
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -100,10 +104,6 @@ public class ConsoleFileProcessor {
                 }
             }
 
-            if (transactionValues.size() <= 1) {
-                System.err.println("Transaction with less than 2 values given");
-                return false;
-            }
             if (type == null) {
                 System.err.println("No type given for the values");
                 return false;
@@ -115,14 +115,27 @@ public class ConsoleFileProcessor {
                 System.err.println(e.getLocalizedMessage());
                 return false;
             }
-            VerificationResult result;
-            try {
-                result = verifier.verifyTransaction(parser, transactionValues, publicKey);
-            } catch (TransactionValidationException e) {
-                System.err.println(e.getLocalizedMessage());
-                return false;
+            if (transactionValues.size() <= 1) {
+				VerificationResult result;
+				try {
+					String val = transactionValues.get(0).getSignedData().getValue();
+					result = verifier.verify(parser, val, publicKey);
+					resultList.clear();
+					resultList.add(result);
+				} catch (Exception e) {
+					System.err.println(e.getLocalizedMessage());
+					return false;
+				}
+            } else {
+	            VerificationResult result;
+	            try {
+	                result = verifier.verifyTransaction(parser, transactionValues, publicKey);
+	            } catch (TransactionValidationException e) {
+	                System.err.println(e.getLocalizedMessage());
+	                return false;
+	            }
+	            resultList.add(result);
             }
-            resultList.add(result);
         }
         try {
             Output output = new Output(factory.getVerifiedDataClasses(), resultList, values);
