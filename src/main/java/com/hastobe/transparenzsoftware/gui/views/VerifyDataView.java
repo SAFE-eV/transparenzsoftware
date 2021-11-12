@@ -102,7 +102,8 @@ public class VerifyDataView extends JPanel {
 		paneMiddle.add(Box.createVerticalStrut(5));
 		meterLabel.setBorder(debugBorder);
 		paneMiddle.add(meterLabel);
-		paneMiddle.add(Box.createVerticalStrut(20));
+		paneMiddle.add(Box.createVerticalStrut(10));
+		warningLabel.setBorder(debugBorder);
 		paneMiddle.add(warningLabel);
 		paneMiddle.add(initialHelpLabel);
 		paneMiddle.add(Box.createVerticalStrut(5));
@@ -155,7 +156,8 @@ public class VerifyDataView extends JPanel {
 		imageLabel.setName("lbl.image");
 		imageLabel.setMinimumSize(new Dimension(64,64));
 		warningLabel = new ErrorLog();
-		warningLabel.setBorder(new EmptyBorder(15, 15, 15, 15));
+		warningLabel.setAlignmentX(CENTER_ALIGNMENT);
+		//warningLabel.setBorder(new EmptyBorder(15, 15, 15, 15));
 		warningLabel.setName("lbl.warn");
 		initialHelpLabel = new JLabel();
 		initialHelpLabel.setAlignmentX(CENTER_ALIGNMENT);
@@ -177,6 +179,7 @@ public class VerifyDataView extends JPanel {
 
 		if (verificationResult.getErrorMessages().size() > 0) {
 			warningLabel.setText(verificationResult.getErrorMessages());
+			warningLabel.setVisible(true);
 		} else {
 			warningLabel.setVisible(false);
 		}

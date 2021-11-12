@@ -150,7 +150,7 @@ public class VerificationResult {
             try {
                 start.getVerifiedData().lawConform(stop.getVerifiedData());
             } catch (RegulationLawException e) {
-                Error lawViolation = new Error(Error.Type.VERIFICATION, e.getMessage(), e.getLocalizedMessage());
+                Error lawViolation = new Error(Error.Type.VERIFICATION, e.getMessage(), e.getLocalizedMessageKey());
                 verificationResult.addError(lawViolation);
             }
         }

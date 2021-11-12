@@ -12,7 +12,7 @@ public class ErrorLog extends JLabel {
     public ErrorLog() {
         this.setBackground(Colors.ERROR_LOG);
         this.setForeground(Color.WHITE);
-        this.setHorizontalAlignment(SwingConstants.CENTER);
+        this.setHorizontalAlignment(SwingConstants.LEFT);
         this.setOpaque(true);
     }
 

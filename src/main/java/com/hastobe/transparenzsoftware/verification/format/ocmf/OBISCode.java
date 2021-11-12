@@ -58,7 +58,7 @@ public class OBISCode {
 			else if (isHex(ch)) D = handleHex(ch,D);
 			else throw new IllegalArgumentException("OBIS code "+code+" can not be parsed.");
 			break;
-			case 4:	if (ch == '.') state = 5;
+			case 4:	if (ch == '.' || ch == '*') state = 5;
 			else if (isHex(ch)) E = handleHex(ch,E);
 			else throw new IllegalArgumentException("OBIS code "+code+" can not be parsed.");
 			break;

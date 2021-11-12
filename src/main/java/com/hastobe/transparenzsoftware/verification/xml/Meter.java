@@ -181,6 +181,7 @@ public class Meter {
     public static TimeSyncType getTimeSyncType(List<Meter> meters) {
         TimeSyncType timeSyncType = null;
         for (Meter meter : meters) {
+        	if (!meter.isLawRelevant()) continue;
             if (meter.timeSyncType == TimeSyncType.INFORMATIVE) {
                 return TimeSyncType.INFORMATIVE;
             }
