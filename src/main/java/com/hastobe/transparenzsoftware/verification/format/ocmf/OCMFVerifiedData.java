@@ -61,7 +61,7 @@ public class OCMFVerifiedData extends VerifiedData {
             if (rv == null) {
                 rv = (double) 0;
             }
-            Meter.TimeSyncType timeSyncType = reading.isTimeInformativeOnly() ? Meter.TimeSyncType.INFORMATIVE : Meter.TimeSyncType.SYNCHRONIZED;
+            Meter.TimeSyncType timeSyncType = reading.getTimeSyncType();
             Meter m = new Meter(rv, reading.getTimestamp(), type, timeSyncType, digits);
             m.setLawRelevant(isLawRelevant(reading));
             meters.add(m);

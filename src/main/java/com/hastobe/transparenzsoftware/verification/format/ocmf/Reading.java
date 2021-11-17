@@ -1,6 +1,7 @@
 package com.hastobe.transparenzsoftware.verification.format.ocmf;
 
 import com.hastobe.transparenzsoftware.i18n.Translator;
+import com.hastobe.transparenzsoftware.verification.xml.Meter.TimeSyncType;
 
 import java.beans.Transient;
 import java.time.OffsetDateTime;
@@ -95,12 +96,26 @@ public abstract class Reading {
         return splitted[1];
     }
 
-    public boolean isTimeInformativeOnly(){
+    public TimeSyncType getTimeSyncType(){
         String syncr = getTimeSynchronicity();
-        if(syncr == null){
-            return true;
-        }
-        return !syncr.toUpperCase().equals("R") && !syncr.toUpperCase().equals("S");
+        TimeSyncType result = TimeSyncType.INFORMATIVE;
+        if (syncr != null) {
+	        switch(this.getTimeSynchronicity().toUpperCase()) {
+	        case "I":
+	            result = TimeSyncType.INFORMATIVE;
+	            break;
+	        case "S":
+	            result = TimeSyncType.SYNCHRONIZED;
+	            break;
+	        case "R":
+	            result = TimeSyncType.REALTIME;
+	            break;
+	        case "U":
+	        default:
+	        
+	       }
+	    }
+        return result;
     }
 
     public String getLabelForTimeFlag(){

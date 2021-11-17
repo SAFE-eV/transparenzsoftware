@@ -10,6 +10,7 @@ import java.awt.font.TextAttribute;
 import java.net.URL;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -243,8 +244,19 @@ public class VerifyDataView extends JPanel {
 		setVerifyIconAndLabel(VerifyResult.NOT_YET_VERIFIED);
 	}
 
+	private List<Meter> filterLawRelevant(List<Meter> meters)
+	{
+		ArrayList<Meter> result = new ArrayList<>();
+		for (Meter m : meters) {
+			if (m.isLawRelevant()) result.add(m);
+		}
+		return result;
+	}
 
 	private void setMeters(List<Meter> meters, boolean transactionResult) {
+		
+		meters = filterLawRelevant(meters);
+		
 		if (meters.size() <= 0) {
 			return;
 		}

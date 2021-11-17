@@ -3,6 +3,8 @@ package com.hastobe.transparenzsoftware.verification.format.ocmf.v02;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.hastobe.transparenzsoftware.verification.xml.Meter.TimeSyncType;
+
 import java.time.OffsetDateTime;
 
 public class ReadingTest {
@@ -104,14 +106,14 @@ public class ReadingTest {
     public void testIsTimeSynchron(){
         Reading reading = new Reading();
         reading.setTM("2018-07-24T13:22:04,000+0200 I");
-        Assert.assertTrue(reading.isTimeInformativeOnly());
+        Assert.assertEquals(reading.getTimeSyncType(),TimeSyncType.INFORMATIVE);
         reading.setTM("2018-07-24T13:22:04,000+0200 S");
-        Assert.assertFalse(reading.isTimeInformativeOnly());
+        Assert.assertEquals(reading.getTimeSyncType(),TimeSyncType.SYNCHRONIZED);
         reading.setTM("2018-07-24T13:22:04,000+0200 U");
-        Assert.assertTrue(reading.isTimeInformativeOnly());
+        Assert.assertEquals(reading.getTimeSyncType(),TimeSyncType.INFORMATIVE);
 
         reading.setTM("2018-07-24T13:22:04,000+0200 R");
-        Assert.assertFalse(reading.isTimeInformativeOnly());
+        Assert.assertEquals(reading.getTimeSyncType(),TimeSyncType.REALTIME);
     }
 
     @Test

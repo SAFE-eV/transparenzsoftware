@@ -295,7 +295,7 @@ public class OCMFVerifiedDataTest {
         OCMFVerifiedData data = new OCMFVerifiedData(ocmf, "", "");
         Assert.assertEquals(2, data.getMeters().size());
         Assert.assertEquals(Meter.TimeSyncType.INFORMATIVE, data.getMeters().get(0).getTimeSyncType());
-        Assert.assertEquals(Meter.TimeSyncType.SYNCHRONIZED, data.getMeters().get(1).getTimeSyncType());
+        Assert.assertEquals(Meter.TimeSyncType.REALTIME, data.getMeters().get(1).getTimeSyncType());
 
         Assert.assertEquals(1.3457782, data.getMeters().get(0).getValue(), 0);
         Assert.assertEquals(2, data.getMeters().get(1).getValue(), 0);
@@ -313,6 +313,7 @@ public class OCMFVerifiedDataTest {
         r1.setST("G");
         r1.setTX("B");
         r1.setTM("2018-07-24T13:22:04,000+0200 I");
+        r1.setRI("1-b:1.8.0");
         ocmfPayloadData.getRD().add(r1);
 
         Reading r2 = new Reading();
@@ -320,6 +321,8 @@ public class OCMFVerifiedDataTest {
         r2.setST("G");
         r2.setTX("E");
         r2.setTM("2018-07-24T13:23:04,000+0200 R");
+        r2.setRI("1-b:1.8.0");
+
         ocmfPayloadData.getRD().add(r2);
         ocmfPayloadData.setIS("1");
 
@@ -327,8 +330,10 @@ public class OCMFVerifiedDataTest {
         OCMFVerifiedData data = new OCMFVerifiedData(ocmf, "", "");
         Assert.assertEquals(2, data.getMeters().size());
         Assert.assertEquals(Meter.TimeSyncType.INFORMATIVE, data.getMeters().get(0).getTimeSyncType());
-        Assert.assertEquals(Meter.TimeSyncType.SYNCHRONIZED, data.getMeters().get(1).getTimeSyncType());
+        Assert.assertEquals(Meter.TimeSyncType.REALTIME, data.getMeters().get(1).getTimeSyncType());
 
+        Assert.assertEquals(Meter.TimeSyncType.REALTIME,Meter.getTimeSyncType(data.getMeters()));
+        
         Assert.assertEquals(0, data.getMeters().get(0).getValue(), 0);
         Assert.assertEquals(2, data.getMeters().get(1).getValue(), 0);
     }

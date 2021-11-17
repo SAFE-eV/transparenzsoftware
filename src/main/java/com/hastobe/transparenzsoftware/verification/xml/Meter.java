@@ -177,18 +177,21 @@ public class Meter {
      * 2) If all meter values are of type SYNCHRONIZED, return type is SYNCHRONIZED
      * 3) If no meter value is of type INFORMATIVE and any value is of type REALTIME,
      *    no matter if there are any SYNCHRONIZED values, the return type is REALTIME
+     * 4) If first value is of type INFORMATIVE or REALTIME, and the last is REALTIME the return is REALTIME
      */
     public static TimeSyncType getTimeSyncType(List<Meter> meters) {
         TimeSyncType timeSyncType = null;
         for (Meter meter : meters) {
         	if (!meter.isLawRelevant()) continue;
-            if (meter.timeSyncType == TimeSyncType.INFORMATIVE) {
-                return TimeSyncType.INFORMATIVE;
-            }
-
-            if (timeSyncType == null) {
-                timeSyncType = meter.timeSyncType;
-            } else if (timeSyncType == TimeSyncType.SYNCHRONIZED && meter.getTimeSyncType() == TimeSyncType.REALTIME) {
+        	TimeSyncType mt = meter.getTimeSyncType();
+        	if (timeSyncType == null || mt == TimeSyncType.INFORMATIVE) {
+            	// If nothing else is set or if it is INFO:
+                timeSyncType = mt;
+            } else if (timeSyncType == TimeSyncType.INFORMATIVE && (mt == TimeSyncType.REALTIME ||
+            		mt == TimeSyncType.SYNCHRONIZED)) {
+            	// If previous value is INFO or SYNCHRONIZED and actual value is REAL -> REAL
+                timeSyncType = TimeSyncType.REALTIME;
+            } else if (timeSyncType == TimeSyncType.SYNCHRONIZED && mt == TimeSyncType.REALTIME) {
                 timeSyncType = TimeSyncType.REALTIME;
             }
         }
