@@ -31,6 +31,7 @@ import javax.swing.border.EmptyBorder;
 import com.hastobe.transparenzsoftware.Utils;
 import com.hastobe.transparenzsoftware.gui.Colors;
 import com.hastobe.transparenzsoftware.gui.views.customelements.ErrorLog;
+import com.hastobe.transparenzsoftware.gui.views.customelements.HintTextField;
 import com.hastobe.transparenzsoftware.gui.views.customelements.VerifyTextArea;
 import com.hastobe.transparenzsoftware.i18n.Translator;
 import com.hastobe.transparenzsoftware.verification.EncodingType;
@@ -59,7 +60,7 @@ public class VerifyDataView extends JPanel {
 	private ErrorLog warningLabel;
 	private JLabel initialHelpLabel;
 	private JLabel meterDescLabel;
-	private final VerifyTextArea publicKeyField;
+	private final HintTextField publicKeyField;
 	private final JLabel publicKeyLabel;
 
 	private Border tfDefaultBorder;
@@ -72,7 +73,7 @@ public class VerifyDataView extends JPanel {
 		//pane.setLayout(new BoxLayout(pane, BoxLayout.PAGE_AXIS));
 		pane.setLayout(new BorderLayout(2,2));
 		publicKeyLabel = new JLabel("<html>" + Translator.get(TEXT_PUBLIC_KEY) + "</html>");
-		this.publicKeyField = new VerifyTextArea(mainView,eventsEnabled);
+		this.publicKeyField = new HintTextField(mainView,eventsEnabled);
 		this.publicKeyField.setColumns(60);
 		this.publicKeyField.setRows(4);
 		this.publicKeyField.setName("text.pubkey");
@@ -368,20 +369,17 @@ public class VerifyDataView extends JPanel {
 		publicKeyField.setText("");
 	}
 
-	public void fillUpContent(String publicKeyContent) {
+	public void fillUpContent(String publicKeyContent, boolean indeterminate) {
 		if (publicKeyContent == null) {
 			publicKeyContent = "";
 		}
 		setEnabled(false);
+		publicKeyField.setHint(Translator.get("app.view.pubkey.ok"));
 		publicKeyField.setText(publicKeyContent);
 	}
 
-	public VerifyTextArea getPublicKeyField() {
-		return publicKeyField;
-	}
-
 	public void setPublicKey(String parsePublicKey) {
-		fillUpContent(parsePublicKey);
+		fillUpContent(parsePublicKey,false);
 	}
 
 	public void setPublicKeyWarning(boolean warn) {
@@ -398,6 +396,10 @@ public class VerifyDataView extends JPanel {
 	public void setEnabled(boolean b) {
 		eventsEnabled.set(b);
 		this.publicKeyField.setEnabled(b);
+	}
+
+	public String getPublicKeyContent() {
+		return publicKeyField.getText();
 	}
 
 

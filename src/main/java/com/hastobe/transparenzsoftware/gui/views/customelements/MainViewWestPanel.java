@@ -65,7 +65,7 @@ public class MainViewWestPanel extends JPanel {
                 mainView.setEnableVerifyMode(true);
                 transactionid = valueHolder.getTransactionId();
                 if (tree.getTransactionMap().get(transactionid) != null && tree.getTransactionMap().get(transactionid).size() > 0) {
-                    mainView.stepToValue(tree.getTransactionMap().get(transactionid).get(0).getInitIndex());
+                    mainView.stepToValueWithKeyCheck(tree.getTransactionMap().get(transactionid).get(0).getInitIndex());
                 } else {
                     LOGGER.error(String.format("Could not load value for transaction id %s", transactionid));
                 }

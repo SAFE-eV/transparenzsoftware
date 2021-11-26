@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<values>
+  <value transactionId="1" context="Transaction.Begin">
+    <signedData format="OCMF" encoding="plain">OCMF|{"FV":"1.0","GI":"BAUER Electronic BSM-WS36A-H01-1311-0000","GS":"001BZR1521070006","GV":"1.9:32CA:AFF4, 6d1dd3c-dirty","PG":"T2","MV":"BAUER Electronic","MM":"BSM-WS36A-H01-1311-0000","MS":"001BZR1521070006","IS":true,"IT":"UNDEFINED","ID":"contract-id: rfid:12345678abcdef","RD":[{"TM":"2021-10-07T15:29:55,000+0200 S","TX":"B","RV":0,"RI":"1-0:1.8.0*198","RU":"Wh","XV":76040,"XI":"1-0:1.8.0*255","XU":"Wh","XT":3,"RT":"AC","EF":"Et","ST":"E"}]}|{"SA":"ECDSA-secp256r1-SHA256","SD":"3045022100c2ba43bee09b3868ad1c1e6211003a2ce31fd7b65c3f0b0e677d845ae4c50203022038a8deb1368282a33271fdc7ea5cf8dc654976b44a40187b8bf78baaf4a646dc"}</signedData>
+    <publicKey encoding="plain">3059301306072a8648ce3d020106082a8648ce3d0301070342000413bd745d84ea9b0f943e9724d6d91d7b19e73e474eac0561dc1d7d16235726c663b7f552d5deb98549c72d2f918324c55ce5b892a6251143c4aae775ac691815</publicKey>
+  </value>
+  <value transactionId="1" context="Transaction.End">
+    <signedData format="OCMF" encoding="plain">OCMF|{"FV":"1.0","GI":"BAUER Electronic BSM-WS36A-H01-1311-0000","GS":"001BZR1521070006","GV":"1.9:32CA:AFF4, 6d1dd3c-dirty","PG":"T3","MV":"BAUER Electronic","MM":"BSM-WS36A-H01-1311-0000","MS":"001BZR1521070006","IS":true,"IT":"UNDEFINED","ID":"contract-id: rfid:12345678abcdef","RD":[{"TM":"2021-10-07T15:38:05,000+0200 S","TX":"E","RV":0,"RI":"1-0:1.8.0*198","RU":"Wh","XV":76040,"XI":"1-0:1.8.0*255","XU":"Wh","XT":4,"RT":"AC","EF":"Et","ST":"E"}]}|{"SA":"ECDSA-secp256r1-SHA256","SD":"3044022002486c21c50359719de774c41c6b10535078186fd0943ffef32b92279996727602201fb6186f368aa987cfb6975b1de652f89afbe983acfa6a1a179f321005f5f6e5"}</signedData>
+    <publicKey encoding="plain">3059301306072a8648ce3d020106082a8648ce3d0301070342000413bd745d84ea9b0f943e9724d6d91d7b19e73e474eac0561dc1d7d16235726c663b7f552d5deb98549c72d2f918324c55ce5b892a6251143c4aae775ac691815</publicKey>
+  </value>
+</values>

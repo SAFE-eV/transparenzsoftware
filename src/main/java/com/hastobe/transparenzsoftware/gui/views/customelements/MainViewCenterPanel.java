@@ -94,12 +94,12 @@ public class MainViewCenterPanel extends JPanel {
     }
 
     public String getPublicKeyContent() {
-        return verifyDataView.getPublicKeyField().getText();
+        return verifyDataView.getPublicKeyContent();
     }
 
-    public void fillUpContent(String rawDataContent, String publicKeyContent, EncodingType encoding, VerificationType type) {
+    public void fillUpContent(String rawDataContent, String publicKeyContent, boolean indeterminate, EncodingType encoding, VerificationType type) {
         raw.fillUpContent(rawDataContent, encoding, type);
-        verifyDataView.fillUpContent(publicKeyContent);
+        verifyDataView.fillUpContent(publicKeyContent, indeterminate);
     }
 
     public VerificationType getVerificationType() {

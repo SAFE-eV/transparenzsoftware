@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class MainView extends JFrame {
@@ -51,6 +52,7 @@ public class MainView extends JFrame {
     private int currentValuePos;
     private final Timer delayVerifyTimer;
 	private boolean verifyMode;
+	private boolean publicKeyIsIndeterminate;
 
     public MainView(VerificationParserFactory factory) {
         this.factory = factory;
@@ -131,7 +133,6 @@ public class MainView extends JFrame {
     }
     /**
      * Loads the content of the fields and tries to verify it
-     * If it was successfully a new window will be opened
      */
     private void verify_() {
         setEnableVerifyButton(false);
@@ -141,8 +142,13 @@ public class MainView extends JFrame {
 
         String publicKeyContent = centerPanel.getPublicKeyContent().trim();
         if (publicKeyContent.isEmpty() && !centerPanel.getVerificationType().isPublicKeyAware()) {
-            LOGGER.error("Empty public key field");
-            setErrorMessage(Translator.get("error.values.no.publickey"));
+            if (publicKeyIsIndeterminate) {
+	            LOGGER.error("Public key is inderminate");
+	            setErrorMessage(Translator.get("error.values.ind.publickey"));
+            } else {
+	            LOGGER.error("Empty public key field");
+	            setErrorMessage(Translator.get("error.values.no.publickey"));
+            }
             return;
         }
 
@@ -276,12 +282,29 @@ public class MainView extends JFrame {
         centerPanel.setEnabledFields(true);
     }
 
+    public void stepToValueWithKeyCheck(int index) {
+        // Check, if all public keys are the same:
+        publicKeyIsIndeterminate = false;
+        if (values.getValues().size() > 1) {
+        	HashSet<String> keys = new HashSet<>();
+        	for (Value v : values.getValues()) {
+        		keys.add(v.getPublicKey().getValue());
+        	}
+    		publicKeyIsIndeterminate = keys.size() > 1;
+        }
+        stepToValue_(index);
+    }
+
+    public void stepToValue(int index) {
+        publicKeyIsIndeterminate = false;
+    	stepToValue_(index);
+    }
     /**
      * Changes to the view to the according element of index of the values
      *
      * @param index page nr
      */
-    public void stepToValue(int index) {
+    private void stepToValue_(int index) {
         currentValuePos = index;
         setEnableVerifyButton(false);
 
@@ -310,7 +333,8 @@ public class MainView extends JFrame {
                         break;
                 }
             }
-            centerPanel.fillUpContent(signedData.getValue(), publicKeyContent, signedData.getEncodingType(), signedData.getFormatAsVerificationType());
+            if (publicKeyIsIndeterminate) publicKeyContent = "";
+            centerPanel.fillUpContent(signedData.getValue(), publicKeyContent, publicKeyIsIndeterminate, signedData.getEncodingType(), signedData.getFormatAsVerificationType());
         	// auto
         	delayedAutoVerify();
 
@@ -564,7 +588,7 @@ public class MainView extends JFrame {
 			return ;
         }
         pubKey = trimString(pubKey);
-        centerPanel.fillUpContent(rawDataContent, pubKey,
+        centerPanel.fillUpContent(rawDataContent, pubKey, false,
         		EncodingType.PLAIN,VerificationType.UNKNOWN);
         //we could not read values so it can be a single value
         //flag is necessary to remove the values in the ui which are there at the moment
