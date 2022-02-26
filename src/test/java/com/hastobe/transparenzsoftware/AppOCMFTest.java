@@ -74,11 +74,9 @@ public class AppOCMFTest extends AbstractAppTest {
     public void test_second_key_fail() throws Exception {
     	chooseFile(testDirXML,"second_key_fail_ocmf.xml");
     	String pubKey = getWindow().textBox("text.pubkey").text();
-    	assertEquals("30 56 30 10 06 07 2A 86 48 CE 3D 02 01 06 05 2B 81 04 00 0A 03 42 00 04 AC EB B9 E1 48 F9 66 DB 42 35 C4 9E 5E CA AD 19 79 F2 2F 4F AF E4 23 8A 6B A3 23 FA A0 EA 9F FB 68 4B 0B FC 7F CE 48 F7 81 C9 15 23 63 20 1A A0 DC 79 38 46 C3 97 A1 DB D4 F4 6F 87 00 83 09 B1", pubKey);
+    	assertEquals("", pubKey);
     	delayForVerify();
-    	getWindow().label("lbl.icon").requireText(Daten_wurden_verifiziert);
-    	getWindow().label("lbl.meter").requireText(Pattern.compile(".*1,833 kWh.*"));
-    	getWindow().label("lbl.meter").requireText(Pattern.compile(".*0,000 kWh.*"));
+    	getWindow().label("lbl.icon").requireText(".*Keine Daten vorhanden.*");
     	delay();
     }
 

@@ -3,7 +3,7 @@
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout>
-                <pattern>%d{HH:mm:ss.SSS} %-5level %logger{30} - %msg%n</pattern>
+                <pattern>%d{HH:mm:ss.SSS} %-5level %logger{30} - %m{lookups}-%n</pattern>
                 <alwaysWriteExceptions>true</alwaysWriteExceptions>
                 <!--<pattern>%-5level - %msg%n</pattern>-->
                 <!--<alwaysWriteExceptions>false</alwaysWriteExceptions>-->
