@@ -5,7 +5,7 @@
 # java
 target/*
 /target/
-
+/versionen/
 
 # eclipse
 .settings/*

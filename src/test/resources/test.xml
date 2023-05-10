@@ -1,0 +1,10 @@
+<?xml version="1.0"?><values>
+<value transactionId="9850" context="Transaction.Begin">
+<signedData>OCMF|{"FV":"1.0","GI":"eBZ LD3","GS":"1EBZ0300034628","GV":"V207","MS":"1EBZ0300034628","PG":"T117","IS":true,"IL":"TRUSTED","IT":"EMAID","ID":"DKV_Testbox2","CI":"Dies","CT":"EVSEID","RD":[{"TM":"2022-10-27T19:15:20,000+0200 I","TX":"B","RV":2850685,"RI":"1-b:1.8.e","RU":"Wh","ST":"G"},{"TM":"2022-10-27T19:20:06,000+0200 I","TX":"E","RV":2850951,"RI":"1-b:1.8.e","RU":"Wh","ST":"G"}]}|{"SA":"ECDSA-secp192r1-SHA256","SD":"303402184b322dbd3e5fcf5d4d0d2334052080ea6791c7126839237f021879989dcbf73069c5abebea76bd9268ccff2c56edb8faf409"}</signedData>
+        <publicKey encoding="hex">3049301306072a8648ce3d020106082a8648ce3d030101033200041e155ef46fbcc56005769c08d792127c006c242ccccd96bf7051b6fbc278497036659e7bae57f542776a17c7f8b28600</publicKey>
+</value>
+<value transactionId="9850" context="Transaction.End">
+<signedData>OCMF|{"FV":"1.0","GI":"eBZ LD3","GS":"1EBZ0300034628","GV":"V207","MS":"1EBZ0300034628","PG":"T120","IS":true,"IL":"TRUSTED","IT":"EMAID","ID":"DKV_Testbox2","CI":"Dies","CT":"EVSEID","RD":[{"TM":"2022-10-27T19:38:50,000+0200 I","TX":"B","RV":2851485,"RI":"1-b:1.8.e","RU":"Wh","ST":"G"},{"TM":"2022-10-27T19:43:38,000+0200 I","TX":"E","RV":2851753,"RI":"1-b:1.8.e","RU":"Wh","ST":"G"}]}|{"SA":"ECDSA-secp192r1-SHA256","SD":"30340218e10a077929f593717affdff69a5df0d2862989a6638f873d0218007d21b1c0255c5b24a3c5a01d600839ebae2bb67bcb1159"}</signedData>
+        <publicKey encoding="hex">3049301306072a8648ce3d020106082a8648ce3d030101033200041e155ef46fbcc56005769c08d792127c006c242ccccd96bf7051b6fbc278497036659e7bae57f542776a17c7f8b28600</publicKey>
+</value>
+</values>
