@@ -6,8 +6,15 @@ Measuring Instruments Directive 2014/32/EU (MID) and national laws (German: Eich
 The common format for this data is OCMF. Please refer to safe-ev.de for further information.
 
 # Install and run
-Be sure that maven is installed [https://maven.apache.org/](https://maven.apache.org/). To
-package the application run:
+Be sure that maven is installed (this software was compiled/tested with maven 3.9.6) [https://maven.apache.org/](https://maven.apache.org/).
+
+First, checkout the [https://github.com/SAFE-eV/SAFESealing](SAFESealing software) as a separate package and run 
+
+`mvn clean install -DskipTests`
+
+Tests can be skipped, they may take a long time.
+
+To package the transparenzsoftware application run:
 
 `mvn clean package` 
 
@@ -17,7 +24,7 @@ Run with:
 
 `java -jar target/transparenzsoftware.jar`
   
-
+A lot of sample OCMF files and other formats can be found in the `src/test/resources` directory.
   
 ## Options
 * `-v` enables the logging
@@ -47,4 +54,4 @@ The application has 4 major packages.
  the components and event listeners.
 * `i18n` holds a class wrapping the loading of translated strings
 * `output` contains classes for generating the resulting xml
-* `verifification` contains the logic to load and verify all implemented formats
+* `verification` contains the logic to load and verify all implemented formats

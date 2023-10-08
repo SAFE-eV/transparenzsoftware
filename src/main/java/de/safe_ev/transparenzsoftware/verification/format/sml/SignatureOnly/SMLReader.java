@@ -7,9 +7,9 @@ import de.safe_ev.transparenzsoftware.verification.ValidationException;
 import de.safe_ev.transparenzsoftware.verification.format.sml.SMLSignature;
 import de.safe_ev.transparenzsoftware.verification.format.sml.SignatureOnly.embedded.SignedMeterValue;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import java.io.StringReader;
 
 public class SMLReader {

@@ -16,86 +16,87 @@ import de.safe_ev.transparenzsoftware.verification.result.VerificationResult;
 
 public class EDLMennekesVerificationParser extends SMLVerificationParserBase implements ContainedPublicKeyParser {
 
-	private static final Logger LOGGER = LogManager.getLogger(EDLMennekesVerificationParser.class);
+    private static final Logger LOGGER = LogManager.getLogger(EDLMennekesVerificationParser.class);
 
-	private final XMLReader xmlReader;
+    private final XMLReader xmlReader;
 
-	public EDLMennekesVerificationParser() {
-		super();
-		xmlReader = new XMLReader();
-	}
+    public EDLMennekesVerificationParser() {
+	super();
+	xmlReader = new XMLReader();
+    }
 
-	@Override
-	public VerificationResult parseAndVerify(String data, byte[] publicKey, IntrinsicVerified intrinsicVerified) {
-		VerificationResult verificationResult;
-		try {
-			final ChargingProcess chargingProcess = xmlReader.readChargingProcessFromString(data, true);
-			final EDLMennekesSignature mennekesSignatureStart = new EDLMennekesSignature(chargingProcess,
-					EDLMennekesSignature.ReadingType.MEASUREMENT_START);
-			final EDLMennekesSignature mennekesSignatureEnd = new EDLMennekesSignature(chargingProcess,
-					EDLMennekesSignature.ReadingType.MEASUREMENT_END);
-			final EDLMennekesVerifiedData verifiedData = new EDLMennekesVerifiedData(chargingProcess,
-					mennekesSignatureStart, mennekesSignatureEnd);
-			if (!intrinsicVerified.ok()) {
-				if (!verifier.verify(publicKey, mennekesSignatureStart)) {
-					return new VerificationResult(verifiedData, Error.withVerificationFailed());
-				}
-				if (!verifier.verify(publicKey, mennekesSignatureEnd)) {
-					return new VerificationResult(verifiedData, Error.withVerificationFailed());
-				}
-			}
-			verificationResult = new VerificationResult(verifiedData, true, intrinsicVerified);
-			try {
-				verifiedData.checkLawIntegrityForTransaction();
-			} catch (final RegulationLawException e) {
-				verificationResult.addError(Error.withRegulationLawException(e));
-			}
-		} catch (final ValidationException e) {
-			verificationResult = new VerificationResult(Error.withValidationException(e));
+    @Override
+    public VerificationResult parseAndVerify(String data, byte[] publicKey, IntrinsicVerified intrinsicVerified) {
+	LOGGER.info("Starting...");
+	VerificationResult verificationResult;
+	try {
+	    final ChargingProcess chargingProcess = xmlReader.readChargingProcessFromString(data, true);
+	    final EDLMennekesSignature mennekesSignatureStart = new EDLMennekesSignature(chargingProcess,
+		    EDLMennekesSignature.ReadingType.MEASUREMENT_START);
+	    final EDLMennekesSignature mennekesSignatureEnd = new EDLMennekesSignature(chargingProcess,
+		    EDLMennekesSignature.ReadingType.MEASUREMENT_END);
+	    final EDLMennekesVerifiedData verifiedData = new EDLMennekesVerifiedData(chargingProcess,
+		    mennekesSignatureStart, mennekesSignatureEnd);
+	    if (!intrinsicVerified.ok()) {
+		if (!verifier.verify(publicKey, mennekesSignatureStart)) {
+		    return new VerificationResult(verifiedData, Error.withVerificationFailed());
 		}
-		return verificationResult;
-	}
-
-	@Override
-	public VerificationType getVerificationType() {
-		return VerificationType.EDL_40_MENNEKES;
-	}
-
-	@Override
-	public boolean canParseData(String data) {
-		try {
-			final ChargingProcess chargingProcess = xmlReader.readChargingProcessFromString(data, false);
-			if (chargingProcess == null || chargingProcess.getPublicKey() == null) {
-				return false;
-			}
-		} catch (final Exception e) {
-			return false;
+		if (!verifier.verify(publicKey, mennekesSignatureEnd)) {
+		    return new VerificationResult(verifiedData, Error.withVerificationFailed());
 		}
-		LOGGER.info("Match for " + VerificationType.EDL_40_MENNEKES + " detected");
-		return true;
+	    }
+	    verificationResult = new VerificationResult(verifiedData, true, intrinsicVerified);
+	    try {
+		verifiedData.checkLawIntegrityForTransaction();
+	    } catch (final RegulationLawException e) {
+		verificationResult.addError(Error.withRegulationLawException(e));
+	    }
+	} catch (final ValidationException e) {
+	    verificationResult = new VerificationResult(Error.withValidationException(e));
 	}
+	return verificationResult;
+    }
 
-	@Override
-	public String parsePublicKey(String data) {
-		try {
-			final ChargingProcess chargingProcess = xmlReader.readChargingProcessFromString(data, true);
-			return Utils.clearString(chargingProcess.getPublicKey());
-		} catch (final ValidationException e) {
-			return null;
-		}
-	}
+    @Override
+    public VerificationType getVerificationType() {
+	return VerificationType.EDL_40_MENNEKES;
+    }
 
-	@Override
-	public String createFormattedKey(String data) {
-		final String publicKey = parsePublicKey(data);
-		if (publicKey == null) {
-			return null;
-		}
-		return Utils.splitStringToGroups(publicKey, 4);
+    @Override
+    public boolean canParseData(String data) {
+	try {
+	    final ChargingProcess chargingProcess = xmlReader.readChargingProcessFromString(data, false);
+	    if (chargingProcess == null || chargingProcess.getPublicKey() == null) {
+		return false;
+	    }
+	} catch (final Exception e) {
+	    return false;
 	}
+	LOGGER.info("Match for " + VerificationType.EDL_40_MENNEKES + " detected");
+	return true;
+    }
 
-	@Override
-	public Class getVerfiedDataClass() {
-		return EDLMennekesVerifiedData.class;
+    @Override
+    public String parsePublicKey(String data) {
+	try {
+	    final ChargingProcess chargingProcess = xmlReader.readChargingProcessFromString(data, true);
+	    return Utils.clearString(chargingProcess.getPublicKey());
+	} catch (final ValidationException e) {
+	    return null;
 	}
+    }
+
+    @Override
+    public String createFormattedKey(String data) {
+	final String publicKey = parsePublicKey(data);
+	if (publicKey == null) {
+	    return null;
+	}
+	return Utils.splitStringToGroups(publicKey, 4);
+    }
+
+    @Override
+    public Class getVerfiedDataClass() {
+	return EDLMennekesVerifiedData.class;
+    }
 }

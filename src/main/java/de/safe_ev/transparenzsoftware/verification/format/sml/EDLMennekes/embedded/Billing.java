@@ -1,6 +1,6 @@
 package de.safe_ev.transparenzsoftware.verification.format.sml.EDLMennekes.embedded;
 
-import javax.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.*;
 import java.util.List;
 
 @XmlRootElement(name = "Billing", namespace = "http://www.mennekes.de/Mennekes.EdlVerification.xsd")

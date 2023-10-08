@@ -1,9 +1,9 @@
 package de.safe_ev.transparenzsoftware.verification.input;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.Unmarshaller;
 
 import de.safe_ev.transparenzsoftware.verification.format.sml.EDLMennekes.embedded.Billing;
 import de.safe_ev.transparenzsoftware.verification.format.sml.EDLMennekes.embedded.BillingAdapterException;

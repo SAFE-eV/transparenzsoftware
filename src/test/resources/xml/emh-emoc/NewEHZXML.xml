@@ -1,0 +1,12 @@
+<?xml version="1.0"?><values>
+<value transactionId="8866" context="Transaction.Begin">
+<signedData>
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;&lt;signedMeterValue&gt;  &lt;publicKey encoding="base64"&gt;r+ae+UBsxrGv00udDk3Yg2Vqn14daq3Ld1+thbR66UQrveLLDAL2E+dADLovh6k6/brIjmJYa8Qq8gqll25E1A==&lt;/publicKey&gt;  &lt;meterValueSignature encoding="base64"&gt;jLLuezxgxBw9vCEXlCYr2/IhVtrT9I7rdg1216R3f1P3Mhlr9xT8hutSI5KlVVJ7mt5pit5hxxyt0nYsqhjxhQBG&lt;/meterValueSignature&gt;  &lt;signatureMethod&gt;ECDSA256SHA256&lt;/signatureMethod&gt;  &lt;encodingMethod&gt;EDL&lt;/encodingMethod&gt;  &lt;encodedMeterValue encoding="base64"&gt;CgFFTUgAALoFtLWTmWSI3jcCAboAAAABAAERAP8e//47AwAAAAAAAEYBQUJDREVGR0gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKuTmWRq7gIAAAAAAGruAgAAAAAA6AMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=&lt;/encodedMeterValue&gt;&lt;/signedMeterValue&gt;
+</signedData>
+</value>
+<value transactionId="8866" context="Transaction.End">
+<signedData>
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;&lt;signedMeterValue&gt;  &lt;publicKey encoding="base64"&gt;r+ae+UBsxrGv00udDk3Yg2Vqn14daq3Ld1+thbR66UQrveLLDAL2E+dADLovh6k6/brIjmJYa8Qq8gqll25E1A==&lt;/publicKey&gt;  &lt;meterValueSignature encoding="base64"&gt;An3+idhUzPkKIDDKmElPaqmCC8NJePARxASkqmbu8YRQP5qH0l1/Gl46pFcrzmD88IMd+Qc46B8KM8Dy2ub7IQBG&lt;/meterValueSignature&gt;  &lt;signatureMethod&gt;ECDSA256SHA256&lt;/signatureMethod&gt;  &lt;encodingMethod&gt;EDL&lt;/encodingMethod&gt;  &lt;encodedMeterValue encoding="base64"&gt;CgFFTUgAALoFtBqUmWSIQzgCAbsAAAABAAERAP8e/xE8AwAAAAAAAEYCQUJDREVGR0gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCUmWR87gIAAAAAAHzuAgAAAAAA6AMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=&lt;/encodedMeterValue&gt;&lt;/signedMeterValue&gt;
+</signedData>
+</value>
+</values>

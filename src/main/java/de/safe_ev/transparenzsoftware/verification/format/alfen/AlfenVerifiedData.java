@@ -1,8 +1,8 @@
 package de.safe_ev.transparenzsoftware.verification.format.alfen;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import de.safe_ev.transparenzsoftware.Utils;
 import de.safe_ev.transparenzsoftware.gui.views.helper.DetailsList;

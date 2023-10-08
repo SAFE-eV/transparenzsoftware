@@ -1,11 +1,9 @@
 package de.safe_ev.transparenzsoftware.verification.format.ocmf;
 
-
 import java.beans.Transient;
 import java.util.List;
 
 public abstract class OCMFPayloadData {
-
 
     /**
      * Format version
@@ -26,9 +24,8 @@ public abstract class OCMFPayloadData {
     protected String GS;
 
     /**
-     * Paginating of the whole dataset
-     * Format is `Code.Number`
-     * Valid codes are: F (Fiscal), T (Transaction)
+     * Paginating of the whole dataset Format is `Code.Number` Valid codes are: F
+     * (Fiscal), T (Transaction)
      */
     protected String PG;
 
@@ -52,11 +49,9 @@ public abstract class OCMFPayloadData {
      */
     protected String MF;
 
-
     /**
-     * Identification flags list of strings, valid codes see OCMF documentation
-     * They are describing values which are used to identify the authentication
-     * media.
+     * Identification flags list of strings, valid codes see OCMF documentation They
+     * are describing values which are used to identify the authentication media.
      */
     protected List<String> IF;
 
@@ -75,111 +70,110 @@ public abstract class OCMFPayloadData {
      */
     private String TT;
 
-    
     public String getFV() {
-        return FV;
+	return FV;
     }
 
     public void setFV(String FV) {
-        this.FV = FV;
+	this.FV = FV;
     }
 
     public String getGI() {
-        return GI;
+	return GI;
     }
 
     public void setGI(String GI) {
-        this.GI = GI;
+	this.GI = GI;
     }
 
     public String getGV() {
-        return GV;
+	return GV;
     }
 
     public void setGV(String GV) {
-        this.GV = GV;
+	this.GV = GV;
     }
 
     public String getPG() {
-        return PG;
+	return PG;
     }
 
     public void setPG(String PG) {
-        this.PG = PG;
+	this.PG = PG;
     }
 
     public String getMV() {
-        return MV;
+	return MV;
     }
 
     public void setMV(String MV) {
-        this.MV = MV;
+	this.MV = MV;
     }
 
     public String getMM() {
-        return MM;
+	return MM;
     }
 
     public void setMM(String MM) {
-        this.MM = MM;
+	this.MM = MM;
     }
 
     public String getMS() {
-        return MS;
+	return MS;
     }
 
     public void setMS(String MS) {
-        this.MS = MS;
+	this.MS = MS;
     }
 
     public String getMF() {
-        return MF;
+	return MF;
     }
 
     public void setMF(String MF) {
-        this.MF = MF;
+	this.MF = MF;
     }
 
     public String getIT() {
-        return IT;
+	return IT;
     }
 
     public void setIT(String IT) {
-        this.IT = IT;
+	this.IT = IT;
     }
 
     public List<String> getIF() {
-        return IF;
+	return IF;
     }
 
     public void setIF(List<String> IF) {
-        this.IF = IF;
+	this.IF = IF;
     }
 
     public String getID() {
-        return ID;
+	return ID;
     }
 
     public void setID(String ID) {
-        this.ID = ID;
+	this.ID = ID;
     }
 
-	public String getTT() {
-		return TT;
-	}
+    public String getTT() {
+	return TT;
+    }
 
-	public void setTT(String tarifText) {
-		TT = tarifText;
-	}
+    public void setTT(String tarifText) {
+	TT = tarifText;
+    }
 
-	public abstract List<? extends Reading> getRD();
+    public abstract List<? extends Reading> getRD();
 
     public String getGS() {
-        return GS;
+	return GS;
     }
 
     public void setGS(String GS) {
-        this.GS = GS;
+	this.GS = GS;
     }
 
     /**
@@ -188,23 +182,23 @@ public abstract class OCMFPayloadData {
      * @return true if data contains complete transaction
      */
     public boolean containsCompleteTransaction() {
-        if (!getPaginationContext().equals("T")) {
-            return false;
-        }
-        boolean startFound = false;
-        boolean endFound = false;
-        for (Reading reading : getRD()) {
-            if (reading.getTX() == null) {
-                continue;
-            }
-            if (reading.isStartTransaction()) {
-                startFound = true;
-            }
-            if (reading.isStopTransaction()) {
-                endFound = true;
-            }
-        }
-        return startFound && endFound;
+	if (!getPaginationContext().equals("T")) {
+	    return false;
+	}
+	boolean startFound = false;
+	boolean endFound = false;
+	for (final Reading reading : getRD()) {
+	    if (reading.getTX() == null) {
+		continue;
+	    }
+	    if (reading.isStartTransaction()) {
+		startFound = true;
+	    }
+	    if (reading.isStopTransaction()) {
+		endFound = true;
+	    }
+	}
+	return startFound && endFound;
     }
 
     /**
@@ -213,10 +207,10 @@ public abstract class OCMFPayloadData {
      * @return pagination code
      */
     public String getPaginationContext() {
-        if (getPG() == null || getPG().length() <= 1) {
-            return null;
-        }
-        return getPG().substring(0, 1);
+	if (getPG() == null || getPG().length() <= 1) {
+	    return null;
+	}
+	return getPG().substring(0, 1);
     }
 
     @Transient
@@ -225,5 +219,9 @@ public abstract class OCMFPayloadData {
     @Transient
     public abstract String getIdStatus();
 
+    @Transient
+    public LossCompensation getLC() {
+	return null;
+    };
 
 }

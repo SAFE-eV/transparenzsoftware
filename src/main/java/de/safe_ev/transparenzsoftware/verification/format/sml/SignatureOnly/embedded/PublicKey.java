@@ -1,6 +1,6 @@
 package de.safe_ev.transparenzsoftware.verification.format.sml.SignatureOnly.embedded;
 
-import javax.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.*;
 
 @XmlRootElement(name = "publicKey")
 @XmlAccessorType(XmlAccessType.FIELD)

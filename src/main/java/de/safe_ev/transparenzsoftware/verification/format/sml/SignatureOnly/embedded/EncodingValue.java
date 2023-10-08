@@ -1,6 +1,6 @@
 package de.safe_ev.transparenzsoftware.verification.format.sml.SignatureOnly.embedded;
 
-import javax.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 import de.safe_ev.transparenzsoftware.verification.DecodingException;
 import de.safe_ev.transparenzsoftware.verification.EncodingType;
