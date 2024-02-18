@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<bouncycastle.version>1.72</bouncycastle.version>
+		<bouncycastle.version>1.74</bouncycastle.version>
 		<jdk.version>11</jdk.version>
 		<jdk.target.version>11</jdk.target.version>
 		<file.encoding>UTF-8</file.encoding>
