@@ -23,7 +23,7 @@ public class OCMFVerificationParser implements VerificationParser {
 	public static final String HEADER_VALUE = "OCMF";
 
 	public static final double MIN_VERSION = 0.1;
-	public static final double MAX_VERSION = 1.1;
+	public static final double MAX_VERSION = 1.2;
 
 	@Override
 	public VerificationType getVerificationType() {
