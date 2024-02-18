@@ -5,8 +5,8 @@
 # java
 target/*
 /target/
-
-
+/versionen/
+**/under_test/
 # eclipse
 .settings/*
 .project

@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.hastobe</groupId>
-	<artifactId>com.hastobe.transparenzsoftware</artifactId>
-	<version>1.2.0</version>
+	<groupId>de.safe_ev</groupId>
+	<artifactId>de.safe_ev.transparenzsoftware</artifactId>
+	<version>1.3.0</version>
 	<packaging>jar</packaging>
+
+	<properties>
+		<bouncycastle.version>1.72</bouncycastle.version>
+		<jdk.version>11</jdk.version>
+		<jdk.target.version>11</jdk.target.version>
+		<file.encoding>UTF-8</file.encoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<junit.version>4.13.1</junit.version>
+		<jsml.version>1.1.2</jsml.version>
+		<log4j-core.version>2.19.0</log4j-core.version>
+		<commons-cli.version>1.4</commons-cli.version>
+		<jaxb.version>2.4.0</jaxb.version>
+		<javax.activation.version>1.1.1</javax.activation.version>
+		<project.main.resources>src/main/resources</project.main.resources>
+		<commons-codec.version>1.11</commons-codec.version>
+		<guava.version>32.0.0-jre</guava.version>
+		<mockito.version>2.23.4</mockito.version>
+		<gson.version>2.8.9</gson.version>
+	</properties>
 
 	<dependencies>
 		<!-- MIT license -->
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15on</artifactId>
+			<artifactId>bcprov-jdk18on</artifactId>
 			<version>${bouncycastle.version}</version>
 		</dependency>
 
@@ -62,26 +80,21 @@
 		<!-- Java 8 = JAX-B Version 2.2.8 -->
 		<!-- CDDL | GPL double license -->
 		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>${jaxb.version}</version>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>4.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-core</artifactId>
-			<version>${jaxb.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-impl</artifactId>
-			<version>${jaxb.version}</version>
-		</dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>4.0.0</version>
+  		</dependency>
 
 		<!-- CDDL double license -->
 		<dependency>
-			<groupId>javax.activation</groupId>
-			<artifactId>activation</artifactId>
-			<version>${activation.version}</version>
+			<groupId>jakarta.activation</groupId>
+			<artifactId>jakarta.activation-api</artifactId>
+			<version>2.0.0</version>
 		</dependency>
 
 		<dependency>
@@ -105,31 +118,18 @@
 		</dependency>
 
 		<dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-pdf-plugin</artifactId>
-            <version>1.4</version>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-pdf-plugin</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.metabit.custom.safe</groupId>
+			<artifactId>safesealing</artifactId>
+			<version>0.9.2</version>
 		</dependency>
 
 	</dependencies>
-
-	<properties>
-		<bouncycastle.version>1.59</bouncycastle.version>
-		<jdk.version>1.8</jdk.version>
-		<file.encoding>UTF-8</file.encoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<junit.version>4.12</junit.version>
-		<jsml.version>1.1.2</jsml.version>
-		<log4j-core.version>2.17.1</log4j-core.version>
-		<commons-cli.version>1.4</commons-cli.version>
-		<jaxb.version>2.2.11</jaxb.version>
-		<activation.version>1.1.1</activation.version>
-		<project.main.resources>src/main/resources</project.main.resources>
-		<commons-codec.version>1.11</commons-codec.version>
-		<guava.version>25.1-jre</guava.version>
-		<mockito.version>2.23.4</mockito.version>
-		<gson.version>2.8.5</gson.version>
-	</properties>
 
 	<reporting>
 		<plugins>
@@ -157,14 +157,37 @@
 			</resource>
 		</resources>
 		<plugins>
+
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>4.1</version>
+				<configuration>
+					<properties>
+						<owner>Mycila</owner>
+						<email>mathieu.carbou@gmail.com</email>
+					</properties>
+					<licenseSets>
+						<licenseSet>
+							<header>LICENSE</header>
+							<excludes>
+								<exclude>**/README</exclude>
+								<exclude>src/test/resources/**</exclude>
+								<exclude>src/main/resources/**</exclude>
+							</excludes>
+						</licenseSet>
+					</licenseSets>
+				</configuration>
+			</plugin>
+
 			<!-- set the compiler version level -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
+				<version>3.8.1</version>
 				<configuration>
 					<source>${jdk.version}</source>
-					<target>${jdk.version}</target>
+					<target>${jdk.target.version}</target>
 				</configuration>
 			</plugin>
 
@@ -174,8 +197,8 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0-M5</version>
 				<configuration>
-                            <forkCount>1</forkCount>
- 				</configuration>
+					<forkCount>1</forkCount>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -194,24 +217,24 @@
 					<outputDirectory>${basedir}/target/newsite</outputDirectory>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pdf-plugin</artifactId>
-                <version>1.4</version>
-                <executions>
-                    <execution>
-                        <id>pdf</id>
-                        <phase>site</phase>
-                        <goals>
-                            <goal>pdf</goal>
-                        </goals>
-                        <configuration>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pdf-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>pdf</id>
+						<phase>site</phase>
+						<goals>
+							<goal>pdf</goal>
+						</goals>
+						<configuration>
 							<generatedSiteDirectory>${basedir}/target/newsite</generatedSiteDirectory>
-                            <outputDirectory>${project.reporting.outputDirectory}</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+							<outputDirectory>${project.reporting.outputDirectory}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
 			<!-- assembly plugin to build a fat jar -->
 			<plugin>
@@ -226,11 +249,10 @@
 						</goals>
 						<configuration>
 							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.hastobe.transparenzsoftware.Transparenzsoftware</mainClass>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>de.safe_ev.transparenzsoftware.Transparenzsoftware</mainClass>
 									<manifestEntries>
-										<Main-Class>com.hastobe.transparenzsoftware.Transparenzsoftware</Main-Class>
+										<Main-Class>de.safe_ev.transparenzsoftware.Transparenzsoftware</Main-Class>
 										<Build-Number>1</Build-Number>
 									</manifestEntries>
 								</transformer>

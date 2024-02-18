@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<values >
+    <value transactionld="15060" context="Transaction.End">
+        <signedData format="OCMF" encoding="plain">OCMF|{"FV" : "1.0","GI" : "XXX-XXX.1K2L","GS" : "1XXX0028200099","GV" : "1.4p3","PG" : "T76","MV" : "XXX","MM" : "XXXXX.1K2L","MS" : "1XXX0128200099","MF" : "230","IS" : false,"IT" : "NONE","ID" : "SIM_CHARGE","CT" : "EVSEID","CI" : "99BZ999993","RD" : [{"TM" : "2021-09-02T12:29:53,000+0200 I","TX" : "B","RV" : "0.0","RI" : "1-0:98.8.0.FF","RU" : "kWh","RT" : "DC","EF" : "","ST" : "G"},{"TM" : "2021-09-02T12:30:07,000+0200 I","TX" : "E","RV" : "1.0","RI" : "1-0:98.8.0.FF","RU" : "kWh","RT" : "DC","EF" : "","ST" : "G"},{"TM" : "2021-09-02T12:29:53,000+0200 I","TX" : "B","RV" : "1.0","RI" : "1-0:2.8.0.FF","RU" : "kWh","RT" : "DC","EF" : "","ST" : "G"},{"TM" : "2021-09-02T12:30:07,000+0200 I","TX" : "E","RV" : "2.0","RI" : "1-0:2.8.0.FF","RU" : "kWh","RT" : "DC","EF" : "","ST" : "G"}]}|{"SA": "ECDSA-secp256k1-SHA256","SD" : "30460221009E807C6F7583DA8768E80F7D034E82FEE4DBB34B7C312A8AFE6A956836B086D1022100DB390825EDD18091C045EE83FFB8C2CDF7571457CCA52B1BB89A39B33E574006"}</signedData>
+        <publicKey> 3056301006072A8648CE3D020106052B8104000A03420004611335D2C0C96F54D28F7B504FED58D0F3CF7981D4F3E59E38ED5EB887393FB41A7371FFD96494C4DB477F63628DFC2DAF1D347DEA80A160C483E7D9952EBF78</publicKey>
+        </value>
+</values >
