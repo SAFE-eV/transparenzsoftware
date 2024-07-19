@@ -3,6 +3,7 @@ package de.safe_ev.transparenzsoftware.verification.format.ocmf;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import de.safe_ev.transparenzsoftware.gui.views.helper.DetailsList;
 import de.safe_ev.transparenzsoftware.i18n.Translator;
@@ -26,6 +27,7 @@ public class OCMFVerifiedData extends VerifiedData {
     private String meterModel;
     private String meterSerialNumber;
     private String meterFirmwareVersion;
+    private String chargeControllerFirmwareVersion;
     private String identificationStatus;
     private String identificationLevel;
     private String identificationFlags;
@@ -68,6 +70,7 @@ public class OCMFVerifiedData extends VerifiedData {
 	    final Meter.TimeSyncType timeSyncType = reading.getTimeSyncType();
 	    final Meter m = new Meter(rv, reading.getTimestamp(), type, timeSyncType, digits);
 	    m.setLawRelevant(isLawRelevant(reading));
+	    m.setCompensated(isCompensated(reading));
 	    meters.add(m);
 	}
 	this.publicKey = publicKey;
@@ -81,6 +84,7 @@ public class OCMFVerifiedData extends VerifiedData {
 	meterModel = ocmfPayloadData.getMM();
 	meterSerialNumber = ocmfPayloadData.getMS();
 	meterFirmwareVersion = ocmfPayloadData.getMF();
+	chargeControllerFirmwareVersion = ocmfPayloadData.getCF();
 	identificationStatus = ocmfPayloadData.getIdStatus();
 	identificationLevel = ocmfPayloadData.getIdLevel();
 
@@ -139,6 +143,10 @@ public class OCMFVerifiedData extends VerifiedData {
 	if (getMeterFirmwareVersion() != null) {
 	    addData.put(Translator.get("app.verify.ocmf.meterFirmwareVersion"), getMeterFirmwareVersion());
 	}
+	if (getChargeControllerFirmwareVersion() != null) {
+	    addData.put(Translator.get("app.verify.ocmf.chargeControllerFirmwareVersion"),
+		    getChargeControllerFirmwareVersion());
+	}
 	if (getIdentificationStatus() != null) {
 	    addData.put(Translator.get("app.verify.ocmf.identificationStatus"), getIdentificationStatus());
 	}
@@ -168,7 +176,13 @@ public class OCMFVerifiedData extends VerifiedData {
 		addData.put(Translator.get("app.view.single.value") + " " + count, val);
 		if (reading.getTimeSynchronicity() != null) {
 		    final String label = Translator.get("app.verify.ocmf.timesynchronicity");
-		    addData.put(String.format("%s %s", label, count), Translator.get(reading.getLabelForTimeFlag()));
+		    String value = "";
+		    if (reading.getEF() != null && reading.getEF().indexOf("t") >= 0) {
+			value = Translator.get("app.verify.ocmf.timesynchronicity.error");
+		    } else {
+			value = Translator.get(reading.getLabelForTimeFlag());
+		    }
+		    addData.put(String.format("%s %s", label, count), value);
 		}
 		count++;
 	    }
@@ -223,10 +237,9 @@ public class OCMFVerifiedData extends VerifiedData {
 
 	String previousST = null;
 	String previousRU = null;
-	for (final Reading reading : readings) {
-	    if (!isLawRelevant(reading)) {
-		continue;
-	    }
+
+	final List<? extends Reading> lawRelevantReadings = filterLawRelevantReadings(readings);
+	for (final Reading reading : lawRelevantReadings) {
 	    if (reading.getST() == null) {
 		if (previousST == null) {
 		    throw new OCMFValidationException("Missing mandatory ST parameter for first reading.",
@@ -309,28 +322,46 @@ public class OCMFVerifiedData extends VerifiedData {
 	return true;
     }
 
-    private boolean isLawRelevant(Reading reading) {
-	final String ri = reading.getRI();
-	if (ri == null) {
-	    return false;
+    private List<? extends Reading> filterLawRelevantReadings(List<? extends Reading> readings) {
+	final List<? extends Reading> compensated = readings.stream().filter(this::isCompensated).toList();
+	if (!compensated.isEmpty()) {
+	    return compensated;
 	}
-	try {
-	    final OBISCode obis = new OBISCode(ri);
-	    if (obis.getA() == 1 && (obis.getC() == 1 || obis.getC() == 152) && obis.getD() == 8) {
-		return true;
-	    }
-	} catch (final Exception e) {
-
-	}
-	return false;
+	final List<? extends Reading> lawRelevant = readings.stream().filter(this::isLawRelevant).toList();
+	return lawRelevant;
     }
 
-    private void checkErrorFlag(Reading startValue) throws RegulationLawException {
-	if (startValue.getEF() != null) {
-	    if (startValue.getEF().equals("E")) {
+    private boolean isLawRelevant(Reading reading) {
+	return getObisCode(reading)
+		.map(obis -> (obis.getA() == 1 && (obis.getC() == 1 || obis.getC() == 0x98) && obis.getD() == 8)
+			&& (obis.getF() == 0 || obis.getF() == 0x200 || obis.getF() == 0xFF))
+		.orElse(false);
+    }
+
+    private boolean isCompensated(Reading reading) {
+	return getObisCode(reading).map(obis -> (obis.getA() == 1 && (obis.getC() == 0x98) && obis.getD() == 8))
+		.orElse(false);
+    }
+
+    private Optional<OBISCode> getObisCode(Reading reading) {
+	final String ri = reading.getRI();
+	if (ri != null) {
+	    try {
+		return Optional.of(new OBISCode(ri));
+	    } catch (final Exception e) {
+
+	    }
+	}
+	return Optional.empty();
+    }
+
+    private void checkErrorFlag(Reading reading) throws RegulationLawException {
+	if (reading.getEF() != null) {
+	    if (reading.getEF().equals("E")) {
 		throw new RegulationLawException("Error flag set on energy",
 			"app.verify.law.conform.error.flag.energy");
 	    }
+	    // Time "t" error flag is not law-relevant in this case.
 	}
     }
 
@@ -364,6 +395,10 @@ public class OCMFVerifiedData extends VerifiedData {
 
     public String getMeterFirmwareVersion() {
 	return meterFirmwareVersion;
+    }
+
+    public String getChargeControllerFirmwareVersion() {
+	return chargeControllerFirmwareVersion;
     }
 
     public String getIdentificationStatus() {

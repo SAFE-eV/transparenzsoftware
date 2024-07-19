@@ -50,6 +50,11 @@ public abstract class OCMFPayloadData {
     protected String MF;
 
     /**
+     * Charge controller firmware version, optional field
+     */
+    protected String CF;
+
+    /**
      * Identification flags list of strings, valid codes see OCMF documentation They
      * are describing values which are used to identify the authentication media.
      */
@@ -132,6 +137,14 @@ public abstract class OCMFPayloadData {
 
     public void setMF(String MF) {
 	this.MF = MF;
+    }
+
+    public String getCF() {
+	return CF;
+    }
+
+    public void setCF(String CF) {
+	this.CF = CF;
     }
 
     public String getIT() {
