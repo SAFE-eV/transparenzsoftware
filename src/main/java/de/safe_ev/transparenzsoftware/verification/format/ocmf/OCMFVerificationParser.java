@@ -23,7 +23,7 @@ public class OCMFVerificationParser implements VerificationParser {
     public static final String HEADER_VALUE = "OCMF";
 
     public static final double MIN_VERSION = 0.1;
-    public static final double MAX_VERSION = 1.3;
+    public static final double MAX_VERSION = 1.3 + 0.1; // must be one more
 
     @Override
     public VerificationType getVerificationType() {
@@ -134,7 +134,7 @@ public class OCMFVerificationParser implements VerificationParser {
 	if (version < 0.5) {
 	    ocmfPayloadData = gson.fromJson(rawData,
 		    de.safe_ev.transparenzsoftware.verification.format.ocmf.v02.OCMFPayloadData.class);
-	} else if (version <= 1.2) {
+	} else if (version <= 1.3) {
 	    ocmfPayloadData = gson.fromJson(rawData,
 		    de.safe_ev.transparenzsoftware.verification.format.ocmf.v05.OCMFPayloadData.class);
 	} else {
