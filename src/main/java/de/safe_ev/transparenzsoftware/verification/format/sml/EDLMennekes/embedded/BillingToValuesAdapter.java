@@ -1,7 +1,7 @@
 package de.safe_ev.transparenzsoftware.verification.format.sml.EDLMennekes.embedded;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 
 import de.safe_ev.transparenzsoftware.verification.EncodingType;
 import de.safe_ev.transparenzsoftware.verification.VerificationType;

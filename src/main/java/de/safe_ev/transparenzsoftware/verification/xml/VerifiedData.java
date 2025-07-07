@@ -1,6 +1,6 @@
 package de.safe_ev.transparenzsoftware.verification.xml;
 
-import javax.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.*;
 
 import de.safe_ev.transparenzsoftware.gui.views.helper.DetailsList;
 import de.safe_ev.transparenzsoftware.verification.RegulationLawException;

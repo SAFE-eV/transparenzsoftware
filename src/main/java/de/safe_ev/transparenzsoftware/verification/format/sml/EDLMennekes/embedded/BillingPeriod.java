@@ -1,7 +1,7 @@
 package de.safe_ev.transparenzsoftware.verification.format.sml.EDLMennekes.embedded;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.safe_ev.transparenzsoftware.verification.xml.OffsetDateTimeAdapter;
 

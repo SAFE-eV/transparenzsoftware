@@ -54,7 +54,7 @@ public class EncryptedDataDecoder {
 	    final SubjectPublicKeyInfo keyInfo = SubjectPublicKeyInfoFactory.createSubjectPublicKeyInfo(asymKey);
 	    final PublicKey pubKey = BouncyCastleProvider.getPublicKey(keyInfo);
 	    final byte[] encodedData = Utils.hexStringToByteArray(data.getEncodedData().getValue());
-	    final SAFESealRevealer revealer = new SAFESealRevealer(false);
+	    final SAFESealRevealer revealer = new SAFESealRevealer(2);
 	    final byte[] decodedData = revealer.reveal(pubKey, null, encodedData);
 	    final String flatData = new String(decodedData);
 	    intrinsicVerified.set(IntrinsicVerified.VERIFIED);

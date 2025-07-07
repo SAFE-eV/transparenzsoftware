@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<values>
+	<value transactionId="848182519" context="Transaction_context">
+		<signedData format="OCMF">
+		</signedData>
+		<publicKey>B27CDB498504606CA3ACA2BA05A61F30D443B36CADD6F00C881F3469FBB08B8C2F498C314A035BDADCC83EA731A8B65CACD0A39A32C88AE444431E990F9E84ED</publicKey>
+	</value>
+</values>

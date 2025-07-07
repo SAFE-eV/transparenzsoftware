@@ -51,6 +51,7 @@ public class SMLSignatureVerifier implements Verifier {
     protected String KEY_ALGORITHM = "EC";
     protected int KEY_POINT_DATA_LENGTH = 24;
     protected int PUBLIC_KEY_BYTES_LENGTH = 48;
+    protected int CROPPED_HASH_LEN = 24;
 
     /**
      * Initializes the verifier and also the bouncy castle library as security
@@ -74,6 +75,7 @@ public class SMLSignatureVerifier implements Verifier {
 	} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
 	    throw new ValidationException("Failure on initialising the crypto algorithms", e);
 	} catch (final SignatureException e) {
+	    VerificationLogger.log("SML", ELLIPTIC_CURVE_ALGORITHM, publicKey, payloadData, signature, false);
 	    throw new ValidationException("Invalid signature supplied", e);
 	} catch (final InvalidKeyException e) {
 	    throw new ValidationException("Invalid public key supplied", e);
@@ -91,19 +93,23 @@ public class SMLSignatureVerifier implements Verifier {
 
     /**
      * @param publicKeyBytes public key in bytes (two points on the curve)
-     * @param SMLSignature   SMLSignature parsed
+     * @param signatureSML   SMLSignature parsed
      * @return true if success
      * @throws ValidationException
      */
-    public boolean verify(byte[] publicKeyBytes, SMLSignature SMLSignature) throws ValidationException {
-	final byte[] providedData = SMLSignature.buildExtendedSignatureData();
+    public boolean verify(byte[] publicKeyBytes, SMLSignature signatureSML) throws ValidationException {
+	final byte[] providedData = signatureSML.buildExtendedSignatureData();
 	LOGGER.info("Provided:    " + Hex.toHexString(providedData));
 	final byte[] hashedData = Utils.hashSHA256(providedData);
-	final byte[] hashedDataCropped = Arrays.copyOfRange(hashedData, 0, 24);
+	final byte[] hashedDataCropped = Arrays.copyOfRange(hashedData, 0, CROPPED_HASH_LEN);
 
 	// 48 bytes because the last 2 bytes are from the logbook
-	final byte[] signedData = SMLSignature.getProvidedSignature();
-	final byte[] signatureCropped = Arrays.copyOfRange(signedData, 0, 48);
+	final byte[] signatureData = signatureSML.getProvidedSignature();
+	int cutoff = signatureSML.getVersion() == 4 ? 2 : 0;
+	if (signatureData.length == 50) {
+	    cutoff = 2;
+	}
+	final byte[] signatureCropped = Arrays.copyOfRange(signatureData, 0, signatureData.length - cutoff);
 	return verify(publicKeyBytes, signatureCropped, hashedDataCropped);
     }
 
@@ -145,10 +151,13 @@ public class SMLSignatureVerifier implements Verifier {
     public PublicKey getPublicKeyFromBytes(byte[] pubKey) throws ValidationException {
 
 	if (pubKey.length != PUBLIC_KEY_BYTES_LENGTH) {
-	    LOGGER.error("Invalid public key length received");
-	    throw new ValidationException("Public key is not 48 bytes long", "error.invalid.public.key");
+	    LOGGER.error("Invalid public key length received, expected: " + PUBLIC_KEY_BYTES_LENGTH + " but was "
+		    + pubKey.length);
+	    throw new ValidationException("Public key is not " + PUBLIC_KEY_BYTES_LENGTH + " bytes long",
+		    "error.invalid.public.key");
 	}
 
+	LOGGER.info("Trying " + KEY_ALGORITHM + " with " + PUBLIC_KEY_BYTES_LENGTH);
 	try {
 	    final KeyFactory kf = KeyFactory.getInstance(KEY_ALGORITHM, Constants.BOUNCY_CASTLE_PROVIDER_CODE);
 	    return kf.generatePublic(initPublicKeyCryptoSpecs(pubKey));
