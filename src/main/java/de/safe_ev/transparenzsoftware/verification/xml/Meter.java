@@ -38,7 +38,7 @@ public class Meter {
     private boolean lawRelevant = true;
 
     @XmlTransient
-    private boolean compensated = false;
+    private boolean compensated;
 
     private Meter() {
 	value = 0;
@@ -52,11 +52,16 @@ public class Meter {
      * @param timestamp
      * @param scale     0= 1/1000 1= 10/1000 2= 100/1000 3 = 1000/1000
      */
-    public Meter(double value, OffsetDateTime timestamp, int scale) {
-	this(value, timestamp, null, TimeSyncType.INFORMATIVE, scale);
+    public Meter(double value, OffsetDateTime timestamp, int scale, boolean compensated) {
+	this(value, timestamp, null, TimeSyncType.INFORMATIVE, scale, compensated);
     }
 
-    public Meter(double value, OffsetDateTime timestamp, Type type, TimeSyncType timeSyncType, int scaling) {
+    public Meter(double value, OffsetDateTime timestamp, int scale) {
+	this(value, timestamp, null, TimeSyncType.INFORMATIVE, scale, false);
+    }
+
+    public Meter(double value, OffsetDateTime timestamp, Type type, TimeSyncType timeSyncType, int scaling,
+	    boolean compensated) {
 	this.value = value;
 	this.timestamp = timestamp;
 	this.type = type;
@@ -68,6 +73,7 @@ public class Meter {
 	    scaling = -2;
 	}
 	this.scaling = scaling;
+	this.compensated = compensated;
     }
 
     public void setDescriptiveMessageText(String text) {
@@ -91,9 +97,6 @@ public class Meter {
 	final List<String> additionalData = new ArrayList<>();
 	if (timeSyncType != null && !timeSyncType.equals(TimeSyncType.SYNCHRONIZED)) {
 	    additionalData.add(Translator.get(timeSyncType.message));
-	}
-	if (compensated) {
-	    additionalData.add(Translator.get("app.verify.compensated"));
 	}
 	return String.join(", ", additionalData);
     }

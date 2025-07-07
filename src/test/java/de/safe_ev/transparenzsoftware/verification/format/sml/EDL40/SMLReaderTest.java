@@ -116,7 +116,7 @@ public class SMLReaderTest {
         SMLSignature signature = smlReader.parsePayloadData(EncodingType.BASE64.decode(SML_DATA_FULL_NEW));
         Assert.assertNotNull(signature);
         Assert.assertNotNull(signature.getProvidedSignature());
-        Assert.assertEquals(2918, signature.getMeterPositionAsLong());
+        Assert.assertEquals(2918, signature.getLawRelevantMeterAsLong());
         Assert.assertEquals("09 01 45 4D 48 00 00 7A C6 62", Utils.toFormattedHex(signature.getServerId()));
         Assert.assertEquals(65, new BigInteger(Utils.reverseByteOrder(signature.getPagination())).intValue());
         Assert.assertEquals(340285, new BigInteger(Utils.reverseByteOrder(signature.getSecondsIndex())).intValue());
@@ -136,7 +136,7 @@ public class SMLReaderTest {
         SMLSignature signature = smlReader.parsePayloadData(EncodingType.BASE64.decode(SML_DATA_TECHNAGON));
         Assert.assertNotNull(signature);
         Assert.assertNotNull(signature.getProvidedSignature());
-        Assert.assertEquals(46201, signature.getMeterPositionAsLong());
+        Assert.assertEquals(46201, signature.getLawRelevantMeterAsLong());
         Assert.assertEquals("09 01 45 4D 48 00 00 7F 92 03", Utils.toFormattedHex(signature.getServerId()));
         Assert.assertEquals(14, new BigInteger(Utils.reverseByteOrder(signature.getPagination())).intValue());
         Assert.assertEquals(83696, new BigInteger(Utils.reverseByteOrder(signature.getSecondsIndex())).intValue());

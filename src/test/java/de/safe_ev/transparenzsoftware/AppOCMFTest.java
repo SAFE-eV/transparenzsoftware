@@ -61,6 +61,16 @@ public class AppOCMFTest extends AbstractAppTest {
     }
 
     @Test
+    public void test_ocmf_obis_9e() throws Exception {
+	chooseFile(testDirXML, "ocmf_obis_9e.xml");
+	final String pubKey = getWindow().textBox("text.pubkey").text();
+	delayForVerify();
+	getWindow().label("lbl.icon").requireText(Daten_wurden_verifiziert);
+	getWindow().label("lbl.meter").requireText(Pattern.compile(".*9,914 kWh [^k].*"));
+	delay();
+    }
+
+    @Test
     public void test_ocmf_with_compensation() throws Exception {
 	chooseFile(testDirXML, "Ocmf_Example_OBIS_98.8.0_2.8.0.xml");
 	delayForVerify();

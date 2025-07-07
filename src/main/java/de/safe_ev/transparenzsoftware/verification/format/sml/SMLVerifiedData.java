@@ -59,12 +59,14 @@ public class SMLVerifiedData extends VerifiedData {
 	if (smlSignature != null) {
 	    serverId = Utils.toFormattedHex(smlSignature.getServerId());
 	    meters = new ArrayList<>();
-	    meter = smlSignature.getMeterPositionAsLong();
+	    meter = smlSignature.getLawRelevantMeterAsLong();
 
 	    // calculate kWh
 	    meter = meter != 0 ? meter * Math.pow(10, smlSignature.getScaler()) / 1000 : 0;
-
-	    meters.add(new Meter(meter, smlSignature.getTimestampAsDate(), smlSignature.getScaler()));
+	    powerlineResistance = smlSignature.getPowerlineResistance();
+	    final Meter m = new Meter(meter, smlSignature.getTimestampAsDate(), smlSignature.getScaler(),
+		    powerlineResistance != 0);
+	    meters.add(m);
 	    status = Utils.toFormattedHex(smlSignature.getStatus());
 	    secondsIndex = Utils.toFormattedHex(smlSignature.getSecondsIndex());
 	    pagination = new BigInteger(Utils.reverseByteOrder(smlSignature.getPagination())).intValue();
@@ -76,7 +78,6 @@ public class SMLVerifiedData extends VerifiedData {
 	    signature = Utils.toFormattedHex(smlSignature.getProvidedSignature());
 	    customerId = Utils.toFormattedHex(Utils.trimPaddingAtEnd(smlSignature.getContractId()));
 	    timestampCustomerId = smlSignature.getTimestampContractIdAsDate();
-	    powerlineResistance = smlSignature.getPowerlineResistance();
 	    price = smlSignature.getPrice();
 	}
 

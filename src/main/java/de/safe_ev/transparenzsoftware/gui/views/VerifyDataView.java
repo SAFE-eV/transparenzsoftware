@@ -336,6 +336,11 @@ public class VerifyDataView extends JPanel {
 	builder.append("<li>");
 	final String preci = meter.getScalingFormat();
 	builder.append(String.format(preci + " kWh", meter.getValue()));
+	if (meter.isCompensated()) {
+	    builder.append(" (");
+	    builder.append(Translator.get("app.verify.compensated"));
+	    builder.append(")");
+	}
 	builder.append("</li><li>");
 
 	final LocalDateTime localDateTime = meter.getTimestamp() != null ? meter.getTimestamp().toLocalDateTime()

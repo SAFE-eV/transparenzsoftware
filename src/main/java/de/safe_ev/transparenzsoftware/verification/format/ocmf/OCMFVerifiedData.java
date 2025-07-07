@@ -68,9 +68,8 @@ public class OCMFVerifiedData extends VerifiedData {
 		rv = (double) 0;
 	    }
 	    final Meter.TimeSyncType timeSyncType = reading.getTimeSyncType();
-	    final Meter m = new Meter(rv, reading.getTimestamp(), type, timeSyncType, digits);
+	    final Meter m = new Meter(rv, reading.getTimestamp(), type, timeSyncType, digits, isCompensated(reading));
 	    m.setLawRelevant(isLawRelevant(reading));
-	    m.setCompensated(isCompensated(reading));
 	    meters.add(m);
 	}
 	this.publicKey = publicKey;
@@ -333,14 +332,22 @@ public class OCMFVerifiedData extends VerifiedData {
 
     private boolean isLawRelevant(Reading reading) {
 	return getObisCode(reading)
-		.map(obis -> (obis.getA() == 1 && (obis.getC() == 1 || obis.getC() == 0x98) && obis.getD() == 8)
-			&& (obis.getF() == 0 || obis.getF() == 0x200 || obis.getF() == 0xFF))
+		.map(obis -> (obis.getA() == 1 && isCLawRelevant(obis.getC()) && obis.getD() == 8)
+			&& (obis.getF() == 0 || obis.getF() == 0x200 || obis.getF() == 0x255 || obis.getF() == 0xFF))
 		.orElse(false);
     }
 
+    private boolean isCLawRelevant(int value) {
+	return value == 1 || value == 0x98 || value == 0x9E || (value >= 0xB0 && value <= 0xC7);
+    }
+
     private boolean isCompensated(Reading reading) {
-	return getObisCode(reading).map(obis -> (obis.getA() == 1 && (obis.getC() == 0x98) && obis.getD() == 8))
+	return getObisCode(reading).map(obis -> (obis.getA() == 1 && isCCompensated(obis.getC()) && obis.getD() == 8))
 		.orElse(false);
+    }
+
+    private boolean isCCompensated(int value) {
+	return value == 0x98 || value == 0xB1 || value == 0xB3 || value == 0xC1 || value == 0xC3;
     }
 
     private Optional<OBISCode> getObisCode(Reading reading) {
@@ -357,7 +364,7 @@ public class OCMFVerifiedData extends VerifiedData {
 
     private void checkErrorFlag(Reading reading) throws RegulationLawException {
 	if (reading.getEF() != null) {
-	    if (reading.getEF().equals("E")) {
+	    if (reading.getEF().indexOf("E") >= 0) {
 		throw new RegulationLawException("Error flag set on energy",
 			"app.verify.law.conform.error.flag.energy");
 	    }

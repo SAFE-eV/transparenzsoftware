@@ -152,6 +152,8 @@ public abstract class SMLSignature {
      */
     private int price;
 
+    private boolean compensated;
+
     public SMLSignature() {
     }
 
@@ -313,11 +315,15 @@ public abstract class SMLSignature {
     }
 
     /**
-     * returns the meter position value as long
+     * returns either the meter position value or the compensated value (if set) as
+     * long
      *
      * @return meter position
      */
-    public long getMeterPositionAsLong() {
+    public long getLawRelevantMeterAsLong() {
+	if (historicalValueComp != 0) {
+	    return historicalValueComp;
+	}
 	return Utils.bytesToLong(Utils.reverseByteOrder(meterPosition));
     }
 
@@ -647,6 +653,9 @@ public abstract class SMLSignature {
 
     public void setPowerlineResistance(int powerlineResistance) {
 	this.powerlineResistance = powerlineResistance;
+	if (powerlineResistance != 0) {
+	    compensated = true;
+	}
     }
 
     public int getVersion() {
@@ -655,5 +664,9 @@ public abstract class SMLSignature {
 
     public void setVersion(int version) {
 	this.version = version;
+    }
+
+    public boolean isCompensated() {
+	return compensated;
     }
 }
